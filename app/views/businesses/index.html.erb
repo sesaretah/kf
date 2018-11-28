@@ -1,0 +1,45 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @businesses.each do |business| %>
+          <tr>
+                        <td><%= business.title %></td>
+                        <td><%= business.user_id %></td>
+                        <td><%= business.tel %></td>
+                        <td><%= business.mobile %></td>
+                        <td><%= business.fax %></td>
+                        <td><%= business.address %></td>
+                        <td><%= business.bio %></td>
+                        <td><%= business.telegram_channel %></td>
+                        <td><%= business.instagram_page %></td>
+                        <td><%= business.email %></td>
+                        <td><%= link_to t(:show), business %></td>
+            <td><%= link_to t(:edit), edit_business_path(business) %></td>
+            <td><%= link_to t(:destroy), business, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

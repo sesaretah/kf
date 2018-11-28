@@ -1,0 +1,45 @@
+<%= form_for(@categorization, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_categorization %></h3>
+</div>
+<% if @categorization.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@categorization.errors.count, "error") %> prohibited this categorization from being saved:</h2>
+
+  <ul>
+    <% @categorization.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :product_id, class: "form-label" %>
+      <%= f.number_field :product_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :category_id, class: "form-label" %>
+      <%= f.number_field :category_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :level, class: "form-label" %>
+      <%= f.number_field :level , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="card-footer text-right">
+  <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+</div>
+<% end %>

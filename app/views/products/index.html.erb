@@ -1,0 +1,31 @@
+<div class="row row-cards">
+  <div class="col-lg-3 ">
+    <% if current_user.id == @business.user_id%>
+    <div class="list-group list-group-transparent mb-4 text-center">
+      <%= link_to '/products/new', class: "list-group-item list-group-item-action active small", style:'font-weight:normal;' do%>
+      <i class="fe fe-plus-square" style="vertical-align:middle;"></i> <%=t :add_new_product%>
+      <%end%>
+    </div>
+    <%end%>
+  </div>
+  <div class="col-lg-9 order-lg-1">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @products.each do |product| %>
+          <tr>
+            <td><%= product.title %></td>
+            <td><%= product.description %></td>
+            <td><%= product.category_id %></td>
+            <td><%= product.business_id %></td>
+            <td><%= product.user_id %></td>
+            <td><%= link_to t(:show), product %></td>
+            <td><%= link_to t(:edit), edit_product_path(product) %></td>
+            <td><%= link_to t(:destroy), product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

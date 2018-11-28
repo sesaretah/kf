@@ -1,0 +1,184 @@
+<%= form_for(@product, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_product %></h3>
+</div>
+<% if @product.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+  <ul>
+    <% @product.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :title, class: "form-label" %>
+        <%= f.text_field :title , class: "form-control" %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.label :category_id, class: "form-label" %>
+        <%= select_tag "category", options_for_select(Category.where('parent_id IN (?)', @business.classifications.pluck(:category_id)).order(:title).collect { |p| [ "#{Category.find(p.parent_id).title} > #{p.title}", p.id ] }) , { :include_blank =>true, :class => "form-control"}%>
+      </div>
+    </div>
+  </div>
+  <div id='sub_category_row' class="row" style="display:none">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.label :sub_category_id, class: "form-label" %>
+        <%= select_tag "sub_category", nil, { :class => "form-control", disabled: true}%>
+      </div>
+    </div>
+  </div>
+  <div id='sub_sub_category_row' class="row" style="display:none">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.label :sub_sub_category_id, class: "form-label" %>
+        <%= select_tag "sub_sub_category", nil , { :class => "form-control", disabled: true}%>
+      </div>
+    </div>
+  </div>
+  <div id='specs' class="alert alert-secondary" style='display:none;background-color:#eeeeef;' role="alert">
+
+  </div>
+  <script>
+  $('select[name="category"]').on('change', function() {
+    var category_id = $(this).val();
+    $.ajax({
+      type: "GET",
+      url: "/categories/get_children/1",
+      data: {category_id : category_id},
+      success: function (data) {
+        if(data.length > 0){
+          $('#sub_category_row').css('display','block');
+          var $el = $('select[name="sub_category"]');
+          $el.prop("disabled", false);
+          $el.empty();
+          $('select[name="sub_sub_category"]').empty();
+          $el.append("<option></option>");
+          $.each(data, function(item) {
+            $el.append($("<option></option>")
+            .attr("value", data[item]['id']).text(data[item]['title']));
+          });
+        }else{
+          $('#specs').css('display','none');
+          $('#specs').empty();
+          $('#sub_category_row').css('display','none');
+          $('#sub_sub_category_row').css('display','none');
+          $('select[name="sub_category"]').find('option').remove().end();
+          $('select[name="sub_sub_category"]').find('option').remove().end();
+        }
+      },
+      error: function(){
+        $('#specs').css('display','none');
+        $('#specs').empty();
+        $('#sub_category_row').css('display','none');
+        $('#sub_sub_category_row').css('display','none');
+        $('select[name="sub_category"]').find('option').remove().end();
+        $('select[name="sub_sub_category"]').find('option').remove().end();
+      }
+    });
+  });
+  </script>
+
+  <script>
+  $('select[name="sub_category"]').on('change', function() {
+    var category_id = $(this).val();
+    $.ajax({
+      type: "GET",
+      url: "/categories/specs/"+category_id,
+      data: {category_id : category_id},
+      success: function (data) {
+        if(data.length > 0){
+          $('#specs').css('display','block');
+          $('#specs').html("");
+          $.each(data, function(item) {
+            $('#specs').append("<div class='col-md-5'><div class='form-group small'><label class='form-label'>"+data[item]['title']+"</label><input class='form-control' type='text' name='product_param_"+data[item]['id']+"'></div></div>");
+          });
+
+        } else {
+          $('#specs').css('display','none');
+          $('#specs').empty();
+        }
+      },
+      error: function (){
+        $('#specs').css('display','none');
+        $('#specs').empty();
+      }
+    });
+
+    $.ajax({
+      type: "GET",
+      url: "/categories/get_children/1",
+      data: {category_id : category_id},
+      success: function (data) {
+        if(data.length > 0){
+          $('#sub_sub_category_row').css('display','block');
+          var $el = $('select[name="sub_sub_category"]');
+          $el.prop("disabled", false);
+          $el.empty();
+          $el.append("<option></option>");
+          $.each(data, function(item) {
+            $el.append($("<option></option>")
+            .attr("value", data[item]['id']).text(data[item]['title']));
+          });
+        } else {
+          $('#sub_sub_category_row').css('display','none');
+          $('select[name="sub_sub_category"]').find('option').remove().end();
+        }
+      },
+      error: function (){
+      }
+    });
+  });
+  </script>
+
+  <script>
+  $('select[name="sub_sub_category"]').on('change', function() {
+    var category_id = $(this).val();
+    $.ajax({
+      type: "GET",
+      url: "/categories/specs/"+category_id,
+      data: {category_id : category_id},
+      success: function (data) {
+        $('#specs').html('');
+        if(data.length > 0){
+          $('#specs').empty();
+          $('#specs').css('display','block');
+          $.each(data, function(item) {
+            $('#specs').append("<div class='col-md-5'><div class='form-group small'><label class='form-label'>"+data[item]['title']+"</label><input class='form-control' type='text' name='product_param_"+data[item]['id']+"'></div></div>");
+          });
+        }else{
+          $('#specs').css('display','none');
+          $('#specs').empty();
+        }
+      },
+      error: function (){
+        $('#specs').css('display','none');
+        $('#specs').empty();
+      }
+    });
+  });
+  </script>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group">
+        <%= f.label :description, class: "form-label" %>
+        <%= f.text_area :description , class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-right">
+    <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+  </div>
+  <% end %>
