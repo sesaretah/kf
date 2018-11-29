@@ -13,15 +13,23 @@
       <table class="table card-table table-vcenter">
         <tbody>
           <% @products.each do |product| %>
+          <% @upload = Upload.where(uploadable_type: 'Product', uploadable_id: product.id, attachment_type: 'product_attachment').first%>
           <tr>
-            <td><%= product.title %></td>
-            <td><%= product.description %></td>
-            <td><%= product.category_id %></td>
-            <td><%= product.business_id %></td>
-            <td><%= product.user_id %></td>
-            <td><%= link_to t(:show), product %></td>
-            <td><%= link_to t(:edit), edit_product_path(product) %></td>
-            <td><%= link_to t(:destroy), product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><img src="<%if !@upload.blank?%><%= @upload.attachment(:thumb)%><%else%>/assets/noimage-35-thumb.jpg<%end%>" alt="" class="h-7"></td>
+            <td>
+              <%= product.title%>
+            </td>
+            <td class="text-right text-muted d-none d-md-table-cell text-nowrap">
+              
+            </td>
+            <td class="text-right text-muted d-none d-md-table-cell text-nowrap">
+
+            </td>
+            <td class="text-right">
+              <% if !product.price.blank?%>
+                <strong><%= product.price%> <%= rcurrencies(product.currency)%></strong>
+              <%end%>
+            </td>
           </tr>
           <% end %>
         </tbody>

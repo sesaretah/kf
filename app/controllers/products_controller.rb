@@ -1,8 +1,13 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
-  before_action :load_business, only: [:index, :new, :show,:create, :update]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :upload]
+  before_action :load_business, only: [:index, :new, :show,:create, :update, :edit,:upload]
   # GET /products
   # GET /products.json
+
+  def upload
+
+  end
+
   def index
     @products = Product.all
   end
@@ -27,14 +32,10 @@ class ProductsController < ApplicationController
     @product = Product.new(product_params)
     @product.business_id = @business.id
     @product.user_id = current_user.id
+    @product.save
+    extract_features
     respond_to do |format|
-      if @product.save
-        format.html { redirect_to @product, notice: 'Product was successfully created.' }
-        format.json { render :show, status: :created, location: @product }
-      else
-        format.html { render :new }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-      end
+        format.html { redirect_to "/products/upload/#{@product.id}", notice: 'Product was successfully created.' }
     end
   end
 
@@ -45,7 +46,8 @@ class ProductsController < ApplicationController
       @product.business_id = @business.id
       @product.user_id = current_user.id
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+        extract_features
+        format.html { redirect_to "/products/upload/#{@product.id}", notice: 'Product was successfully updated.' }
         format.json { render :show, status: :ok, location: @product }
       else
         format.html { render :edit }
@@ -64,6 +66,38 @@ class ProductsController < ApplicationController
     end
   end
 
+  def extract_features
+    if !params[:category].blank?
+      @categorizations = Categorization.where(product_id: @product.id, level: [1,2,3])
+      for categorization in @categorizations
+        categorization.destroy
+      end
+      Categorization.create(product_id: @product.id, category_id: params[:category], level: 1)
+    end
+    if !params[:subcategory].blank?
+      @categorizations = Categorization.where(product_id: @product.id, level: [2,3])
+      for categorization in @categorizations
+        categorization.destroy
+      end
+      Categorization.create(product_id: @product.id, category_id: params[:subcategory], level: 2)
+    end
+    if !params[:subsubcategory].blank?
+      @categorizations = Categorization.where(product_id: @product.id, level: 3)
+      for categorization in @categorizations
+        categorization.destroy
+      end
+      Categorization.create(product_id: @product.id, category_id: params[:subsubcategory], level: 3)
+    end
+    for specification in @product.specifications
+      specification.destroy
+    end
+    for key in params.keys
+      if key.split('-')[0] == 'productparam'
+        Specification.create(product_id: @product.id, spec_id: key.split('-')[1], spec_value: params[key])
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -72,6 +106,6 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:title, :description, :category_id, :business_id, :user_id)
+      params.require(:product).permit(:title, :description, :category_id, :business_id, :user_id, :price, :currency)
     end
 end

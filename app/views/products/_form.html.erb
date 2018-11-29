@@ -16,7 +16,7 @@
 
 <div class="card-body">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <div class="form-group">
         <%= f.label :title, class: "form-label" %>
         <%= f.text_field :title , class: "form-control" %>
@@ -24,31 +24,65 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= f.label :price, class: "form-label" %>
+        <div class="row gutters-xs">
+          <div class="col">
+            <%= f.text_field :price , class: "form-control" %>
+          </div>
+          <span class="col-auto">
+            <%= f.select( :currency, currencies, {include_blank: true}, {:class => "form-control"})  %>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-6">
       <div class="form-group">
         <%= f.label :category_id, class: "form-label" %>
+        <% if @product.category.blank?%>
         <%= select_tag "category", options_for_select(Category.where('parent_id IN (?)', @business.classifications.pluck(:category_id)).order(:title).collect { |p| [ "#{Category.find(p.parent_id).title} > #{p.title}", p.id ] }) , { :include_blank =>true, :class => "form-control"}%>
+        <%else%>
+        <%= select_tag "category", options_for_select(Category.where('parent_id IN (?)', @business.classifications.pluck(:category_id)).order(:title).collect { |p| [ "#{Category.find(p.parent_id).title} > #{p.title}", p.id ] }, @product.category.id) , { :include_blank =>true, :class => "form-control"}%>
+        <%end%>
       </div>
     </div>
   </div>
-  <div id='sub_category_row' class="row" style="display:none">
+  <div id='sub_category_row' class="row" <% if @product.subcategory.blank?%>style="display:none"<%end%>>
     <div class="col-md-6">
       <div class="form-group">
         <%= f.label :sub_category_id, class: "form-label" %>
-        <%= select_tag "sub_category", nil, { :class => "form-control", disabled: true}%>
+        <% if @product.category.blank? || @product.subcategory.blank?%>
+          <%= select_tag "subcategory", nil, { :class => "form-control", disabled: true}%>
+        <%else%>
+          <%= select_tag "subcategory", options_for_select(Category.where(parent_id: @product.category.id).order(:title).collect { |p| [ "#{p.title}", p.id ]}, @product.subcategory.id) , { :include_blank =>true, :class => "form-control"}%>
+        <%end%>
       </div>
     </div>
   </div>
-  <div id='sub_sub_category_row' class="row" style="display:none">
+  <div id='sub_sub_category_row' class="row" <%if @product.subsubcategory.blank? %>style="display:none"<%end%>>
     <div class="col-md-6">
       <div class="form-group">
         <%= f.label :sub_sub_category_id, class: "form-label" %>
-        <%= select_tag "sub_sub_category", nil , { :class => "form-control", disabled: true}%>
+        <% if @product.category.blank? || @product.subcategory.blank? || @product.subsubcategory.blank? %>
+          <%= select_tag "subsubcategory", nil , { :class => "form-control", disabled: true}%>
+        <%else%>
+          <%= select_tag "subsubcategory", options_for_select(Category.where(parent_id: @product.subcategory.id).order(:title).collect { |p| [ "#{p.title}", p.id ]}, @product.subsubcategory.id) , { :include_blank =>true, :class => "form-control"}%>
+        <%end%>
       </div>
     </div>
   </div>
-  <div id='specs' class="alert alert-secondary" style='display:none;background-color:#eeeeef;' role="alert">
-
+  <div id='specs' class="alert alert-secondary" style='<%if @product.specifications.count == 0%>display:none;<%end%>background-color:#eeeeef;' role="alert">
+    <% for specification in @product.specifications%>
+    <div class='col-md-5'>
+      <div class='form-group small'>
+        <label class='form-label'><%= specification.spec.title%></label>
+        <input class='form-control' type='text' name='productparam-<%= specification.spec.id%>' value='<%= specification.spec_value%>'>
+      </div>
+    </div>
+    <%end%>
   </div>
   <script>
   $('select[name="category"]').on('change', function() {
@@ -60,10 +94,10 @@
       success: function (data) {
         if(data.length > 0){
           $('#sub_category_row').css('display','block');
-          var $el = $('select[name="sub_category"]');
+          var $el = $('select[name="subcategory"]');
           $el.prop("disabled", false);
           $el.empty();
-          $('select[name="sub_sub_category"]').empty();
+          $('select[name="subsubcategory"]').empty();
           $el.append("<option></option>");
           $.each(data, function(item) {
             $el.append($("<option></option>")
@@ -74,8 +108,8 @@
           $('#specs').empty();
           $('#sub_category_row').css('display','none');
           $('#sub_sub_category_row').css('display','none');
-          $('select[name="sub_category"]').find('option').remove().end();
-          $('select[name="sub_sub_category"]').find('option').remove().end();
+          $('select[name="subcategory"]').find('option').remove().end();
+          $('select[name="subsubcategory"]').find('option').remove().end();
         }
       },
       error: function(){
@@ -83,15 +117,15 @@
         $('#specs').empty();
         $('#sub_category_row').css('display','none');
         $('#sub_sub_category_row').css('display','none');
-        $('select[name="sub_category"]').find('option').remove().end();
-        $('select[name="sub_sub_category"]').find('option').remove().end();
+        $('select[name="subcategory"]').find('option').remove().end();
+        $('select[name="subsubcategory"]').find('option').remove().end();
       }
     });
   });
   </script>
 
   <script>
-  $('select[name="sub_category"]').on('change', function() {
+  $('select[name="subcategory"]').on('change', function() {
     var category_id = $(this).val();
     $.ajax({
       type: "GET",
@@ -102,7 +136,7 @@
           $('#specs').css('display','block');
           $('#specs').html("");
           $.each(data, function(item) {
-            $('#specs').append("<div class='col-md-5'><div class='form-group small'><label class='form-label'>"+data[item]['title']+"</label><input class='form-control' type='text' name='product_param_"+data[item]['id']+"'></div></div>");
+            $('#specs').append("<div class='col-md-5'><div class='form-group small'><label class='form-label'>"+data[item]['title']+"</label><input class='form-control' type='text' name='productparam-"+data[item]['id']+"'></div></div>");
           });
 
         } else {
@@ -123,7 +157,7 @@
       success: function (data) {
         if(data.length > 0){
           $('#sub_sub_category_row').css('display','block');
-          var $el = $('select[name="sub_sub_category"]');
+          var $el = $('select[name="subsubcategory"]');
           $el.prop("disabled", false);
           $el.empty();
           $el.append("<option></option>");
@@ -133,7 +167,7 @@
           });
         } else {
           $('#sub_sub_category_row').css('display','none');
-          $('select[name="sub_sub_category"]').find('option').remove().end();
+          $('select[name="subsubcategory"]').find('option').remove().end();
         }
       },
       error: function (){
@@ -143,7 +177,7 @@
   </script>
 
   <script>
-  $('select[name="sub_sub_category"]').on('change', function() {
+  $('select[name="subsubcategory"]').on('change', function() {
     var category_id = $(this).val();
     $.ajax({
       type: "GET",
@@ -155,7 +189,7 @@
           $('#specs').empty();
           $('#specs').css('display','block');
           $.each(data, function(item) {
-            $('#specs').append("<div class='col-md-5'><div class='form-group small'><label class='form-label'>"+data[item]['title']+"</label><input class='form-control' type='text' name='product_param_"+data[item]['id']+"'></div></div>");
+            $('#specs').append("<div class='col-md-5'><div class='form-group small'><label class='form-label'>"+data[item]['title']+"</label><input class='form-control' type='text' name='productparam-"+data[item]['id']+"'></div></div>");
           });
         }else{
           $('#specs').css('display','none');

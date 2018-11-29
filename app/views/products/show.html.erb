@@ -1,22 +1,53 @@
 <div class='row'>
-  <div class="col-lg-3 order-lg-1">
+  <div class="col-lg-4 order-lg-1">
+    <div class="card">
+      <div class="card-body mb-4">
+        <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
+          <% @uploads = Upload.where(uploadable_type: 'Product', uploadable_id: @product.id, attachment_type: 'product_attachment')%>
+          <ol class="carousel-indicators">
+            <%@i = 0%>
+            <% for upload in @uploads%>
+            <li data-target="#carousel-indicators" data-slide-to="<%=@i%>" class="<% if upload.id == @uploads.first.id%>active<%end%>"></li>
+            <% @i += 1%>
+            <%end%>
+          </ol>
+          <div class="carousel-inner">
+
+            <% for upload in @uploads%>
+            <div class="carousel-item <% if upload.id == @uploads.first.id%>active<%end%>">
+              <img class="d-block w-100" alt="" src="<%= upload.attachment(:medium)%>" data-holder-rendered="true">
+            </div>
+            <%end%>
+          </div>
+        </div>
+        <div class='text-center mt-2'>
+          <span href="#" class="btn btn-sm btn-vimeo"><%=t :price %>: <%= @product.price%> <%= rcurrencies(@product.currency)%></span>
+        </div>
+      </div>
+    </div>
+
+    <%= render partial: 'likes/liike', locals: {item: @product}%>
     <% if current_user.id == @business.user_id%>
     <div class="list-group list-group-transparent mb-4 text-center">
-      <%= link_to '/businesses/'+@business.id.to_s+'/edit', class: "list-group-item list-group-item-action active small", style:'font-weight:normal;' do%>
-      <i class="fe fe-edit" style="vertical-align:middle;"></i> <%=t :edit_your_business%>
+      <%= link_to '/products/'+@product.id.to_s+'/edit', class: "list-group-item list-group-item-action active small", style:'font-weight:normal;' do%>
+      <i class="fe fe-edit" style="vertical-align:middle;"></i> <%=t :edit_your_product%>
       <%end%>
     </div>
     <%end%>
+
   </div>
-  <div class="col-lg-9 order-lg-1">
+  <div class="col-lg-8 order-lg-1">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title"></h3>
+        <h5 class="card-title" style="font-size: 0.8rem; color:#9ea0a2;">
+          <%if !@product.category.blank?%><%= @product.category.title %><%end%>
+          <%if !@product.subcategory.blank?%>/ <%= @product.subcategory.title %><%end%>
+          <%if !@product.subsubcategory.blank?%>/ <%= @product.subsubcategory.title%><%end%>
+        </h5>
         <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
         </div>
       </div>
-      
+
       <div class="card-body">
         <div class='row'>
           <div class='col-md-12 col-lg-12'>
@@ -28,12 +59,26 @@
               <%= label :product, :description , class: "form-label", style: 'color: #7795c1;'%>
               <div class="form-control-plaintext"><%= @product.description %></div>
             </div>
-            <div class="form-group">
-              <%= label :product, :category_id , class: "form-label", style: 'color: #7795c1;'%>
-              <div class="form-control-plaintext"><%= @product.category_id %></div>
-            </div>
           </div>
         </div>
+      </div>
+    </div>
+
+
+    <div class='card'>
+      <div class="card-header">
+        <h3 class="card-title" style="font-size: 0.8rem; color:#9ea0a2;"><i class="fe fe-info" style="vertical-align:-3px;"></i> <%=t :specifications%></h3>
+        <div class="card-options">
+
+        </div>
+      </div>
+      <div class='card-body'>
+        <% for specification in @product.specifications%>
+        <div class="form-group">
+          <label class='form-label' style='color: #7795c1;'><%= specification.spec.title%></label>
+          <div class="form-control-plaintext"><%= specification.spec_value%></div>
+        </div>
+        <%end%>
       </div>
     </div>
   </div>

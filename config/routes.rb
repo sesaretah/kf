@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :likes
+  resources :uploads
+  resources :specifications
   resources :profiles
   devise_for :users
   resources :specs
@@ -11,4 +14,9 @@ Rails.application.routes.draw do
   root 'home#index'
   match "/categories/get_children/:id" => "categories#get_children", :via => :get
   match "/categories/specs/:id" => "categories#specs", :via => :get
+  match "/products/upload/:id" => "products#upload", :via => :get
+  match "/uploads/remoted/:id" => "uploads#remoted", :via => :get
+
+  match "/likes/liike/:id" => "likes#liike", :via => :get
+  match "/likes/disliike/:id" => "likes#disliike", :via => :get
 end

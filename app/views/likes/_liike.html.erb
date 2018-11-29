@@ -1,0 +1,17 @@
+<div id='like-<%= item.id%>' style="display: inline;">
+  <div class="list-group list-group-transparent mb-4 text-center">
+    <div class="list-group-item list-group-item-action active small">
+      <% @like = Like.where(likeable_type: item.class.name, likeable_id: item.id, user_id: current_user.id ).first%>
+      <% if @like.blank?%>
+      <%= link_to "/likes/liike/1?likeable_type=#{item.class.name}&likeable_id="+ item.id.to_s, :method => :get, remote: true  do %>
+      <i class="fa fa-heart-o" style="color: grey !important;vertical-align: middle;"></i>
+      <%end%>
+      <%else%>
+      <%= link_to "/likes/disliike/1?likeable_type=#{item.class.name}&likeable_id="+ item.id.to_s, :method => :get, remote: true  do %>
+      <i class="fa fa-heart" style="color: red !important;vertical-align: middle;"></i>
+      <%end%>
+      <%end%>
+      <span style="font-size:0.6rem">(<%= Like.where(likeable_type: item.class.name, likeable_id: item.id).count%>)</span>
+    </div>
+  </div>
+</div>

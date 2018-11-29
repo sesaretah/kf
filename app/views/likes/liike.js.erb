@@ -1,0 +1,1 @@
+$("#like-<%= @item.id%>").replaceWith("<%= escape_javascript(render(:partial => 'likes/liike',locals: {item: @item})) %>");

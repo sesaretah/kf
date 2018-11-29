@@ -232,11 +232,12 @@ fa:
           title: 'عنوان'
           priority: 'اولویت'
         product:
-          title: 'نام'
-          description: 'شرح'
+          title: 'نام کالا/محصول'
+          description: 'شرح و بررسی'
           category_id: 'نوع محصول'
           sub_category_id: 'دسته بندی'
           sub_sub_category_id: 'زیر دسته'
+          price: 'قیمت'
         participation:
           exhibition_id: 'عنوان نمایشگاه'
           year: 'سال'
@@ -272,6 +273,14 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  upload_pictures: 'بارگذاری عکس'
+  rial: 'ریال'
+  toman: 'تومان'
+  dollar: 'دلار'
+  euro: 'یورو'
+  edit_your_product: 'ویرایش اطلاعات کالا'
+  price: 'قیمت'
+  specifications: 'مشخصات کامل'
   sub_category_id: 'دسته بندی'
   sub_sub_category: 'زیر دسته'
   add_new_product: 'افزودن کالای جدید'

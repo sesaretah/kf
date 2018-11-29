@@ -1,0 +1,45 @@
+<%= form_for(@specification, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_specification %></h3>
+</div>
+<% if @specification.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@specification.errors.count, "error") %> prohibited this specification from being saved:</h2>
+
+  <ul>
+    <% @specification.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :product_id, class: "form-label" %>
+      <%= f.number_field :product_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :spec_id, class: "form-label" %>
+      <%= f.number_field :spec_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :spec_value, class: "form-label" %>
+      <%= f.text_field :spec_value , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="card-footer text-right">
+  <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+</div>
+<% end %>
