@@ -15,3 +15,12 @@
 /log/*
 !/log/.keep
 /tmp
+
+/public/system
+/public/system/*
+
+/db/sphinx/*
+
+/config/secrets.yml
+Gemfile.lock
+
