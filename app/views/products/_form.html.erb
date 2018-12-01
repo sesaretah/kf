@@ -24,6 +24,14 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <%= f.label :brand, class: "form-label" %>
+        <%= f.text_field :brand , class: "form-control" %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-md-4">
       <div class="form-group">
         <%= f.label :price, class: "form-label" %>
@@ -55,9 +63,9 @@
       <div class="form-group">
         <%= f.label :sub_category_id, class: "form-label" %>
         <% if @product.category.blank? || @product.subcategory.blank?%>
-          <%= select_tag "subcategory", nil, { :class => "form-control", disabled: true}%>
+        <%= select_tag "subcategory", nil, { :class => "form-control", disabled: true}%>
         <%else%>
-          <%= select_tag "subcategory", options_for_select(Category.where(parent_id: @product.category.id).order(:title).collect { |p| [ "#{p.title}", p.id ]}, @product.subcategory.id) , { :include_blank =>true, :class => "form-control"}%>
+        <%= select_tag "subcategory", options_for_select(Category.where(parent_id: @product.category.id).order(:title).collect { |p| [ "#{p.title}", p.id ]}, @product.subcategory.id) , { :include_blank =>true, :class => "form-control"}%>
         <%end%>
       </div>
     </div>
@@ -67,22 +75,28 @@
       <div class="form-group">
         <%= f.label :sub_sub_category_id, class: "form-label" %>
         <% if @product.category.blank? || @product.subcategory.blank? || @product.subsubcategory.blank? %>
-          <%= select_tag "subsubcategory", nil , { :class => "form-control", disabled: true}%>
+        <%= select_tag "subsubcategory", nil , { :class => "form-control", disabled: true}%>
         <%else%>
-          <%= select_tag "subsubcategory", options_for_select(Category.where(parent_id: @product.subcategory.id).order(:title).collect { |p| [ "#{p.title}", p.id ]}, @product.subsubcategory.id) , { :include_blank =>true, :class => "form-control"}%>
+        <%= select_tag "subsubcategory", options_for_select(Category.where(parent_id: @product.subcategory.id).order(:title).collect { |p| [ "#{p.title}", p.id ]}, @product.subsubcategory.id) , { :include_blank =>true, :class => "form-control"}%>
         <%end%>
       </div>
     </div>
   </div>
-  <div id='specs' class="alert alert-secondary" style='<%if @product.specifications.count == 0%>display:none;<%end%>background-color:#eeeeef;' role="alert">
-    <% for specification in @product.specifications%>
-    <div class='col-md-5'>
-      <div class='form-group small'>
-        <label class='form-label'><%= specification.spec.title%></label>
-        <input class='form-control' type='text' name='productparam-<%= specification.spec.id%>' value='<%= specification.spec_value%>'>
+  <div >
+
+    <div id='specs' class="alert alert-secondary" style='<%if @product.specifications.count == 0%>display:none;<%end%>background-color:#eeeeef;' role="alert">
+      <div class="alert alert-warning" role="alert">
+        <i class="fe fe-alert-triangle"></i> <%=t :please_fill_the_following_specs_it_is_not_mandantory%>
       </div>
+      <% for specification in @product.specifications%>
+      <div class='col-md-5'>
+        <div class='form-group small'>
+          <label class='form-label'><%= specification.spec.title%></label>
+          <input class='form-control' type='text' name='productparam-<%= specification.spec.id%>' value='<%= specification.spec_value%>'>
+        </div>
+      </div>
+      <%end%>
     </div>
-    <%end%>
   </div>
   <script>
   $('select[name="category"]').on('change', function() {
@@ -204,10 +218,10 @@
   });
   </script>
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="form-group">
         <%= f.label :description, class: "form-label" %>
-        <%= f.text_area :description , class: "form-control" %>
+        <%= f.text_area :description, rows: 5 , class: "form-control" %>
       </div>
     </div>
   </div>

@@ -4,6 +4,8 @@ class Product < ActiveRecord::Base
 
   has_many :categories, :through => :categorizations
   has_many :categorizations, dependent: :destroy
+  belongs_to :business
+  has_many :prominents
 
   def category
     @categorization = self.categorizations.where(level: 1).first

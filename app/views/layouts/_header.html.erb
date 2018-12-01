@@ -39,6 +39,7 @@
 <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
   <div class="container">
     <div class="row align-items-center">
+      <%= render partial:'carts/cart_header', locals: {cart: @cart}%>
       <div class="col-lg-3 ml-auto">
         <form action="/home/advanced_search" accept-charset="UTF-8" method="get" class="input-icon my-3 my-lg-0">
           <input type="search" name="q" class="form-control header-search" placeholder="<%=t :search%>…" tabindex="1" value="<%= params[:q]%>">
@@ -47,6 +48,7 @@
           </div>
         </form>
       </div>
+
       <div class="col-lg order-lg-first">
         <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
           <li class="nav-item">

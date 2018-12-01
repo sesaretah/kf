@@ -1,0 +1,9 @@
+<div id='add_to_cart'>
+  <% if !cart.inkludes(product)%>
+  <%= link_to "/carts/add_to_cart/#{cart.id}?product_id=#{product.id}", class: "btn btn-instagram mt-2", remote: true do %>
+  <i class="fe fe-shopping-cart"></i> <%=t :add_to_cart%>
+  <%end%>
+  <%else%>
+  <span class="btn btn-outline-secondary mt-2"><%=t :this_item_is_added_to_the_shopping_cart%><span>
+  <%end%>
+</div>

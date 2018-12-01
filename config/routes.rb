@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :cart_items
+  resources :carts
+  resources :prominents
   resources :likes
   resources :uploads
   resources :specifications
@@ -19,4 +22,7 @@ Rails.application.routes.draw do
 
   match "/likes/liike/:id" => "likes#liike", :via => :get
   match "/likes/disliike/:id" => "likes#disliike", :via => :get
+
+  match "/carts/add_to_cart/:id" => "carts#add_to_cart", :via => :get
+  match "/carts/remove_from_cart/:id" => "carts#remove_from_cart", :via => :get
 end

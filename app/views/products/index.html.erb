@@ -7,28 +7,63 @@
       <%end%>
     </div>
     <%end%>
+    <%for product in @business.products.joins(:prominents).order('level desc')%>
+    <div class="card">
+      <div class="card-body">
+        <div class="mb-4 text-center">
+          <% @upload = Upload.where(uploadable_type: 'Product', uploadable_id: product.id, attachment_type: 'product_attachment').first%>
+          <img src="<%if !@upload.blank?%><%= @upload.attachment(:medium)%><%else%>/assets/noimage-35-medium.jpg<%end%>" alt="<%= product.title%>" class="img-fluid">
+        </div>
+        <h4 class="card-title"><a href="javascript:void(0)"><%= product.title%></a></h4>
+        <div class="card-subtitle">
+          <%= product.brand%>
+        </div>
+        <div class="mt-1 text-center mb-1">
+          <div class="product-price">
+          <%= product.price%> <%= rcurrencies(product.currency)%>
+          </div>
+        </div>
+        <div class="mt-1 text-center mb-4">
+          <div class="ml-auto">
+            <%= render partial: 'carts/add_to_cart', locals: {product: product, cart: @cart}%>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%end%>
+
   </div>
   <div class="col-lg-9 order-lg-1">
     <div class="card">
       <table class="table card-table table-vcenter">
+        <thead>
+          <tr>
+            <th class="text-center w-9"><i class="icon-people"></i></th>
+            <th><%=t :product_name%></th>
+            <th class="text-center w-9"></th>
+            <th class=" text-center w-10"><%=t :price%></th>
+            <th class="text-right w-8 "></th>
+          </tr>
+        </thead>
         <tbody>
           <% @products.each do |product| %>
           <% @upload = Upload.where(uploadable_type: 'Product', uploadable_id: product.id, attachment_type: 'product_attachment').first%>
           <tr>
             <td><img src="<%if !@upload.blank?%><%= @upload.attachment(:thumb)%><%else%>/assets/noimage-35-thumb.jpg<%end%>" alt="" class="h-7"></td>
             <td>
-              <%= product.title%>
+              <div><strong><%= truncate(product.title, length: 20)%></strong></div>
             </td>
-            <td class="text-right text-muted d-none d-md-table-cell text-nowrap">
-              
+            <td class="text-center text-muted">
+              <i class="fa fa-heart-o" style="color: grey !important;vertical-align: middle;"></i> <span style="font-size:0.8rem">(<%= Like.where(likeable_type: 'Product', likeable_id: product.id).count%>)</span>
             </td>
-            <td class="text-right text-muted d-none d-md-table-cell text-nowrap">
 
-            </td>
             <td class="text-right">
               <% if !product.price.blank?%>
-                <strong><%= product.price%> <%= rcurrencies(product.currency)%></strong>
+              <div><strong><%= product.price%> <%= rcurrencies(product.currency)%></strong></div>
               <%end%>
+            </td>
+            <td class="text-center">
+              <a href='/products/<%= product.id%>' class="btn btn-sm btn-secondary"><i class="fe fe-play"></i><%=t :view%></a>
             </td>
           </tr>
           <% end %>

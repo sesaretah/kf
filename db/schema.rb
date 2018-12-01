@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181129122448) do
+ActiveRecord::Schema.define(version: 20181201110721) do
 
   create_table "businesses", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -31,6 +31,19 @@ ActiveRecord::Schema.define(version: 20181129122448) do
     t.integer  "logo_file_size",    limit: 8
     t.datetime "logo_updated_at"
     t.string   "subdomain",         limit: 255
+  end
+
+  create_table "cart_items", force: :cascade do |t|
+    t.integer  "cart_id",    limit: 4
+    t.integer  "product_id", limit: 4
+    t.integer  "quantity",   limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "categories", force: :cascade do |t|
@@ -74,6 +87,7 @@ ActiveRecord::Schema.define(version: 20181129122448) do
     t.datetime "updated_at",                null: false
     t.string   "price",       limit: 255
     t.string   "currency",    limit: 255
+    t.string   "brand",       limit: 255
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -87,6 +101,14 @@ ActiveRecord::Schema.define(version: 20181129122448) do
     t.string   "avatar_content_type", limit: 255
     t.integer  "avatar_file_size",    limit: 8
     t.datetime "avatar_updated_at"
+  end
+
+  create_table "prominents", force: :cascade do |t|
+    t.integer  "product_id", limit: 4
+    t.integer  "level",      limit: 4
+    t.integer  "user_id",    limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "specifications", force: :cascade do |t|

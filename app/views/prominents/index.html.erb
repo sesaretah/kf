@@ -1,0 +1,38 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @prominents.each do |prominent| %>
+          <tr>
+                        <td><%= prominent.product_id %></td>
+                        <td><%= prominent.level %></td>
+                        <td><%= prominent.user_id %></td>
+                        <td><%= link_to t(:show), prominent %></td>
+            <td><%= link_to t(:edit), edit_prominent_path(prominent) %></td>
+            <td><%= link_to t(:destroy), prominent, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

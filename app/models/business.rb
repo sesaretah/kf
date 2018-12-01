@@ -5,4 +5,5 @@ class Business < ActiveRecord::Base
   has_many :categories, :through => :classifications
   has_many :classifications, dependent: :destroy
   belongs_to :user
+  has_many :products
 end

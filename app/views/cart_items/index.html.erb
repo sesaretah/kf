@@ -1,0 +1,38 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @cart_items.each do |cart_item| %>
+          <tr>
+                        <td><%= cart_item.cart_id %></td>
+                        <td><%= cart_item.product_id %></td>
+                        <td><%= cart_item.quantity %></td>
+                        <td><%= link_to t(:show), cart_item %></td>
+            <td><%= link_to t(:edit), edit_cart_item_path(cart_item) %></td>
+            <td><%= link_to t(:destroy), cart_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

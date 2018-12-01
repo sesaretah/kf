@@ -4,6 +4,10 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
 
+  def read_remote
+    @products = @business.products
+
+  end
   def upload
 
   end
@@ -106,6 +110,6 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:title, :description, :category_id, :business_id, :user_id, :price, :currency)
+      params.require(:product).permit(:title, :description, :category_id, :business_id, :user_id, :price, :currency, :brand)
     end
 end

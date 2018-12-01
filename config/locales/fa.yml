@@ -238,6 +238,7 @@ fa:
           sub_category_id: 'دسته بندی'
           sub_sub_category_id: 'زیر دسته'
           price: 'قیمت'
+          brand: 'برند/شرکت تولید کننده'
         participation:
           exhibition_id: 'عنوان نمایشگاه'
           year: 'سال'
@@ -273,6 +274,19 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  complete_order: 'تکمیل فرآیند خرید'
+  total_sum: 'جمع کل'
+  total_price: 'قیمت کل'
+  count: 'تعداد'
+  this_item_is_added_to_the_shopping_cart: 'موجود در سبد خرید'
+  q_and_a: 'پرسش و پاسخ'
+  shopping_cart: 'سبد خرید'
+  add_to_cart: 'افزودن به سبد خرید'
+  please_fill_the_following_specs_it_is_not_mandantory: ' مشخصات زیر را در صورت وجود پر کنید. هیچکدام از اینها اجباری نیست '
+  likes: 'لایک ها'
+  subcategory: 'دسته بندی'
+  product_name: 'نام کالا/محصول'
+  view: 'نمایش'
   upload_pictures: 'بارگذاری عکس'
   rial: 'ریال'
   toman: 'تومان'

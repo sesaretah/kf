@@ -2,17 +2,14 @@ module ApplicationHelper
 
   def currencies
     @options = [
-      [t(:rial), 1],
-      [t(:toman) , 2],
-      [t(:dollar) , 3],
-      [t(:euro) , 2]
+      [t(:toman), 1]
     ]
     return @options
   end
 
   def rcurrencies(i)
     if i != nil
-      @options = [t(:rial),t(:toman), t(:dollar), t(:euro)]
+      @options = [t(:toman)]
       return @options[i.to_i-1]
     else
       return " "
