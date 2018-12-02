@@ -24,3 +24,4 @@
 /config/secrets.yml
 Gemfile.lock
 
+/config/initializers/devise.rb
