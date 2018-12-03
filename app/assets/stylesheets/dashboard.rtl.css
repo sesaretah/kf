@@ -60,9 +60,6 @@ html {
   width: device-width;
 }
 
-@font-face{font-family:'yekan';src:url('/assets/BYekan.eot'),url('/assets/BYekan.woff'),url('/assets/BYekan.ttf');}
-@font-face{font-family:'koodak';src:url('/assets/BKoodakBold.eot'),url('/assets/BKoodakBold.woff'),url('/assets/BKoodakBold.ttf');}
-@font-face{font-family:'iransans';src:url('/assets/IRANSansWeb(FaNum).eot'),url('/assets/IRANSansWeb(FaNum).woff'),url('/assets/IRANSansWeb(FaNum).ttf');}
 
 article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
