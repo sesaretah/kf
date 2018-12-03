@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'iransans';
-    src: url('/assets/IRANSansWeb(FaNum).eot') format('embedded-opentype'),
-         url('/assets/IRANSansWeb(FaNum).woff') format('woff'),
-         url('/assets/IRANSansWeb(FaNum).ttf') format('truetype');
+    src: asset-url('/assets/IRANSansWeb(FaNum).eot') format('embedded-opentype'),
+         asset-url('/assets/IRANSansWeb(FaNum).woff') format('woff'),
+         asset-url('/assets/IRANSansWeb(FaNum).ttf') format('truetype');
 }
