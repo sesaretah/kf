@@ -1,0 +1,38 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @segmentations.each do |segmentation| %>
+          <tr>
+                        <td><%= segmentation.segment_id %></td>
+                        <td><%= segmentation.product_id %></td>
+                        <td><%= segmentation.ext_code %></td>
+                        <td><%= link_to t(:show), segmentation %></td>
+            <td><%= link_to t(:edit), edit_segmentation_path(segmentation) %></td>
+            <td><%= link_to t(:destroy), segmentation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

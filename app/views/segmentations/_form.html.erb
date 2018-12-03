@@ -1,0 +1,45 @@
+<%= form_for(@segmentation, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_segmentation %></h3>
+</div>
+<% if @segmentation.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@segmentation.errors.count, "error") %> prohibited this segmentation from being saved:</h2>
+
+  <ul>
+    <% @segmentation.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :segment_id, class: "form-label" %>
+      <%= f.number_field :segment_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :product_id, class: "form-label" %>
+      <%= f.number_field :product_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :ext_code, class: "form-label" %>
+      <%= f.text_field :ext_code , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="card-footer text-right">
+  <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+</div>
+<% end %>

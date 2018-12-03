@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :segmentations
+  resources :segments
   resources :cart_items
   resources :carts
   resources :prominents
@@ -13,8 +15,9 @@ Rails.application.routes.draw do
   resources :categorizations
   resources :products
   resources :businesses
-  get '', to: 'businesses#show', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' }
+  get '', to: 'home#index', constraints: lambda { |r| r.subdomain.present? && r.subdomain != 'www' }
   root 'home#index'
+
   match "/categories/get_children/:id" => "categories#get_children", :via => :get
   match "/categories/specs/:id" => "categories#specs", :via => :get
   match "/products/upload/:id" => "products#upload", :via => :get
