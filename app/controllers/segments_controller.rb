@@ -4,6 +4,7 @@ class SegmentsController < ApplicationController
   # GET /segments
   # GET /segments.json
 
+
   def remove_from_segment
     @product = Product.find(params[:product_id])
     @segmentation = @segment.segmentations.where(product_id: @product.id).first

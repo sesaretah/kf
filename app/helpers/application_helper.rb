@@ -6,7 +6,7 @@ module ApplicationHelper
     ]
     return @options
   end
-
+  # !!! IF changed also change application controller
   def rcurrencies(i)
     if i != nil
       @options = [t(:toman)]

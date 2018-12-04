@@ -38,4 +38,6 @@ Rails.application.routes.draw do
   match "/segments/remove_from_segment/:id" => "segments#remove_from_segment", :via => :get
 
   match "/products/search/:id" => "products#search", :via => :get
+
+  match "/api/segments" => "api#segments", :via => :get
 end

@@ -55,4 +55,20 @@ class ApplicationController < ActionController::Base
   def create_visit
     Visit.create(visitable_type: params[:controller].classify, visitable_id: params[:id])
   end
+
+  def currencies
+    @options = [
+      [t(:toman), 1]
+    ]
+    return @options
+  end
+
+  def rcurrencies(i)
+    if i != nil
+      @options = [t(:toman)]
+      return @options[i.to_i-1]
+    else
+      return " "
+    end
+  end
 end
