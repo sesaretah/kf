@@ -5,6 +5,11 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
 
+  def search
+    @segment = Segment.find(params[:segment_id])
+    @products = Product.search params[:q], star: true
+  end
+  
   def read_remote
     @products = @business.products
 

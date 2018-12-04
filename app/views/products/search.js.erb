@@ -1,0 +1,3 @@
+<% if !@segment.blank?%>
+$("#results-<%= @segment.id%>").replaceWith("<%= escape_javascript(render(:partial => 'products/segment_search', locals:{segment: @segment, products: @products})) %>");
+<%end%>

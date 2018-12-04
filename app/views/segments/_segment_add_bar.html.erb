@@ -1,0 +1,19 @@
+<div class='card-inner'>
+  <div class='row'>
+    <div class='col-md-6'>
+      <%= form_tag '/products/search/1', method: :get, remote: true do |f| %>
+      <div class="input-icon">
+        <input type="text" name='q' class="form-control" autocomplete="off" placeholder="<%=t :search%>">
+        <span class="input-icon-addon">
+          <i class="fe fe-search"></i>
+        </span>
+      </div>
+      <%= hidden_field_tag 'segment_id', segment.id%>
+      <%end%>
+    </div>
+    <div class='col-md-6'>
+      <span class="pull-left mt-3 clickable "><i class="fe fe-chevron-down"></i></span>
+    </div>
+  </div>
+  <%= render partial: 'products/segment_search' , locals:{segment: segment, products: []}%>
+</div>

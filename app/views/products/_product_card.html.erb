@@ -1,12 +1,17 @@
 <div class="col-md-3">
   <div class="card" >
-    <% @upload = Upload.where(uploadable_type: 'Product', uploadable_id: product.id, attachment_type: 'product_attachment').first%>
-    <img src="<%if !@upload.blank?%><%= @upload.attachment(:large)%><%else%>/assets/noimage-35-large.jpg<%end%>" alt="<%= product.title%>" class="card-img-top">
+    <img src="<%= product.image('large')%>" alt="<%= product.title%>" class="card-img-top">
       <div class="card-body d-flex flex-column pr-2 pt-2">
       <small><%= truncate(product.title, length: 20)%></small>
       <div class="text-muted"></div>
       <div class="text-center">
         <%= product.price%> <%= rcurrencies(product.currency)%>
+        <br />
+        <% if caller == 'settings'&& segment.ext_code.blank?%>
+        <%= link_to "/segments/remove_from_segment/#{segment.id}?product_id=#{product.id}", class: "icon", remote: true,data: { confirm: 'Are you sure?' }  do %>
+          <i class="fe fe-trash" style='vertical-align:-3px;'></i>
+        <%end%>
+        <%end%>
       </div>
     </div>
   </div>

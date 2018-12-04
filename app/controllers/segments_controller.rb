@@ -1,11 +1,19 @@
 class SegmentsController < ApplicationController
-  before_action :set_segment, only: [:show, :edit, :update, :destroy, :check, :change_level]
-  before_action :load_business, only: [:create,:check, :change_level]
+  before_action :set_segment, only: [:show, :edit, :update, :destroy, :check, :change_level, :add_to_segment, :remove_from_segment]
+  before_action :load_business, only: [:create,:check, :change_level, :add_to_segment, :destroy, :remove_from_segment]
   # GET /segments
   # GET /segments.json
 
+  def remove_from_segment
+    @product = Product.find(params[:product_id])
+    @segmentation = @segment.segmentations.where(product_id: @product.id).first
+    @segmentation.destroy
+  end
+  def add_to_segment
+    @product = Product.find(params[:product_id])
+    @segment.segmentations.create(product_id: @product.id)
+  end
   def change_level
-
     if params[:to] == 'up'
       @segment.level = @segment.level.to_i + 1
     else
@@ -13,6 +21,7 @@ class SegmentsController < ApplicationController
     end
     @segment.save
   end
+
   def check
     if params[:to] == 'check'
       @segment.view_in_homepage = true
@@ -78,6 +87,7 @@ class SegmentsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to segments_url, notice: 'Segment was successfully destroyed.' }
       format.json { head :no_content }
+      format.js
     end
   end
 

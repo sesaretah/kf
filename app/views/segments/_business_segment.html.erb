@@ -8,3 +8,18 @@
   <%= render partial: 'products/scrollable_block', locals: {segment: segment, caller: 'settings'}%>
 <%end%>
 </div>
+<script>
+$(document).on('click', '.clickable', function(e){
+  var $this = $(this);
+  if($this.hasClass('collapsed')) {
+    console.log(this);
+    $this.parents('.card-inner').find('.search-results').slideDown();
+    $this.removeClass('collapsed');
+    $this.find('i').removeClass('fe-chevron-down').addClass('fe-chevron-up');
+  } else {
+    $this.parents('.card-inner').find('.search-results').slideUp();
+    $this.addClass('collapsed');
+    $this.find('i').removeClass('fe-chevron-up').addClass('fe-chevron-down');
+  }
+})
+</script>

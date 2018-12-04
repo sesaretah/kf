@@ -34,4 +34,8 @@ Rails.application.routes.draw do
 
   match "/segments/check/:id" => "segments#check", :via => :get
   match "/segments/change_level/:id" => "segments#change_level", :via => :get
+  match "/segments/add_to_segment/:id" => "segments#add_to_segment", :via => :get
+  match "/segments/remove_from_segment/:id" => "segments#remove_from_segment", :via => :get
+
+  match "/products/search/:id" => "products#search", :via => :get
 end

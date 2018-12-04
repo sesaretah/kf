@@ -1,0 +1,19 @@
+<div id='results-<%= segment.id%>' class="row search-results mt-2">
+<%for product in products%>
+  <div class="col-md-5">
+    <div class="row">
+      <div class="col-md-2">
+        <span class="avatar avatar-sm" style="background-image: url(<%=product.image('thumb')%>)"></span>
+      </div>
+      <div class="col-md-10 pr-0">
+        <%= product.title%>
+        <div class="pull-left">
+          <%= link_to "/segments/add_to_segment/#{segment.id}?product_id=#{product.id}", class: "icon", remote: true do %>
+            <i class="fe fe-plus" style='vertical-align:-3px;'></i>
+            <%end%>
+        </div>
+      </div>
+    </div>
+  </div>
+<%end%>
+</div>

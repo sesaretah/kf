@@ -11,8 +11,8 @@
     <div class="card">
       <div class="card-body">
         <div class="mb-4 text-center">
-          <% @upload = Upload.where(uploadable_type: 'Product', uploadable_id: product.id, attachment_type: 'product_attachment').first%>
-          <img src="<%if !@upload.blank?%><%= @upload.attachment(:medium)%><%else%>/assets/noimage-35-medium.jpg<%end%>" alt="<%= product.title%>" class="img-fluid">
+
+          <img src="<%= product.image('large')%>" alt="<%= product.title%>" class="img-fluid">
         </div>
         <h4 class="card-title"><a href="javascript:void(0)"><%= product.title%></a></h4>
         <div class="card-subtitle">
