@@ -4,14 +4,13 @@ class ApiController < ApplicationController
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
-      logger.debug segment.view_in_homepage
+      @products = []
       if segment.view_in_homepage
-        @products = []
         for product in segment.produkts
           @products << {'id' => product.id, 'name' => product.title, 'price' => product.price, 'currency' => rcurrencies(product.currency), 'picture' => request.base_url + product.image('medium')}
         end
+        @data << {'label' =>  segment.title,  'icon' => 'stopwatch', 'products' => @products}
       end
-      @data << {'label' =>  segment.title,  'icon' => 'stopwatch', 'products' => @products}
     end
     render :json => @data.to_json, :callback => params['callback']
   end
