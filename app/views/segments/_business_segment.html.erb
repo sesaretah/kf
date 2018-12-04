@@ -1,0 +1,10 @@
+<div id='settings-detail'>
+<h5><%=t :new_segment%></h5>
+<hr class="mt-2 mb-2"/>
+<%= render partial: 'segments/remote_form', locals: {segment: Segment.new}%>
+<h5><%=t :segments%></h5>
+<hr class="mt-2 mb-2"/>
+<%for segment in @business.segments.order('level desc, updated_at asc')%>
+  <%= render partial: 'products/scrollable_block', locals: {segment: segment, caller: 'settings'}%>
+<%end%>
+</div>

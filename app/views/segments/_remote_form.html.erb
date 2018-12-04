@@ -1,0 +1,14 @@
+<%= form_for(segment, remote: true) do |f| %>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+      <div class="input-group">
+        <%= f.text_field :title , class: "form-control", placeholder: t(:enter_segment_title) %>
+        <span class="input-group-append">
+          <button type="submit" class="btn btn-primary" type="button"><%=t :submit%></button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

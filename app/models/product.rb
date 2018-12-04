@@ -7,6 +7,12 @@ class Product < ActiveRecord::Base
   belongs_to :business
   has_many :prominents
 
+  has_many :segments, :through => :segmentations
+  has_many :segmentations, dependent: :destroy
+
+  has_many :likes, :as => :likeable, :dependent => :destroy
+  has_many :visits, :as => :visitable, :dependent => :destroy
+
   def category
     @categorization = self.categorizations.where(level: 1).first
     if !@categorization.blank?

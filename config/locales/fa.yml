@@ -274,6 +274,13 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  level: 'الویت نمایش'
+  view_in_the_first_page: 'نمایش در صفحه خانه'
+  enter_segment_title: 'عنوان بخش جدید را وارد کنید '
+  segments: 'بخش ها'
+  new_segment: 'بخش جدید'
+  mobile_app_management: 'تنظیمات اپ موبایل'
+  home_settings: 'تنظیمات صفحه خانه'
   complete_order: 'تکمیل فرآیند خرید'
   total_sum: 'جمع کل'
   total_price: 'قیمت کل'

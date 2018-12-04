@@ -1,8 +1,27 @@
 class SegmentsController < ApplicationController
-  before_action :set_segment, only: [:show, :edit, :update, :destroy]
-
+  before_action :set_segment, only: [:show, :edit, :update, :destroy, :check, :change_level]
+  before_action :load_business, only: [:create,:check, :change_level]
   # GET /segments
   # GET /segments.json
+
+  def change_level
+
+    if params[:to] == 'up'
+      @segment.level = @segment.level.to_i + 1
+    else
+      @segment.level = @segment.level.to_i - 1
+    end
+    @segment.save
+  end
+  def check
+    if params[:to] == 'check'
+      @segment.view_in_homepage = true
+    else
+      @segment.view_in_homepage = false
+    end
+    @segment.save
+  end
+
   def index
     @segments = Segment.all
   end
@@ -25,11 +44,12 @@ class SegmentsController < ApplicationController
   # POST /segments.json
   def create
     @segment = Segment.new(segment_params)
-
+    @segment.business_id = @business.id
     respond_to do |format|
       if @segment.save
         format.html { redirect_to @segment, notice: 'Segment was successfully created.' }
         format.json { render :show, status: :created, location: @segment }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @segment.errors, status: :unprocessable_entity }

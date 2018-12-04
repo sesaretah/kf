@@ -1,0 +1,25 @@
+<div class='row'>
+  <div class="col-lg-3 ">
+    <div class="list-group list-group-transparent mb-4 text-center">
+      <%= link_to '/', class: "list-group-item list-group-item-action active small mb-1", style:'font-weight:normal;' do%>
+      <i class="fe fe-home" style="vertical-align:-3px;"></i> <%=t :home_settings%>
+      <%end%>
+
+      <%= link_to '/', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
+      <i class="fe fe-tablet" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
+      <%end%>
+
+      <%= link_to '/', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
+      <i class="fe fe-edit" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
+      <%end%>
+    </div>
+  </div>
+  <div class="col-md-9 order-lg-1">
+    <div class="card">
+      <div class="card-body">
+        <%= render partial: 'segments/business_segment'%>
+        <div class='mb-4'></div>
+      </div>
+    </div>
+  </div>
+</div>

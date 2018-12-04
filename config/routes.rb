@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :visits
   resources :segmentations
   resources :segments
   resources :cart_items
@@ -28,4 +29,9 @@ Rails.application.routes.draw do
 
   match "/carts/add_to_cart/:id" => "carts#add_to_cart", :via => :get
   match "/carts/remove_from_cart/:id" => "carts#remove_from_cart", :via => :get
+
+  match "/home/settings" => "home#settings", :via => :get
+
+  match "/segments/check/:id" => "segments#check", :via => :get
+  match "/segments/change_level/:id" => "segments#change_level", :via => :get
 end

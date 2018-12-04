@@ -1,0 +1,79 @@
+<% if caller == 'homepage' && !segment.view_in_homepage%>
+<%else%>
+<div class="card">
+  <div class="card-header">
+    <%= segment.title%>
+    <% if caller == 'settings'%>
+    <div class="card-options">
+      <label class="custom-switch" style='float: left;'>
+        <input type="checkbox" name="view_<%= segment.id%>" id='view_<%= segment.id%>' <%if segment.view_in_homepage%>checked<%end%> class="custom-switch-input">
+        <span class="custom-switch-indicator"></span>
+        <span class="custom-switch-description" style='font-size: 60%;'><%=t :view_in_the_first_page%></span>
+      </label>
+
+      <% if @business.segments.order('level desc, updated_at asc').first.id != segment.id%>
+      <%= link_to "/segments/change_level/#{segment.id}?to=up", class: "icon", remote: true do %>
+        <i class="fe fe-chevrons-up" style='vertical-align:-3px;'></i>
+      <%end%>
+      <%else%>
+        <span class='icon'><i class="fe fe-chevrons-up" style='vertical-align:-3px;color:#f2f4f9'></i></span>
+      <%end%>
+      <span  style='font-size: 70%; padding-top: 5px;'><%=t :level %></span>
+      <% if @business.segments.order('level desc, updated_at asc').last.id != segment.id%>
+      <%= link_to "/segments/change_level/#{segment.id}?to=down", class: "icon", remote: true do %>
+        <i class="fe fe-chevrons-down" style='vertical-align:-3px;'></i>
+      <%end%>
+      <%else%>
+        <span class='icon'><i class="fe fe-chevrons-up" style='vertical-align:-3px;color:#f2f4f9'></i></span>
+      <%end%>
+    </div>
+    <%end%>
+  </div>
+  <div class="card-body">
+    <section class="cd">
+      <% for product in segment.produkts%>
+      <%= render partial: 'products/product_card', locals: {product: product}%>
+      <%end%>
+    </section>
+  </div>
+</div>
+
+<script>
+$('.custom-switch-input').change(function() {
+  var id = $(this).attr('id').split("_")[1];
+  if($(this).is(":checked")) {
+    $.ajax({
+      url: '/segments/check/'+id,
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        segment_id: id,
+        to: 'check'
+      },
+      error: function() {
+        $(this).attr("checked", false);
+      },
+      success: function(res) {
+        $(this).attr("checked", true);
+      }
+    });
+  } else {
+    $.ajax({
+      url: '/segments/check/'+id,
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        segment_id: id,
+        to: 'uncheck'
+      },
+      error: function() {
+        $(this).attr("checked", true);
+      },
+      success: function(res) {
+        $(this).attr("checked", false);
+      }
+    });
+  }
+});
+</script>
+<%end%>

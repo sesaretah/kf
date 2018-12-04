@@ -31,50 +31,11 @@
     </div>
   </div>
 </div>
-<style>
-
-.cd {
-  display: flex;
-  min-width: 100%;
-  min-height: 200px;
-  overflow-x: auto;
-}
-
-.cd--content {
-  min-width: 300px;
-  margin: 5px;
-}
-
-.cd--content img {
-  width: 100%;
-  height: 100%;
-}
-</style>
 
 
-<div class="col-md-9">
-  <div class="card">
-    <div class="card-header">
-      sec
-    </div>
-    <div class="card-body">
-      <section class="cd">
-        <% for product in @business.products%>
-        <%= render partial: 'products/product_card', locals: {product: product}%>
-        <%end%>
-      </section>
-    </div>
-  </div>
+
+<div class="col-md-12">
+  <%for segment in @business.segments.order('level desc, updated_at asc')%>
+    <%= render partial: 'products/scrollable_block', locals: {segment: segment, caller: 'homepage'}%>
+  <%end%>
 </div>
-
-
-<script>
-(function($) {
-  "use strict";
-
-  // manual carousel controls
-  $('.next').click(function(){ $('.carousel').carousel('next');return false; });
-  $('.prev').click(function(){ $('.carousel').carousel('prev');return false; });
-
-})(jQuery);
-</script>

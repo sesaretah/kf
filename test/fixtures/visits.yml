@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  visitable_id: 1
+  visitable_type: MyString
+  visitor_session: MyString
+
+two:
+  visitable_id: 1
+  visitable_type: MyString
+  visitor_session: MyString
