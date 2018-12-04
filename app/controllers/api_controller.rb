@@ -4,7 +4,8 @@ class ApiController < ApplicationController
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
-      if segment.view_in_homepage.to_i != 0
+      logger.debug segment.view_in_homepage
+      if segment.view_in_homepage
         @products = []
         for product in segment.produkts
           @products << {'id' => product.id, 'name' => product.title, 'price' => product.price, 'currency' => rcurrencies(product.currency), 'picture' => request.base_url + product.image('medium')}
