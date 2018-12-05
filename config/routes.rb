@@ -40,4 +40,5 @@ Rails.application.routes.draw do
   match "/products/search/:id" => "products#search", :via => :get
 
   match "/api/segments" => "api#segments", :via => :get
+  match "/api/products/:id" => "api#products", :via => :get
 end
