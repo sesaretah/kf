@@ -4,6 +4,7 @@
     <h3 class="card-title"><%=t :upload_pictures%></h3>
   </div>
   <div class="card-body">
+
     <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
       <div class="modal-dialog">
@@ -12,21 +13,31 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Modal Header</h4>
+            <h4 class="modal-title"><%=t :crop_image%></h4>
           </div>
           <div class="modal-body">
-               <img id="target" src=""/>
+               <img id="target" for="" src=""/>
+               <input id="crop_x" name="upload[crop_x]" type="hidden" value="">
+               <input id="crop_y" name="upload[crop_y]" type="hidden" value="">
+               <input id="crop_w" name="upload[crop_w]" type="hidden" value="">
+               <input id="crop_h" name="upload[crop_h]" type="hidden" value="">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-default" onclick="send()"></button>
           </div>
         </div>
 
       </div>
     </div>
 <script>
-
-$('#target').Jcrop();
+function send(){
+  $.ajax({
+    type: "PATCH",
+    url: '/uploads/'+ $('#target').attr('for'),
+    data: {authenticity_token: window._token, 'upload[crop_x]': $('#crop_x').val(), 'upload[crop_y]': $('#crop_y').val(), 'upload[crop_w]': $('#crop_w').val(), 'upload[crop_h]': $('#crop_h').val()},
+    success: function(){}
+  });
+}
 </script>
     <%= form_for(Upload.new, html: {class: 'dropzone'}) do |f| %>
     <%= f.hidden_field :uploadable_type, value: 'Business'%>
@@ -59,7 +70,22 @@ $('#target').Jcrop();
         this.on("success", function(file, responseText) {
           $('#myModal').modal('show');
           $('#target').attr('src', responseText.image);
-          $('#target').Jcrop();
+          $('#target').attr('for', responseText.id);
+          $(function() {
+            $('#target').Jcrop({
+              onChange: update_crop,
+              onSelect: update_crop,
+              setSelect: [0, 0, 500, 500],
+              aspectRatio: 30/13
+            });
+          });
+          function update_crop(coords) {
+            var ratio = responseText.ratio
+            $('#crop_x').val(Math.floor(coords.x * ratio));
+            $('#crop_y').val(Math.floor(coords.y * ratio));
+            $('#crop_w').val(Math.floor(coords.w * ratio));
+            $('#crop_h').val(Math.floor(coords.h * ratio));
+          }
           file.id = responseText.id;
         });
 

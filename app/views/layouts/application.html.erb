@@ -19,7 +19,7 @@
   <%= csrf_meta_tags %>
   <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.13/release/featherlight.min.css" type="text/css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.min.css" type="text/css" rel="stylesheet" />
-
+  <%= javascript_tag "window._token = '#{form_authenticity_token}'" %>
   <style>
   html, body {
     max-width: 100%;

@@ -276,6 +276,7 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  crop_image: 'برش عکس'
   slider_settings: 'تنظیمات اسلاید'
   clear: 'پاک کن '
   filter: 'محدود کن'

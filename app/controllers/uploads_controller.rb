@@ -36,6 +36,7 @@ class UploadsController < ApplicationController
       if @upload.save
         format.html { redirect_to @upload, notice: 'Upload was successfully created.' }
         format.json { render :show, status: :created, location: @upload }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @upload.errors, status: :unprocessable_entity }
@@ -49,7 +50,8 @@ class UploadsController < ApplicationController
     respond_to do |format|
       if @upload.update(upload_params)
         format.html { redirect_to @upload, notice: 'Upload was successfully updated.' }
-        format.json { render :show, status: :ok, location: @upload }
+        format.json 
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @upload.errors, status: :unprocessable_entity }
@@ -75,6 +77,6 @@ class UploadsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def upload_params
-      params.require(:upload).permit(:uploadable_type, :uploadable_id, :attachment_type)
+      params.require(:upload).permit(:uploadable_type, :uploadable_id, :attachment_type, :crop_x, :crop_y, :crop_w, :crop_h)
     end
 end
