@@ -63,3 +63,9 @@ margin-left: -24px;
 margin-bottom: 10px;
 background-color: #f3f2f0;
 }
+
+.card-clickable {
+position: absolute;
+top: 0; left: 0;
+height: 100%; width: 100%;
+}

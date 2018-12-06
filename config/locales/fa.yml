@@ -115,7 +115,7 @@ fa:
       not_an_integer: عدد صحیح نیست
       odd: باید فرد باشد
       record_invalid: رکورد نامعتبر است %{errors}
-      taken: پیشتر گرفته شده
+      taken: قبلا ثبت نام شده
       too_long: بلند است (حداکثر %{count} کاراکتر)
       too_short: کوتاه است (حداقل %{count} کاراکتر)
       wrong_length: نااندازه است (باید %{count} کاراکتر باشد)
@@ -265,6 +265,8 @@ fa:
         packaging_type:
           title: 'عنوان'
         user:
+            username: 'تلفن همراه کاربر'
+            mobile: 'شماره تلفن همراه'
             email: 'ایمیل'
             login: 'نام کاربر'
             password: 'رمز عبور'
@@ -274,6 +276,12 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  clear: 'پاک کن '
+  filter: 'محدود کن'
+  categories: 'دسته بندی '
+  all: 'همه '
+  delete_this_product: 'حذف این کالا'
+  enter_mobile: 'شماره موبایل خود را وارد کنید'
   search: 'جستجو'
   level: 'الویت نمایش'
   view_in_the_first_page: 'نمایش در صفحه خانه'
@@ -442,10 +450,10 @@ fa:
     failure:
       already_authenticated: وارد سیستم هستید.
       inactive: حساب شما هنوز فعال نشده است.
-      invalid: ایمیل یا رمز عبور غیر معتبر.
+      invalid: شماره یا رمز عبور غیر معتبر
       last_attempt: شما تنها یک فرصت دیگر دارید قبل از این‎که حسابتان غیرفعال شود.
       locked: حسابتان قفل شده است.
-      not_found_in_database: ایمیل یا رمزعبور نامعتبر.
+      not_found_in_database: شماره یا رمز عبور نامعتبر
       timeout: نشست شما منقضی شده است. برای ادامه دوباره وارد شوید.
       unauthenticated: پیش از ادامه باید وارد شوید یا ثبت نام کنید.
       unconfirmed: باید حسابتان را قبل از ادامه تایید کنید.

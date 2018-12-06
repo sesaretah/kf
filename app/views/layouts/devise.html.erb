@@ -30,4 +30,15 @@
     </div>
   </div>
 </body>
+<% if flash[:notice]%>
+<script>
+new Noty({
+  type: 'warning',
+  theme    : 'relax',
+  timeout: 4000,
+  layout: 'bottomLeft',
+  text: '<%=t  flash[:notice]%>'
+}).show();
+</script>
+<%end%>
 </html>

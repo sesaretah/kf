@@ -9,7 +9,7 @@ class ProductsController < ApplicationController
     @segment = Segment.find(params[:segment_id])
     @products = Product.search params[:q], star: true
   end
-  
+
   def read_remote
     @products = @business.products
 
@@ -19,12 +19,17 @@ class ProductsController < ApplicationController
   end
 
   def index
-    @products = Product.all
+    if !params[:category_id].blank?
+      @products = @business.products.all.joins(:categories).where("categories.id = ?", params[:category_id])
+    else
+      @products = @business.products
+    end
   end
 
   # GET /products/1
   # GET /products/1.json
   def show
+
   end
 
   # GET /products/new

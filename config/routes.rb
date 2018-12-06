@@ -9,7 +9,8 @@ Rails.application.routes.draw do
   resources :uploads
   resources :specifications
   resources :profiles
-  devise_for :users
+  #devise_for :users
+  devise_for :users, :controllers => {:registrations => "registrations", sessions: "sessions"}
   resources :specs
   resources :categories
   resources :classifications
@@ -42,4 +43,9 @@ Rails.application.routes.draw do
   match "/api/segments" => "api#segments", :via => :get
   match "/api/products/:id" => "api#products", :via => :get
   match "/api/business" => "api#business", :via => :get
+
+  match "/api/new_user" => "api#new_user", :via => :post
+  match "/api/my_profile" => "api#my_profile", :via => :get
+
+
 end

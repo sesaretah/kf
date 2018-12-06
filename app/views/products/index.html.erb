@@ -7,31 +7,38 @@
       <%end%>
     </div>
     <%end%>
-    <%for product in @business.products.joins(:prominents).order('level desc')%>
-    <div class="card">
-      <div class="card-body">
-        <div class="mb-4 text-center">
 
-          <img src="<%= product.image('large')%>" alt="<%= product.title%>" class="img-fluid">
-        </div>
-        <h4 class="card-title"><a href="javascript:void(0)"><%= product.title%></a></h4>
-        <div class="card-subtitle">
-          <%= product.brand%>
-        </div>
-        <div class="mt-1 text-center mb-1">
-          <div class="product-price">
-          <%= product.price%> <%= rcurrencies(product.currency)%>
-          </div>
-        </div>
-        <div class="mt-1 text-center mb-4">
-          <div class="ml-auto">
-            <%= render partial: 'carts/add_to_cart', locals: {product: product, cart: @cart}%>
+    <%= form_tag '/products', method: :get, class:'card' do -%>
+    <div class="card-body pr-3 pl-3">
+      <div class="mb-4">
+        <div class="form-group">
+          <div class="form-label"><strong><%=t :categories%></strong></div>
+          <div class="custom-controls-stacked">
+            <%@business.products.all.group_by(&:category).each do |g,p|%>
+            <label class="custom-control custom-checkbox pl-4 pr-0">
+              <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1" <%if params[:category_id].to_i == g.id%>checked=""<%end%>>
+              <span class="custom-control-label pr-5 small"><%= g.title%></span>
+            </label>
+            <%end%>
           </div>
         </div>
       </div>
     </div>
+    <div class="card-footer">
+      <div class="text-center">
+        <button type="button" id='clear' class="btn btn-gray btn-sm"><i class="fe fe-delete" style="vertical-align:-3px;"></i> <%=t :clear%> </button>
+        <button type="submit" class="btn btn-lime btn-sm"><i class="fe fe-filter" style="vertical-align:-3px;"></i> <%=t :filter%> </button>
+      </div>
+    </div>
+    <script>
+    $(document).ready(function() {
+      $( "#clear" ).on("click", function(){
+        $('input:checkbox').removeAttr('checked');
+        $(this).val('check all');
+      })
+    });
+    </script>
     <%end%>
-
   </div>
   <div class="col-lg-9 order-lg-1">
     <div class="card">
@@ -46,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @products.each do |product| %>
+          <% for product in @products %>
           <% @upload = Upload.where(uploadable_type: 'Product', uploadable_id: product.id, attachment_type: 'product_attachment').first%>
           <tr>
             <td><img src="<%if !@upload.blank?%><%= @upload.attachment(:thumb)%><%else%>/assets/noimage-35-thumb.jpg<%end%>" alt="" class="h-7"></td>

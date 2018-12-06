@@ -2,6 +2,9 @@ class Product < ActiveRecord::Base
   has_many :specs, :through => :specifications
   has_many :specifications, dependent: :destroy
 
+  has_many :carts, :through => :cart_items
+  has_many :cart_items, dependent: :destroy
+
   has_many :categories, :through => :categorizations
   has_many :categorizations, dependent: :destroy
   belongs_to :business
@@ -19,6 +22,7 @@ class Product < ActiveRecord::Base
       return @categorization.category
     end
   end
+
 
   def subcategory
     @categorization = self.categorizations.where(level: 2).first
@@ -40,6 +44,19 @@ class Product < ActiveRecord::Base
       return @upload.attachment(style)
     else
       ActionController::Base.helpers.asset_path("noimage-35-#{style}.jpg", :digest => false)
+    end
+  end
+
+  def images(style)
+    @uploads = Upload.where(uploadable_type: 'Product', uploadable_id: self.id, attachment_type: 'product_attachment')
+    if !@uploads.blank?
+      @images = []
+      for upload in @uploads
+        @images << upload.attachment(style)
+      end
+      return @images
+    else
+      return [ActionController::Base.helpers.asset_path("noimage-35-#{style}.jpg", :digest => false)]
     end
   end
 end
