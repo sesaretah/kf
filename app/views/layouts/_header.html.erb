@@ -73,7 +73,7 @@
     <div class="row align-items-center  h-6 pr-4">
       <ul class="nav nav-tabs border-0 flex-column flex-lg-row text-white">
         <% @business.products.all.group_by(&:category).take(10).each do |g,p|%>
-        <li class="nav-item"><a href="/products?category_id=<%= g.id%>" class="nav-link"><%= g.title%></a></li>
+        <li class="nav-item"><a href="/products?category-id-<%= g.id%>=<%= g.id%>" class="nav-link"><%= g.title%></a></li>
         <%end%>
       </ul>
       <div class='mr-auto text-white'><a href='/products' class='text-white'><%=t :all%></a></div>

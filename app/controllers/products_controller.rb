@@ -19,8 +19,20 @@ class ProductsController < ApplicationController
   end
 
   def index
-    if !params[:category_id].blank?
-      @products = @business.products.all.joins(:categories).where("categories.id = ?", params[:category_id])
+    @catrgory_ids = []
+    params.each do |name, value|
+      if name =~ /category-(.+)$/
+        @catrgory_ids << value
+      end
+    end
+    @subcatrgory_ids = []
+    params.each do |name, value|
+      if name =~ /subcategory-(.+)$/
+        @subcatrgory_ids << value
+      end
+    end
+    if !@catrgory_ids.blank? || !@subcatrgory_ids.blank?
+      @products = @business.products.all.distinct.joins(:categories).where("categories.id IN (?)", (@catrgory_ids + @subcatrgory_ids).uniq)
     else
       @products = @business.products
     end
