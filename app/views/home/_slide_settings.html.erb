@@ -1,0 +1,81 @@
+<div id='settings-detail'>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title"><%=t :upload_pictures%></h3>
+  </div>
+  <div class="card-body">
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Modal Header</h4>
+          </div>
+          <div class="modal-body">
+               <img id="target" src=""/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+<script>
+
+$('#target').Jcrop();
+</script>
+    <%= form_for(Upload.new, html: {class: 'dropzone'}) do |f| %>
+    <%= f.hidden_field :uploadable_type, value: 'Business'%>
+    <%= f.hidden_field :uploadable_id, value: @business.id%>
+    <%= f.hidden_field :attachment_type, value: 'business_slider'%>
+    <%= hidden_field_tag :file_type, 'picture'%>
+    <div class="fallback">
+      <%= f.file_field :picture %><br>
+      <%= f.hidden_field :uploadable_type, value: 'Business'%>
+      <%= f.hidden_field :uploadable_id, value: @business.id%>
+      <%= f.hidden_field :attachment_type, value: 'business_slider'%>
+      <%= f.submit "Upload" %>
+    </div>
+    <% end %>
+    <script>
+    Dropzone.autoDiscover = false;
+    $("#new_upload").dropzone({
+      dictDefaultMessage : "<%=t :drop_files_here_to_upload%>",
+      dictRemoveFile : "<%=t :remove_file %>",
+      acceptedFiles : '.docx,.doc,.pdf,.txt, .png,.jpg,.jpeg',
+      addRemoveLinks: true,
+      removedfile: function(file) {
+        $.get( "/uploads/remoted/" + file.id, function( data ) {
+          console.log(data);
+        });
+        var _ref;
+        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+      },
+      init: function () {
+        this.on("success", function(file, responseText) {
+          $('#myModal').modal('show');
+          $('#target').attr('src', responseText.image);
+          $('#target').Jcrop();
+          file.id = responseText.id;
+        });
+
+        <% for upload in Upload.where(uploadable_type: 'Business', uploadable_id: @business.id, attachment_type: 'business_slider')%>
+        var mockFile = { name: "<%= upload.attachment_file_name%>", size: <%= upload.attachment_file_size%>, url: "<%= upload.attachment.url%>", id: <%= upload.id%> };
+        this.options.addedfile.call(this, mockFile);
+        this.options.thumbnail.call(this, mockFile, "<%= upload.attachment(:large)%>");
+        mockFile.previewElement.classList.add('dz-success');
+        mockFile.previewElement.classList.add('dz-complete');
+        <%end%>
+      }
+    });
+    </script>
+  </div>
+  <div class="card-footer text-right">
+
+  </div>
+</div>
+</div>

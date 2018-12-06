@@ -69,3 +69,33 @@ position: absolute;
 top: 0; left: 0;
 height: 100%; width: 100%;
 }
+
+#modal {
+  position: absolute;
+  background: black;
+  width: 300px;
+  height: 300px;
+  display: none;
+}
+
+.preview-container {
+  top: 100px;
+  left: 80px;
+  width: 150px;
+  height: auto;
+  /* use auto here so it doesnt distort the aspect ratio of the image */
+  background-color: #2185C5;
+  position: relative;
+}
+
+#previewSub {
+  width: 150px;
+  height: auto;
+  /* use auto here so it doesnt distort the aspect ratio of the image */
+}
+
+#abutton {
+  position: absolute;
+  background: red;
+  top: 350px;
+}

@@ -276,6 +276,7 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  slider_settings: 'تنظیمات اسلاید'
   clear: 'پاک کن '
   filter: 'محدود کن'
   categories: 'دسته بندی '

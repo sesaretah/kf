@@ -5,12 +5,12 @@
       <i class="fe fe-home" style="vertical-align:-3px;"></i> <%=t :home_settings%>
       <%end%>
 
-      <%= link_to '/', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
-      <i class="fe fe-tablet" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
+      <%= link_to '/home/settings?section=slider', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;', remote: true do%>
+      <i class="fe fe-fast-forward" style="vertical-align:-3px;"></i> <%=t :slider_settings%>
       <%end%>
 
       <%= link_to '/', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
-      <i class="fe fe-edit" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
+      <i class="fe fe-tablet" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
       <%end%>
     </div>
   </div>
