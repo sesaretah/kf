@@ -50,7 +50,7 @@ class UploadsController < ApplicationController
     respond_to do |format|
       if @upload.update(upload_params)
         format.html { redirect_to @upload, notice: 'Upload was successfully updated.' }
-        format.json 
+        format.json { render :show, status: :ok, location: @upload }
         format.js
       else
         format.html { render :edit }

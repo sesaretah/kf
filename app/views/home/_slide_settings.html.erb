@@ -23,7 +23,7 @@
                <input id="crop_h" name="upload[crop_h]" type="hidden" value="">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" onclick="send()"></button>
+            <button type="button" class="btn btn-default" onclick="send()"><%=t :submit%></button>
           </div>
         </div>
 
@@ -33,9 +33,13 @@
 function send(){
   $.ajax({
     type: "PATCH",
+    dataType: 'JSON',
     url: '/uploads/'+ $('#target').attr('for'),
     data: {authenticity_token: window._token, 'upload[crop_x]': $('#crop_x').val(), 'upload[crop_y]': $('#crop_y').val(), 'upload[crop_w]': $('#crop_w').val(), 'upload[crop_h]': $('#crop_h').val()},
-    success: function(){}
+    success: function(){
+       $('#target').attr('src', '');
+       $('#myModal').modal('toggle');
+    }
   });
 }
 </script>
@@ -76,7 +80,7 @@ function send(){
               onChange: update_crop,
               onSelect: update_crop,
               setSelect: [0, 0, 500, 500],
-              aspectRatio: 30/13
+              aspectRatio: 36/13
             });
           });
           function update_crop(coords) {

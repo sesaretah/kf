@@ -1,5 +1,5 @@
 class Upload < ActiveRecord::Base
-  has_attached_file :attachment, :styles => { :medium => "300x300#", :tiny => "20x20>" ,:thumb => "50x50>", :large => "500x500>"  }, :default_url => "/assets/noimage-35-:style.jpg",  :processors => [:cropper]
+  has_attached_file :attachment, :styles => { :medium => "300x300#", :tiny => "20x20>" ,:thumb => "50x50>", :large => "400x400>", :extra => "800X800>"  }, :default_url => "/assets/noimage-35-:style.jpg",  :processors => [:cropper]
   validates_attachment_content_type :attachment, :content_type => ["image/jpg", "image/jpeg", "image/png"]
 #  before_post_process :rename_avatar
 #  before_post_process :resize_images
