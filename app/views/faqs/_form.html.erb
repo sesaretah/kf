@@ -1,0 +1,53 @@
+<%= form_for(@faq, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_faq %></h3>
+</div>
+<% if @faq.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@faq.errors.count, "error") %> prohibited this faq from being saved:</h2>
+
+  <ul>
+    <% @faq.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :question, class: "form-label" %>
+      <%= f.text_area :question , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :answer, class: "form-label" %>
+      <%= f.text_area :answer , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :rank, class: "form-label" %>
+      <%= f.number_field :rank , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :business_id, class: "form-label" %>
+      <%= f.number_field :business_id , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="card-footer text-right">
+  <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+</div>
+<% end %>

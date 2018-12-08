@@ -1,10 +1,14 @@
+$(".list-group-item-action.active").removeClass('active');
 <% if @section == 'homepage'%>
 $("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'segments/business_segment')) %>");
-$(".list-group-item-action.active").removeClass('active');
 $("#homepage-nav").addClass('active');
 <%end%>
 <% if @section == 'slider'%>
 $("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'home/slide_settings')) %>");
-$(".list-group-item-action.active").removeClass('active');
 $("#slider-nav").addClass('active');
+<%end%>
+
+<% if @section == 'faq'%>
+$("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'faqs/business_faqs')) %>");
+$("#faq-nav").addClass('active');
 <%end%>

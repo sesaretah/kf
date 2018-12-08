@@ -1,0 +1,10 @@
+<div id='settings-detail'>
+<h5><%=t :new_faq%></h5>
+<hr class="mt-2 mb-2"/>
+<%= render partial: 'faqs/remote_form', locals: {segment: Segment.new}%>
+<h5><%=t :faqs%></h5>
+<hr class="mt-2 mb-2"/>
+<%for faq in @business.faqs.order('rank desc, updated_at asc')%>
+  <%= render partial: 'faqs/faq_block', locals: {faq: faq, caller: 'settings'}%>
+<%end%>
+</div>

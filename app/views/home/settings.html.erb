@@ -9,7 +9,11 @@
       <i class="fe fe-fast-forward" style="vertical-align:-3px;"></i> <%=t :slider_settings%>
       <%end%>
 
-      <%= link_to '/',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
+      <%= link_to '/home/settings?section=faq', id: 'faq-nav',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;', remote: true do%>
+      <i class="fe fe-help-circle" style="vertical-align:-3px;"></i> <%=t :faq_settings%>
+      <%end%>
+
+      <%= link_to '/home/settings?section=faq',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
       <i class="fe fe-tablet" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
       <%end%>
     </div>

@@ -7,4 +7,5 @@ class Business < ActiveRecord::Base
   belongs_to :user
   has_many :products
   has_many :segments
+  has_many :faqs
 end

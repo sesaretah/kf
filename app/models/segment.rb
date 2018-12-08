@@ -16,6 +16,8 @@ class Segment < ActiveRecord::Base
     @segment = Segment.all.order('level desc').first
     if !@segment.blank?
       self.level = @segment.level.to_i + 1
+    else
+      self.level = 0
     end
   end
 

@@ -1,0 +1,33 @@
+<div class="col-md-12">
+  <div class="row">
+  <div class="col-md-8 ">
+    <div class="mb-1" style='color:#467fcf;'>
+      <%= faq.question%>
+    </div>
+  </div>
+  <div class="col-md-3 p-0 text-right">
+    <% if @business.faqs.order('rank desc, updated_at asc').first.id != faq.id%>
+    <%= link_to "/faqs/change_rank/#{faq.id}?to=up", class: "icon", remote: true do %>
+    <i class="fe fe-chevrons-up" style='vertical-align:-3px;'></i>
+    <%end%>
+    <%else%>
+    <span class='icon'><i class="fe fe-chevrons-up" style='vertical-align:-3px;color:#f2f4f9'></i></span>
+    <%end%>
+    <span  style='font-size: 70%; padding-top: 5px;'><%=t :level %></span>
+    <% if @business.faqs.order('rank desc, updated_at asc').last.id != faq.id%>
+    <%= link_to "/faqs/change_rank/#{faq.id}?to=down", class: "icon", remote: true do %>
+    <i class="fe fe-chevrons-down" style='vertical-align:-3px;'></i>
+    <%end%>
+    <%else%>
+    <span class='icon'><i class="fe fe-chevrons-up" style='vertical-align:-3px;color:#f2f4f9'></i></span>
+    <%end%>
+  </div>
+  <div class="col-md-1 p-0 text-right">
+    <%= link_to faq, method: :delete, remote: true, data: { confirm: 'Are you sure?' } do%>
+    <i class="fe fe-trash" style='vertical-align:-3px;'></i>
+    <%end%>
+  </div>
+</div>
+<div style='text-align: justify;'><%= faq.answer%></div>
+</div>
+<hr class="mb-2 mt-2"/>
