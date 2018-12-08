@@ -24,7 +24,7 @@
         <td class="text-nowrap">
           <%= select_tag "count_#{item.product.id}", options_for_select((1..10).step(1).collect {|p| [ "#{p}", p ] }), { :class => "form-control col-md-8 count" } %>
         </td>
-        <td><span id='price_<%=item.product.id%>'><%= item.product.price%></span> <span id='currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
+        <td><span id='price_<%=item.product.id%>'><%= item.product.priced%></span> <span id='currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
         <td><span class='total_price' id='total_price_<%=item.product.id%>'><%= item.product.price%></span> <span id='total_currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
         <td>
           <%= link_to "/carts/remove_from_cart/#{cart.id}?product_id=#{item.product.id}", class: "icon", remote: true do %>

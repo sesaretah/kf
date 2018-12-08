@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
   after_save ThinkingSphinx::RealTime.callback_for(:product)
   has_many :specs, :through => :specifications
   has_many :specifications, dependent: :destroy
@@ -59,5 +60,9 @@ class Product < ActiveRecord::Base
     else
       return [ActionController::Base.helpers.asset_path("noimage-35-#{style}.jpg", :digest => false)]
     end
+  end
+
+  def priced
+    return number_with_delimiter(self.price, delimiter: ",")
   end
 end

@@ -76,7 +76,7 @@
           <tr>
             <td><img src="<%if !@upload.blank?%><%= @upload.attachment(:thumb)%><%else%>/assets/noimage-35-thumb.jpg<%end%>" alt="" class="h-7"></td>
             <td>
-              <div><strong><%= truncate(product.title, length: 20)%></strong></div>
+              <div class="text-muted small"><strong><%= truncate(product.title, length: 20)%></strong></div>
             </td>
             <td class="text-center text-muted">
               <i class="fa fa-heart-o" style="color: grey !important;vertical-align: middle;"></i> <span style="font-size:0.8rem">(<%= Like.where(likeable_type: 'Product', likeable_id: product.id).count%>)</span>
@@ -84,7 +84,7 @@
 
             <td class="text-right">
               <% if !product.price.blank?%>
-              <div><strong><%= product.price%> <%= rcurrencies(product.currency)%></strong></div>
+              <div class="small"><strong><%= product.priced%> <%= rcurrencies(product.currency)%></strong></div>
               <%end%>
             </td>
             <td class="text-center">

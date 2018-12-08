@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class='text-center mt-2'>
-          <strong><%=t :price %>: <%= @product.price%> <%= rcurrencies(@product.currency)%></strong>
+          <strong><%=t :price %>: <%= @product.priced%> <%= rcurrencies(@product.currency)%></strong>
           <%= render partial: 'carts/add_to_cart', locals: {product: @product, cart: @cart}%>
         </div>
       </div>
