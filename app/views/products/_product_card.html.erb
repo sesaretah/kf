@@ -1,11 +1,11 @@
-<div class="col-md-3">
+<div class="col-md-3 col-6">
   <div class="card" >
     <%= link_to "/products/#{product.id}" do%>
     <img src="<%= product.image('large')%>" alt="<%= product.title%>" class="card-img-top">
       <div class="card-body d-flex flex-column pr-2 pt-2" style="color:black;">
-      <small><%= truncate(product.title, length: 20)%></small>
+      <small class="text-muted"><%= truncate(product.title, length: 20)%></small>
       <div class="text-muted"></div>
-      <div class="text-center">
+      <div class="text-right">
         <%= product.price%> <%= rcurrencies(product.currency)%>
         <br />
         <% if caller == 'settings'&& segment.ext_code.blank?%>

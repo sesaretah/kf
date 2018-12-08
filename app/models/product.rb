@@ -1,4 +1,5 @@
 class Product < ActiveRecord::Base
+  after_save ThinkingSphinx::RealTime.callback_for(:product)
   has_many :specs, :through => :specifications
   has_many :specifications, dependent: :destroy
 
