@@ -1,15 +1,15 @@
 <div class='row'>
   <div class="col-lg-3 ">
     <div class="list-group list-group-transparent mb-4 text-center">
-      <%= link_to '/', class: "list-group-item list-group-item-action active small mb-1", style:'font-weight:normal;' do%>
+      <%= link_to '/home/settings?section=homepage',id: 'homepage-nav', class: "list-group-item list-group-item-action active small mb-1", style:'font-weight:normal;', remote: true do%>
       <i class="fe fe-home" style="vertical-align:-3px;"></i> <%=t :home_settings%>
       <%end%>
 
-      <%= link_to '/home/settings?section=slider', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;', remote: true do%>
+      <%= link_to '/home/settings?section=slider', id: 'slider-nav',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;', remote: true do%>
       <i class="fe fe-fast-forward" style="vertical-align:-3px;"></i> <%=t :slider_settings%>
       <%end%>
 
-      <%= link_to '/', class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
+      <%= link_to '/',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
       <i class="fe fe-tablet" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
       <%end%>
     </div>

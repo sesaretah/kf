@@ -5,6 +5,6 @@ class HomeController < ApplicationController
   end
 
   def settings
-
+    @section = params[:section]
   end
 end

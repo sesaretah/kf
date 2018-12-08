@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:segments, :products, :business]
-  before_action :load_business, only: [:segments,:products, :business]
+  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict]
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
@@ -39,6 +39,19 @@ class ApiController < ApplicationController
   def my_profile
     @profile = current_user.profile
     render :json => {name: @profile.name, surename: @profile.surename}.to_json, :callback => params['callback']
+  end
+
+  def upload_pict
+    @upload = Upload.new
+    @upload.uploadable_type = params[:uploadable_type]
+    @upload.uploadable_id = params[:uploadable_id]
+    @upload.attachment_type = params[:attachment_typecurl]
+    @upload.attachment = params[:file]
+    if @upload.save
+      render :json => {result: 'OK' }.to_json , :callback => params['callback']
+    else
+      render :json => {error: @user.errors }.to_json , :callback => params['callback']
+    end
   end
 
 end
