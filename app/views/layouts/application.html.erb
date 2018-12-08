@@ -6,7 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta http-equiv="Content-Language" content="en" />
   <meta name="msapplication-TileColor" content="#2d89ef">
+  <% if !@business.blank? && !@business.theme.blank?%>
+  <meta name="theme-color" content="<%= @business.theme.header_background%>">
+  <% else%>
   <meta name="theme-color" content="#4188c9">
+  <%end%>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
