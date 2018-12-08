@@ -72,9 +72,11 @@
               <%= label :product, :title , class: "form-label", style: 'color: #7795c1;'%>
               <div class="form-control-plaintext"><%= @product.title %></div>
             </div>
-            <div class="form-group">
+            <div class="form-group" >
               <%= label :product, :description , class: "form-label", style: 'color: #7795c1;'%>
-              <div class="form-control-plaintext"><%= @product.description %></div>
+              <div class="form-control-plaintext" style="text-align:justify;">
+                <%= @product.description %>
+              </div>
             </div>
           </div>
         </div>
