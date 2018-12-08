@@ -276,6 +276,9 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  change_theme: 'تغییر ظاهر سایت '
+  choose_your_favourite_color: 'رنگ دلخواه خود را انتخاب کنید'
+  theme_settings: 'تنظیمات ظاهر سایت'
   all_rights_is_reserved_to_the_owner_of_site: 'تمامی حقوق و مسئولیت محتوای این سایت متعلق است به'
   no_faq_exists: 'پرسش و پاسخی ثبت نشده است'
   faqs: 'پرسش‌های متداول'

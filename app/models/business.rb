@@ -8,4 +8,5 @@ class Business < ActiveRecord::Base
   has_many :products
   has_many :segments
   has_many :faqs
+  belongs_to :theme
 end

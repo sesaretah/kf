@@ -1,0 +1,94 @@
+<%= form_for(@theme, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_theme %></h3>
+</div>
+<% if @theme.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@theme.errors.count, "error") %> prohibited this theme from being saved:</h2>
+
+  <ul>
+    <% @theme.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :title, class: "form-label" %>
+        <%= f.text_field :title , class: "form-control" %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :header_background, class: "form-label" %>
+        <%= f.text_field :header_background , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :navtab_color, class: "form-label" %>
+        <%= f.text_field :navtab_color , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :footer_background, class: "form-label" %>
+        <%= f.text_field :footer_background , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :footer_color, class: "form-label" %>
+        <%= f.text_field :footer_color , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :body_background_color, class: "form-label" %>
+        <%= f.text_field :body_background_color , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :list_group_item_background, class: "form-label" %>
+        <%= f.text_field :list_group_item_background , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :list_group_item_color, class: "form-label" %>
+        <%= f.text_field :list_group_item_color , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <div class="form-group">
+        <%= f.label :header_border_bottom, class: "form-label" %>
+        <%= f.text_field :header_border_bottom , class: "form-control", style: 'direction:ltr;'  %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-right">
+    <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+  </div>
+  <% end %>

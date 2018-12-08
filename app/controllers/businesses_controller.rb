@@ -1,8 +1,14 @@
 class BusinessesController < ApplicationController
-  before_action :set_business, only: [:edit, :update, :destroy]
-  before_action :load_business, only: [:index, :show]
+  before_action :set_business, only: [:edit, :update, :destroy, :change_theme]
+  before_action :load_business, only: [:index, :show,:change_theme]
   # GET /businesses
   # GET /businesses.json
+  def change_theme
+    @theme = Theme.find(params[:theme_id])
+    @business.theme_id = @theme.id
+    @business.save
+    render :json => @business.to_json, :callback => params['callback']
+  end
   def index
     @businesses = Business.all
   end

@@ -12,3 +12,8 @@ $("#slider-nav").addClass('active');
 $("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'faqs/business_faqs')) %>");
 $("#faq-nav").addClass('active');
 <%end%>
+
+<% if @section == 'theme'%>
+$("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'businesses/change_theme')) %>");
+$("#theme-nav").addClass('active');
+<%end%>

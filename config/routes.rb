@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :themes
   resources :faqs
   resources :visits
   resources :segmentations
@@ -50,6 +51,6 @@ Rails.application.routes.draw do
 
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
 
-
+  match "/businesses/change_theme/:id" => "businesses#change_theme", :via => :get
 
 end

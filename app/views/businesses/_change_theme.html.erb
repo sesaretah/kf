@@ -1,0 +1,36 @@
+<div id='settings-detail'>
+  <h5><%=t :change_theme%></h5>
+  <div class="form-group">
+    <div class="form-label mb-3"><%=t :choose_your_favourite_color%></div>
+    <div class="custom-controls-stacked">
+      <% for theme in Theme.all%>
+      <label class="custom-control custom-radio">
+        <input type="radio" class="custom-control-input" name="example-radios" value="<%= theme.id%>" <% if @business.theme_id == theme.id%>checked<%end%>>
+        <div class="custom-control-label pr-5">
+          <span class="colorinput-color" style='margin-top: -4px;background-color:<%= theme.header_background%>'></span>
+        </div>
+      </label>
+      <%end%>
+    </div>
+  </div>
+  <script>
+  $('.custom-control-input').change(function() {
+    var id = this.value;
+
+      $.ajax({
+        url: '/businesses/change_theme/'+<%=@business.id%>,
+        type: 'GET',
+        dataType: 'json',
+        data: {
+          theme_id: id
+        },
+        error: function() {
+
+        },
+        success: function() {
+          location.reload();
+        }
+      });
+  });
+  </script>
+</div>

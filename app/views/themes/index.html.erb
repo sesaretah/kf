@@ -1,0 +1,42 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @themes.each do |theme| %>
+          <tr>
+                        <td><%= theme.header_background %></td>
+                        <td><%= theme.navtab_color %></td>
+                        <td><%= theme.footer_background %></td>
+                        <td><%= theme.footer_color %></td>
+                        <td><%= theme.body_background_color %></td>
+                        <td><%= theme.list_group_item_background %></td>
+                        <td><%= theme.list_group_item_color %></td>
+                        <td><%= link_to t(:show), theme %></td>
+            <td><%= link_to t(:edit), edit_theme_path(theme) %></td>
+            <td><%= link_to t(:destroy), theme, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -26,9 +26,42 @@
     overflow-x: hidden;
   }
   </style>
+<% if !@business.blank? && !@business.theme.blank?%>
+  <style>
+  .header {
+    background: <%= @business.theme.header_background%>;
+    <%if !@business.theme.header_border_bottom.blank?%>
+      border-bottom: 1px solid <%= @business.theme.header_border_bottom%>
+    <%end%>
+  }
+  .nav-tabs {
+    color: <%= @business.theme.navtab_color%>;
+  }
+  .footer {
+    background: <%= @business.theme.footer_background%>;
+    color: <%= @business.theme.footer_color%>;
+  }
 
+  body {
+    background-color: <%= @business.theme.body_background_color%>;
+  }
 
+  .list-group-transparent .list-group-item.active {
+    background: <%= @business.theme.list_group_item_background%>;
+  }
 
+  .list-group-item.active {
+    color: <%= @business.theme.list_group_item_color%>;
+  }
+
+  .btn-instagram {
+    color: #fff;
+    background-color: #40a6e4;
+    border-color: #5aa1e6;
+  }
+
+  </style>
+  <%end%>
 </head>
 <body class="">
   <div class="page">

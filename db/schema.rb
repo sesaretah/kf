@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181208124717) do
+ActiveRecord::Schema.define(version: 20181208151028) do
 
   create_table "businesses", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20181208124717) do
     t.integer  "logo_file_size",    limit: 8
     t.datetime "logo_updated_at"
     t.string   "subdomain",         limit: 255
+    t.integer  "theme_id",          limit: 4
   end
 
   create_table "cart_items", force: :cascade do |t|
@@ -151,6 +152,20 @@ ActiveRecord::Schema.define(version: 20181208124717) do
     t.integer  "category_id", limit: 4
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string   "header_background",          limit: 255
+    t.string   "navtab_color",               limit: 255
+    t.string   "footer_background",          limit: 255
+    t.string   "footer_color",               limit: 255
+    t.string   "body_background_color",      limit: 255
+    t.string   "list_group_item_background", limit: 255
+    t.string   "list_group_item_color",      limit: 255
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "title",                      limit: 255
+    t.string   "header_border_bottom",       limit: 255
   end
 
   create_table "uploads", force: :cascade do |t|
