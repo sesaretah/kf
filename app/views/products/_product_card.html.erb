@@ -7,13 +7,14 @@
       <div class="text-muted"></div>
       <div class="text-right small">
         <strong><%= product.price%> <%= rcurrencies(product.currency)%></strong>
-        <br />
-        <% if caller == 'settings'&& segment.ext_code.blank?%>
-        <%= link_to "/segments/remove_from_segment/#{segment.id}?product_id=#{product.id}", class: "icon", remote: true,data: { confirm: 'Are you sure?' }  do %>
-          <i class="fe fe-trash" style='vertical-align:-3px;'></i>
-        <%end%>
-        <%end%>
       </div>
+      <div class="text-center">
+      <% if caller == 'settings'&& segment.ext_code.blank?%>
+      <%= link_to "/segments/remove_from_segment/#{segment.id}?product_id=#{product.id}", class: "icon", remote: true,data: { confirm: 'Are you sure?' }  do %>
+        <i class="fe fe-trash" style='vertical-align:-3px;'></i>
+      <%end%>
+      <%end%>
+    </div>
     </div>
     <%end%>
   </div>
