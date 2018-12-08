@@ -1,4 +1,4 @@
-<div class="col-md-6 col-12 p-0">
+<div class="col-md-6 col-12 p-0 text-right">
 <label class="custom-switch mt-1" style='float: left;'>
   <input type="checkbox" name="view_<%= segment.id%>" id='view_<%= segment.id%>' <%if segment.view_in_homepage%>checked<%end%> class="custom-switch-input">
   <span class="custom-switch-indicator"></span>
@@ -6,7 +6,7 @@
 </label>
 </div>
 
-<div class="col-md-5 col-6 p-0">
+<div class="col-md-5 col-12 p-0 text-right">
 <% if @business.segments.order('level desc, updated_at asc').first.id != segment.id%>
 <%= link_to "/segments/change_level/#{segment.id}?to=up", class: "icon", remote: true do %>
 <i class="fe fe-chevrons-up" style='vertical-align:-3px;'></i>
@@ -24,7 +24,7 @@
 <%end%>
 </div>
 
-<div class="col-md-1 col-4 p-0">
+<div class="col-md-1 col-12 p-0 text-right">
 <% if segment.ext_code.blank?%>
 <%= link_to segment, method: :delete, remote: true, class: "icon" ,data: { confirm: 'Are you sure?' } do %>
 <i class="fe fe-trash" style='vertical-align:-3px;'></i>
