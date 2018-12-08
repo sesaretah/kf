@@ -5,7 +5,11 @@
     <%= segment.title%>
     <% if caller == 'settings'%>
     <div class="card-options">
-      <%= render partial: 'segments/segment_options', locals: {segment: segment}%>
+      <div class="col-md-12">
+        <div class="row">
+        <%= render partial: 'segments/segment_options', locals: {segment: segment}%>
+      </div>
+      </div>
     </div>
     <%end%>
   </div>
