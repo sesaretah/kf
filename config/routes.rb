@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :pixels
   resources :themes
   resources :faqs
   resources :visits

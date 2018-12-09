@@ -1,0 +1,106 @@
+<% for pixel in @business.pixels%>
+<div class="row">
+  <div class="col-md-3 p-5">
+    <%=t :related_category%>:
+    <%= pixel.category.title%>
+  </div>
+  <div class="col-md-9">
+    <%= form_for(Upload.new, html: {id:"upload-#{pixel.id}", class: 'dropzone'}) do |f| %>
+    <%= f.hidden_field :uploadable_type, value: 'Pixel'%>
+    <%= f.hidden_field :uploadable_id, value: pixel.id%>
+    <%= f.hidden_field :attachment_type, value: 'pixel_attachment'%>
+    <%= hidden_field_tag :file_type, 'picture'%>
+    <div class="fallback">
+      <%= f.file_field :picture %><br>
+      <%= f.hidden_field :uploadable_type, value: 'Pixel'%>
+      <%= f.hidden_field :uploadable_id, value: pixel.id%>
+      <%= f.hidden_field :attachment_type, value: 'pixel_attachment'%>
+      <%= f.submit "Upload" %>
+    </div>
+    <% end %>
+    <div id="modal_<%= pixel.id%>" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"><%=t :crop_image%></h4>
+          </div>
+          <div class="modal-body">
+               <img id="target_<%= pixel.id%>" for="" src=""/>
+               <input id="crop_x_<%= pixel.id%>" name="upload[crop_x]" type="hidden" value="">
+               <input id="crop_y_<%= pixel.id%>" name="upload[crop_y]" type="hidden" value="">
+               <input id="crop_w_<%= pixel.id%>" name="upload[crop_w]" type="hidden" value="">
+               <input id="crop_h_<%= pixel.id%>" name="upload[crop_h]" type="hidden" value="">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" onclick="send_<%= pixel.id%>()"><%=t :submit%></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    function send_<%= pixel.id%>(){
+      $.ajax({
+        type: "PATCH",
+        dataType: 'JSON',
+        url: '/uploads/'+ $('#target_<%= pixel.id%>').attr('for'),
+        data: {authenticity_token: window._token, 'upload[crop_x]': $('#crop_x_<%= pixel.id%>').val(), 'upload[crop_y]': $('#crop_y_<%= pixel.id%>').val(), 'upload[crop_w]': $('#crop_w_<%= pixel.id%>').val(), 'upload[crop_h]': $('#crop_h_<%= pixel.id%>').val()},
+        success: function(){
+           $('#target_<%= pixel.id%>').attr('src', '');
+           $('#modal_<%= pixel.id%>').modal('toggle');
+        }
+      });
+    }
+    </script>
+    <script>
+    Dropzone.autoDiscover = false;
+    $("#upload-<%= pixel.id%>").dropzone({
+      dictDefaultMessage : "<%=t :drop_files_here_to_upload%>",
+      dictRemoveFile : "<%=t :remove_file %>",
+      acceptedFiles : '.docx,.doc,.pdf,.txt, .png,.jpg,.jpeg',
+      addRemoveLinks: true,
+      removedfile: function(file) {
+        $.get( "/uploads/remoted/" + file.id, function( data ) {
+          console.log(data);
+        });
+        var _ref;
+        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+      },
+      init: function () {
+        this.on("success", function(file, responseText) {
+          console.log('test');
+          $('#modal_<%= pixel.id%>').modal('show');
+          $('#target_<%= pixel.id%>').attr('src', responseText.image);
+          $('#target_<%= pixel.id%>').attr('for', responseText.id);
+          $(function() {
+            $('#target_<%= pixel.id%>').Jcrop({
+              onChange: update_crop,
+              onSelect: update_crop,
+              setSelect: [0, 0, 500, 500],
+              aspectRatio: 4/3
+            });
+          });
+          function update_crop(coords) {
+            var ratio = responseText.ratio
+            $('#crop_x_<%= pixel.id%>').val(Math.floor(coords.x * ratio));
+            $('#crop_y_<%= pixel.id%>').val(Math.floor(coords.y * ratio));
+            $('#crop_w_<%= pixel.id%>').val(Math.floor(coords.w * ratio));
+            $('#crop_h_<%= pixel.id%>').val(Math.floor(coords.h * ratio));
+          }
+          file.id = responseText.id;
+        });
+
+        <% for upload in Upload.where(uploadable_type: 'Pixel', uploadable_id: pixel.id, attachment_type: 'pixel_attachment')%>
+        var mockFile = { name: "<%= upload.attachment_file_name%>", size: <%= upload.attachment_file_size%>, url: "<%= upload.attachment.url%>", id: <%= upload.id%> };
+        this.options.addedfile.call(this, mockFile);
+        this.options.thumbnail.call(this, mockFile, "<%= upload.attachment(:large)%>");
+        mockFile.previewElement.classList.add('dz-success');
+        mockFile.previewElement.classList.add('dz-complete');
+        <%end%>
+      }
+    });
+    </script>
+  </div>
+</div>
+<hr class="mt-2 mb-2 mr-4 ml-4"/>
+<%end%>

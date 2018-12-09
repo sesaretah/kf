@@ -17,3 +17,8 @@ $("#faq-nav").addClass('active');
 $("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'businesses/change_theme')) %>");
 $("#theme-nav").addClass('active');
 <%end%>
+
+<% if @section == 'pixel'%>
+$("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'pixels/business_pixel')) %>");
+$("#pixel-nav").addClass('active');
+<%end%>

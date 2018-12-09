@@ -1,0 +1,22 @@
+<%= form_for(Pixel.new, remote: true) do |f| %>
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+      <% @categories = []%>
+      <%@business.products.all.group_by(&:category).each do |g,p|%>
+        <%@categories << [g.title,g.id]%>
+        <%@business.products.all.group_by(&:subcategory).each do |s, i|%>
+          <% if s.parent_id == g.id %>
+            <% @categories << ['-- '+s.title, s.id]%>
+          <%end%>
+        <%end%>
+      <%end%>
+      <%= f.label :category_id, class: "form-label" %>
+      <%= f.select :category_id , @categories, {}, {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 23px">
+    <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+  </div>
+</div>
+<% end %>

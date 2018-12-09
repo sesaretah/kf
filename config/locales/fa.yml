@@ -249,6 +249,8 @@ fa:
           certification_id: 'عنوان گواهینامه یا جواز'
           start_year: 'سال شروع'
           end_year: 'سال پایان'
+        pixel:
+          category_id: 'دسته بندی مرتبط با پیکسل'
         faq:
           question: 'پرسش'
           answer: 'پاسخ'
@@ -276,6 +278,10 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  related_category: 'دسته بندی مرتبط '
+  pixels: 'پیکسل های شما'
+  new_pixel: 'پیکسل جدید'
+  pixel_settings: 'تنظیمات پیکسل ها'
   change_theme: 'تغییر ظاهر سایت '
   choose_your_favourite_color: 'رنگ دلخواه خود را انتخاب کنید'
   theme_settings: 'تنظیمات ظاهر سایت'

@@ -1,0 +1,37 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @pixels.each do |pixel| %>
+          <tr>
+                        <td><%= pixel.category_id %></td>
+                        <td><%= pixel.title %></td>
+                        <td><%= link_to t(:show), pixel %></td>
+            <td><%= link_to t(:edit), edit_pixel_path(pixel) %></td>
+            <td><%= link_to t(:destroy), pixel, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -9,4 +9,5 @@ class Business < ActiveRecord::Base
   has_many :segments
   has_many :faqs
   belongs_to :theme
+  has_many :pixels
 end

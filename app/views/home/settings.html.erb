@@ -17,6 +17,10 @@
       <i class="fe fe-layers" style="vertical-align:-3px;"></i> <%=t :theme_settings%>
       <%end%>
 
+      <%= link_to '/home/settings?section=pixel', id: 'pixel-nav',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;', remote: true do%>
+      <i class="fe fe-square" style="vertical-align:-3px;"></i> <%=t :pixel_settings%>
+      <%end%>
+
       <%= link_to '/home/settings?section=faq',class: "list-group-item list-group-item-action small mb-1", style:'font-weight:normal;' do%>
       <i class="fe fe-tablet" style="vertical-align:-3px;"></i> <%=t :mobile_app_management%>
       <%end%>
