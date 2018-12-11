@@ -1,7 +1,8 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories, :paginated_products]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products]
+  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business]
+  before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
   def segments
     @data = []
@@ -86,6 +87,46 @@ class ApiController < ApplicationController
       render :json => {result: 'NONE'}.to_json , :callback => params['callback']
     end
   end
+
+  def new_product
+    @product = Product.new(title: params['productName'], description: params['description'], price: params['price'], currency: params['currency'])
+    @product.business_id = @business.id
+    if @product.save
+      extract_features(@product)
+      render :json => {result: 'OK', id: @product.id}.to_json, :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+  end
+
+  def edit_business
+    @business = Business.find(params[:id])
+    @business.title = params['name']
+    @business.bio = params['description']
+    @business.instagram_page = params['instagramChannelAddr']
+    @business.telegram_channel = params['telegramChannelAddr']
+    @business.address = params['address']
+    @business.tel = params['tel']
+    @business.fax = params['fax']
+    @business.mobile = params['mobile']
+    @business.email = params['email']
+    if @business.save
+      render :json => {result: 'OK', id: @business.id}.to_json, :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+  end
+
+  def is_admin
+    if current_user.blank?
+      head(403)
+    else
+      if @business.user_id != current_user.id
+        head(403)
+      end
+    end
+  end
+
 
 
 end

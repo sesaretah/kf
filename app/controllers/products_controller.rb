@@ -60,7 +60,7 @@ class ProductsController < ApplicationController
     @product.business_id = @business.id
     @product.user_id = current_user.id
     @product.save
-    extract_features
+    extract_features(@product)
     respond_to do |format|
         format.html { redirect_to "/products/upload/#{@product.id}", notice: 'Product was successfully created.' }
     end
@@ -73,7 +73,7 @@ class ProductsController < ApplicationController
       @product.business_id = @business.id
       @product.user_id = current_user.id
       if @product.update(product_params)
-        extract_features
+        extract_features(@product)
         format.html { redirect_to "/products/upload/#{@product.id}", notice: 'Product was successfully updated.' }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -93,37 +93,7 @@ class ProductsController < ApplicationController
     end
   end
 
-  def extract_features
-    if !params[:category].blank?
-      @categorizations = Categorization.where(product_id: @product.id, level: [1,2,3])
-      for categorization in @categorizations
-        categorization.destroy
-      end
-      Categorization.create(product_id: @product.id, category_id: params[:category], level: 1)
-    end
-    if !params[:subcategory].blank?
-      @categorizations = Categorization.where(product_id: @product.id, level: [2,3])
-      for categorization in @categorizations
-        categorization.destroy
-      end
-      Categorization.create(product_id: @product.id, category_id: params[:subcategory], level: 2)
-    end
-    if !params[:subsubcategory].blank?
-      @categorizations = Categorization.where(product_id: @product.id, level: 3)
-      for categorization in @categorizations
-        categorization.destroy
-      end
-      Categorization.create(product_id: @product.id, category_id: params[:subsubcategory], level: 3)
-    end
-    for specification in @product.specifications
-      specification.destroy
-    end
-    for key in params.keys
-      if key.split('-')[0] == 'productparam'
-        Specification.create(product_id: @product.id, spec_id: key.split('-')[1], spec_value: params[key])
-      end
-    end
-  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

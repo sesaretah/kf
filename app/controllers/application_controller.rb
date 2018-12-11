@@ -71,4 +71,37 @@ class ApplicationController < ActionController::Base
       return " "
     end
   end
+
+  def extract_features(product)
+    if !params[:category].blank?
+      @categorizations = Categorization.where(product_id: product.id, level: [1,2,3])
+      for categorization in @categorizations
+        categorization.destroy
+      end
+      Categorization.create(product_id: product.id, category_id: params[:category], level: 1)
+    end
+    if !params[:subcategory].blank?
+      @categorizations = Categorization.where(product_id: product.id, level: [2,3])
+      for categorization in @categorizations
+        categorization.destroy
+      end
+      Categorization.create(product_id: product.id, category_id: params[:subcategory], level: 2)
+    end
+    if !params[:subsubcategory].blank?
+      @categorizations = Categorization.where(product_id: product.id, level: 3)
+      for categorization in @categorizations
+        categorization.destroy
+      end
+      Categorization.create(product_id: product.id, category_id: params[:subsubcategory], level: 3)
+    end
+    for specification in product.specifications
+      specification.destroy
+    end
+    for key in params.keys
+      if key.split('-')[0] == 'productparam'
+        Specification.create(product_id: product.id, spec_id: key.split('-')[1], spec_value: params[key])
+      end
+    end
+  end
+  
 end
