@@ -50,6 +50,8 @@ Rails.application.routes.draw do
   match "/api/my_profile" => "api#my_profile", :via => :get
   match "/api/upload_pict" => "api#upload_pict", :via => :post
   match "/api/categories" => "api#categories", :via => :get
+  match "/api/paginated_products" => "api#paginated_products", :via => :get
+
 
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
 

@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories]
+  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories, :paginated_products]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products]
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
@@ -55,7 +55,17 @@ class ApiController < ApplicationController
   end
 
   def paginated_products
-
+    @products = @business.products.paginate(:page => params[:page], :per_page => params[:per_page])
+    @total_pages = @products.total_pages
+    @results = []
+    for product in @products
+      @results << {'id' => product.id, 'name' => product.title, 'picture' => request.base_url + product.image('large'), 'category' => {'id' => product.category.id}, 'subcategory' => {'id' => product.subcategory.id}}
+    end
+    if !@results.blank?
+      render :json => {'products' => @results, 'page' => params[:page], 'per_page' => params[:per_page], 'total_pages' => @total_pages}.to_json , :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
   end
 
   def categories
@@ -74,7 +84,7 @@ class ApiController < ApplicationController
     else
       render :json => {result: 'NONE'}.to_json , :callback => params['callback']
     end
-
   end
+
 
 end
