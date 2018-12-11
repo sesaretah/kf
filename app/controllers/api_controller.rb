@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict]
+  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories]
   before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories]
   def segments
     @data = []
