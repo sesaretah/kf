@@ -2,6 +2,7 @@ class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories, :paginated_products]
   before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products]
+  include ActionView::Helpers::TextHelper
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
@@ -71,10 +72,10 @@ class ApiController < ApplicationController
   def categories
     @results = []
     @business.products.all.group_by(&:category).take(10).each do |g,p|
-      @hash = {'id' =>  g.id, 'name' => g.title, 'subCategories' => []}
+      @hash = {'id' =>  g.id, 'name' => truncate(g.title, :length => 10, :omission => '..'), 'subCategories' => []}
       @business.products.all.group_by(&:subcategory).each do |s, i|
         if s.parent_id == g.id
-          @hash['subCategories'] << {'id' => s.id, 'name' => s.title}
+          @hash['subCategories'] << {'id' => s.id, 'name' => truncate(s.title, :length => 10, :omission => '..')}
         end
       end
       @results << @hash
