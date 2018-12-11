@@ -61,7 +61,13 @@ class ApiController < ApplicationController
   def categories
     @results = []
     @business.products.all.group_by(&:category).take(10).each do |g,p|
-      @results << g
+      @hash = {'id' =>  g.id, 'name' => g.title, 'subCategories' => []}
+      @business.products.all.group_by(&:subcategory).each do |s, i|
+        if s.parent_id == g.id
+          @hash['subCategories'] << {'id' => s.id, 'name' => s.title}
+        end
+      end
+      @results << @hash
     end
     if !@results.blank?
       render :json => @results.to_json , :callback => params['callback']
