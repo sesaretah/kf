@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   match "/api/new_user" => "api#new_user", :via => :post
   match "/api/my_profile" => "api#my_profile", :via => :get
   match "/api/upload_pict" => "api#upload_pict", :via => :post
+  match "/api/categories" => "api#categories", :via => :get
 
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
 

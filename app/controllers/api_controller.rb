@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
   before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories]
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
@@ -52,6 +52,23 @@ class ApiController < ApplicationController
     else
       render :json => {error: @user.errors }.to_json , :callback => params['callback']
     end
+  end
+
+  def paginated_products
+
+  end
+
+  def categories
+    @results = []
+    @business.products.all.group_by(&:category).take(10).each do |g,p|
+      @results << g
+    end
+    if !@results.blank?
+      render :json => @results.to_json , :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+
   end
 
 end

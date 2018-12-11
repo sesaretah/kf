@@ -1,8 +1,9 @@
+<% @uploads = Upload.where(uploadable_type: 'Business', uploadable_id: @business.id, attachment_type: 'business_slider')%>
+<% if !@uploads.blank?%>
 <div class="col-md-12">
   <div class="card p-0">
     <div class="card-body p-0" style="padding-bottom: 0px !important;">
       <div id="carousel-indicators" class="carousel slide" data-ride="carousel">
-        <% @uploads = Upload.where(uploadable_type: 'Business', uploadable_id: @business.id, attachment_type: 'business_slider')%>
         <ol class="carousel-indicators">
           <%@i = 0%>
           <% for upload in @uploads%>
@@ -22,39 +23,15 @@
     </div>
   </div>
 </div>
+<%end%>
 
 
 
 <div class="col-md-12">
-  <% @i = 1%>
+  <% @i = 0%>
   <%for segment in @business.segments.order('level desc, updated_at asc')%>
-  <% if (@i % 3) == 2 %>
-  <div class="row">
-    <%for pixel in @business.pixels.first(@i*4)%>
-    <% @uploads = Upload.where(uploadable_type: 'Pixel', uploadable_id: pixel.id, attachment_type: 'pixel_attachment')%>
-    <div class="col-md-3 col-6">
-      <div class="card p-0" style="padding-bottom: 0px !important;">
-        <div class="card-body p-0" style="padding-bottom: 0px !important;">
-          <% if !@uploads.blank?%>
-          <div id="carousel-captions" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <% for upload in @uploads%>
-              <div class="carousel-item <% if upload.id == @uploads.first.id %> active<%end%>">
-                <img class="d-block w-100" alt="" src="<%= upload.attachment(:large)%>" data-holder-rendered="true">
-                <div class="carousel-item-background d-none d-md-block"></div>
-                <div class="carousel-caption d-none d-md-block">
-                  <h3><%= pixel.category.title%></h3>
-                </div>
-              </div>
-              <%end%>
-            </div>
-          </div>
-          <%end%>
-        </div>
-      </div>
-    </div>
-    <%end%>
-  </div>
+  <% if @i % 3 == 1 %>
+  <%= render partial: 'pixels/pixels_block', locals: {caller: 'homepage'}%>
   <%end%>
   <% @i += 1%>
   <%= render partial: 'products/scrollable_block', locals: {segment: segment, caller: 'homepage'}%>
