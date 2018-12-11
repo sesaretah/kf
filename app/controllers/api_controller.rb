@@ -71,11 +71,11 @@ class ApiController < ApplicationController
 
   def categories
     @results = []
-    @business.products.all.group_by(&:category).take(10).each do |g,p|
-      @hash = {'id' =>  g.id, 'name' => truncate(g.title, :length => 10, :omission => '..'), 'subCategories' => []}
+    @business.products.all.group_by(&:category).each do |g,p|
+      @hash = {'id' =>  g.id, 'name' => truncate(g.title, :length => 10, :omission => '..'), 'subCategories' => [], 'picture' => request.base_url + p.first.image('large')}
       @business.products.all.group_by(&:subcategory).each do |s, i|
         if s.parent_id == g.id
-          @hash['subCategories'] << {'id' => s.id, 'name' => truncate(s.title, :length => 10, :omission => '..')}
+          @hash['subCategories'] << {'id' => s.id, 'name' => truncate(s.title, :length => 10, :omission => '..'), 'picture' => request.base_url + p.first.image('large')}
         end
       end
       @results << @hash
