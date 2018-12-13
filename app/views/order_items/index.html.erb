@@ -1,0 +1,40 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @order_items.each do |order_item| %>
+          <tr>
+                        <td><%= order_item.product_id %></td>
+                        <td><%= order_item.order_id %></td>
+                        <td><%= order_item.unit_price %></td>
+                        <td><%= order_item.quantity %></td>
+                        <td><%= order_item.total_price %></td>
+                        <td><%= link_to t(:show), order_item %></td>
+            <td><%= link_to t(:edit), edit_order_item_path(order_item) %></td>
+            <td><%= link_to t(:destroy), order_item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

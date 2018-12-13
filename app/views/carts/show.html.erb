@@ -8,14 +8,7 @@
         </div>
       </div>
       <div class="card-body">
-        <div class='row'>
-          <div class='col-md-12 col-lg-12'>
-            <%= render partial:'carts/remote_form', locals: {cart: @cart}%>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer text-right">
-        <button type="submit" class="btn btn-success"><%=t :complete_order%> <i class="fe fe-arrow-left"></i></button>
+        <%= render partial:'carts/remote_form', locals: {cart: @cart}%>
       </div>
     </div>
   </div>

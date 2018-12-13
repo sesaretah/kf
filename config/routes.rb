@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :order_statuses
+  resources :order_items
+  resources :orders
   resources :pixels
   resources :themes
   resources :faqs

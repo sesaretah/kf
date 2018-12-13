@@ -1,0 +1,50 @@
+<%= form_tag '/products', method: :get, class:'card' do -%>
+<div class="card-body pr-3 pl-3">
+  <div class="mb-4">
+    <div class="form-group">
+      <div class="form-label"><strong><%=t :categories%></strong></div>
+      <div class="custom-controls-stacked">
+        <%@i = 1%>
+        <%@business.products.all.group_by(&:category).each do |g,p|%>
+        <% if !g.blank?%>
+        <label class="custom-control custom-checkbox pl-4 pr-0">
+          <input type="checkbox" class="custom-control-input" id="category-id-<%=g.id%>" name="category-id-<%=g.id%>" value="<%= g.id%>" <%if params["category-id-#{g.id}"].to_i == g.id%>checked=""<%end%>>
+          <span class="custom-control-label pr-5 small"><%= g.title%></span>
+            <%@business.products.all.group_by(&:subcategory).each do |s, i|%>
+                <% if !s.blank? && s.parent_id == g.id && (params["category-id-#{g.id}"].to_i == g.id || ( params["category-id-#{g.id}"].to_i != g.id && params["subcategory-id-#{s.id}"].to_i == s.id))%>
+                  <label class="custom-control custom-checkbox pl-4 pr-0">
+                    <input type="checkbox" class="custom-control-input" parent="category-id-<%= g.id%>" name="subcategory-id-<%=s.id%>" value="<%= s.id%>" <%if params["subcategory-id-#{s.id}"].to_i == s.id || (params["subcategory-id-#{s.id}"].to_i != s.id && params["category-id-#{g.id}"].to_i == g.id )%>checked=""<%end%>>
+                    <span class="custom-control-label pr-5 small"><%= s.title%></span>
+                  </label>
+                <%end%>
+            <%end%>
+        </label>
+        <% @i += 1%>
+        <%end%>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card-footer">
+  <div class="text-center">
+    <button type="button" id='clear' class="btn btn-gray btn-sm"><i class="fe fe-delete" style="vertical-align:-3px;"></i> <%=t :clear%> </button>
+    <button type="submit" class="btn btn-lime btn-sm"><i class="fe fe-filter" style="vertical-align:-3px;"></i> <%=t :filter%> </button>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+  $( "#clear" ).on("click", function(){
+    $('input:checkbox').removeAttr('checked');
+    $(this).val('check all');
+  })
+
+  $( ".custom-control-input" ).on("change", function(){
+    if ($(this).attr('parent') != undefined) {
+      $('#'+$(this).attr('parent')).removeAttr('checked');
+    }
+    }
+  })
+});
+</script>
+<%end%>

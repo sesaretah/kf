@@ -1,0 +1,36 @@
+<div class="row row-cards">
+  <div class="col-lg-3">
+    <div class="row">
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="card">
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <% @order_statuses.each do |order_status| %>
+          <tr>
+                        <td><%= order_status.title %></td>
+                        <td><%= link_to t(:show), order_status %></td>
+            <td><%= link_to t(:edit), edit_order_status_path(order_status) %></td>
+            <td><%= link_to t(:destroy), order_status, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
