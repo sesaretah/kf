@@ -1,6 +1,7 @@
 class FaqsController < ApplicationController
   before_action :set_faq, only: [:show, :edit, :update, :destroy, :change_rank]
   before_action :load_business, only: [:create, :destroy, :index, :change_rank]
+  before_filter :authenticate_user!, :except => [:index]
   # GET /faqs
   # GET /faqs.json
 

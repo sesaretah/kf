@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :provinces
   resources :order_statuses
   resources :order_items
   resources :orders

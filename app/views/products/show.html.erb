@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <% if current_user.id == @business.user_id%>
+    <% if user_signed_in? && current_user.id == @business.user_id%>
     <div class="list-group list-group-transparent mb-2 text-center">
       <%= link_to '/products/'+@product.id.to_s+'/edit', class: "list-group-item list-group-item-action active small", style:'font-weight:normal;' do%>
       <i class="fe fe-edit" style="vertical-align:middle;"></i> <%=t :edit_your_product%>

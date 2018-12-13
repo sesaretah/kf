@@ -1,0 +1,29 @@
+<%= form_for(@province, html: {class: 'card'}) do |f| %>
+<div class="card-header">
+  <h3 class="card-title"><%=t :new_province %></h3>
+</div>
+<% if @province.errors.any? %>
+<div id="error_explanation">
+  <h2><%= pluralize(@province.errors.count, "error") %> prohibited this province from being saved:</h2>
+
+  <ul>
+    <% @province.errors.full_messages.each do |message| %>
+    <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div class="card-body">
+<div class="row">
+  <div class="col-md-5">
+    <div class="form-group">
+          <%= f.label :name, class: "form-label" %>
+      <%= f.text_field :name , class: "form-control" %>
+          </div>
+  </div>
+</div>
+<div class="card-footer text-right">
+  <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+</div>
+<% end %>

@@ -1,6 +1,6 @@
 <div class="row row-cards">
   <div class="col-lg-3 ">
-    <% if current_user.id == @business.user_id%>
+    <% if user_signed_in? && current_user.id == @business.user_id%>
     <div class="list-group list-group-transparent mb-4 text-center">
       <%= link_to '/products/new', class: "list-group-item list-group-item-action active small", style:'font-weight:normal;' do%>
       <i class="fe fe-plus-square" style="vertical-align:middle;"></i> <%=t :add_new_product%>

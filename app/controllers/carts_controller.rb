@@ -1,6 +1,8 @@
 class CartsController < ApplicationController
   before_action :set_cart, only: [:show, :edit, :update, :destroy, :add_to_cart, :remove_from_cart]
   before_action :load_business, only: [:show]
+  before_filter :authenticate_user!, :except => [:add_to_cart, :show, :remove_from_cart]
+  
   def add_to_cart
     @product = Product.find(params[:product_id])
     @cart_item = CartItem.create(cart_id: @cart.id, product_id: @product.id)

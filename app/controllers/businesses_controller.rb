@@ -1,6 +1,7 @@
 class BusinessesController < ApplicationController
   before_action :set_business, only: [:edit, :update, :destroy, :change_theme]
   before_action :load_business, only: [:index, :show,:change_theme]
+    before_filter :authenticate_user!, :except => [:show]
   # GET /businesses
   # GET /businesses.json
   def change_theme

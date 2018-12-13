@@ -63,9 +63,11 @@
           <li class="nav-item">
             <a href="/faqs" class="nav-link"><i class="fe fe-help-circle"></i><%=t :faqs%></a>
           </li>
+          <% if user_signed_in?%>
           <li class="nav-item">
             <a href="/home/settings" class="nav-link"><i class="fe fe-settings"></i><%=t :settings%></a>
           </li>
+          <%end%>
 
 
         </ul>

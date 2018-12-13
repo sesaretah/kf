@@ -5,6 +5,7 @@
       <%= faq.question%>
     </div>
   </div>
+  <% if user_signed_in? && current_user.id == @business.user_id%>
   <div class="col-md-3 p-0 text-right">
     <% if @business.faqs.order('rank desc, updated_at asc').first.id != faq.id%>
     <%= link_to "/faqs/change_rank/#{faq.id}?to=up", class: "icon", remote: true do %>
@@ -27,6 +28,7 @@
     <i class="fe fe-trash" style='vertical-align:-3px;'></i>
     <%end%>
   </div>
+  <%end%>
 </div>
 <div class="small" style='text-align: justify;'><%= faq.answer%></div>
 </div>

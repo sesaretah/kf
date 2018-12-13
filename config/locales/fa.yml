@@ -278,6 +278,9 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  some_one_else: 'فرد دیگری '
+  my_self: 'خودم'
+  reciever_info: 'مشخصات دریافت کننده'
   related_category: 'دسته بندی مرتبط '
   pixels: 'پیکسل های شما'
   new_pixel: 'پیکسل جدید'

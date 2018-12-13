@@ -2,6 +2,7 @@ class ProductsController < ApplicationController
   before_action :set_product, only: [:show, :edit, :update, :destroy, :upload]
   before_action :load_business, only: [:index, :new, :show,:create, :update, :edit,:upload]
   before_action :create_visit, only:[:show]
+  before_filter :authenticate_user!, :except => [:index, :show, :search]
   # GET /products
   # GET /products.json
 

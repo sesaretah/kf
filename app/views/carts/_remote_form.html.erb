@@ -1,7 +1,7 @@
 <div id='remove_from_cart'>
   <div class='row'>
     <div class='col-md-12 col-lg-12'>
-        <%= form_for Order.new do%>
+      <%= form_for Order.new do%>
       <table class="table card-table table-striped table-vcenter">
         <thead>
           <tr>
@@ -23,7 +23,7 @@
             <td>
               <span class="avatar" style="background-image: url(<%= item.product.image('thumb')%>)"></span>
             </td>
-            <td><%= item.product.title%></td>
+            <td><%= link_to item.product.title, item.product%></td>
             <td class="text-nowrap">
               <%= select_tag "count_#{item.product.id}", options_for_select((1..10).step(1).collect {|p| [ "#{p}", p ] }), { :class => "form-control col-md-8 count" } %>
             </td>
@@ -76,6 +76,30 @@
       </table>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <div class="form-label"><%=t :reciever_info%></div>
+        <div class="custom-controls-stacked">
+          <label class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" name="example-inline-radios" value="option1" checked="">
+            <span class="custom-control-label pr-5"><%=t :my_self%></span>
+          </label>
+          <label class="custom-control custom-radio custom-control-inline">
+            <input type="radio" class="custom-control-input" name="example-inline-radios" value="option2">
+            <span class="custom-control-label pr-5"><%=t :some_one_else%></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+
+    </div>
+  </div>
+
   <div class="card-footer text-right">
     <button type="submit" class="btn btn-success"><%=t :complete_order%> <i class="fe fe-arrow-left"></i></button>
   </div>
