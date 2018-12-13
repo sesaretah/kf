@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business]
+  before_filter :authenticate_user!, :except => [:segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
   def segments
@@ -112,6 +112,19 @@ class ApiController < ApplicationController
     @business.email = params['email']
     if @business.save
       render :json => {result: 'OK', id: @business.id}.to_json, :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+  end
+
+  def slider
+    @uploads = Upload.where(uploadable_type: 'Business', uploadable_id: @business.id, attachment_type: 'business_slider')
+    if !@uploads.blank?
+      @images = []
+      for upload in @uploads
+        @images <<  request.base_url + upload.attachment('large')
+      end
+      render :json => {'images' =>   @images }.to_json, :callback => params['callback']
     else
       render :json => {result: 'NONE'}.to_json , :callback => params['callback']
     end

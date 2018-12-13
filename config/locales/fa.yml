@@ -278,6 +278,16 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  password_confirmation: 'تکرار رمز عبور'
+  want_to_become_a_member: 'مایل به عضویت در این سایت هستم'
+  reciever_province: 'استان محل اقامت دریافت کننده'
+  reciever_address: 'آدرس دریافت کننده'
+  reciever_postal_code: 'کد پستی دریافت کننده ' 
+  your_province: 'استان محل اقامت شما '
+  your_address: 'آدرس شما'
+  your_postal_code: 'کد پستی شما'
+  your_fullname: 'نام و نام خانوادگی شما'
+  your_mobile: 'شماره تلفن همراه شما '
   some_one_else: 'فرد دیگری '
   my_self: 'خودم'
   reciever_info: 'مشخصات دریافت کننده'

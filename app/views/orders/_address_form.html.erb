@@ -1,0 +1,91 @@
+<% if !user_signed_in?%>
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :your_fullname%></label>
+      <%= text_field_tag :customer_name, nil , {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :your_mobile%></label>
+      <%= text_field_tag :customer_mobile, nil , {class: "form-control"} %>
+    </div>
+  </div>
+</div>
+<div class="row" id="your_address">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :your_province%></label>
+      <%= select_tag :customer_province, options_for_select(Province.all.collect{ |u| [u.name, u.id] }) , {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :your_address%></label>
+      <%= text_area_tag :customer_address, nil, {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :your_postal_code%></label>
+      <%= text_field_tag :customer_postal_code, nil, {class: "form-control"} %>
+    </div>
+  </div>
+</div>
+
+<div class="row" id="reciver_address"  style="display:none;">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :reciever_province%></label>
+      <%= select_tag :reciever_province, options_for_select(Province.all.collect{ |u| [u.name, u.id] }) , {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :reciever_address%></label>
+      <%= text_area_tag :reciever_address, nil, {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :reciever_postal_code%></label>
+      <%= text_field_tag :reciever_postal_code, nil, {class: "form-control"} %>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+      <label class="custom-switch mt-1">
+        <input type="checkbox" name="view_" id='view_' class="custom-switch-input">
+        <span class="custom-switch-indicator"></span>
+        <span class="custom-switch-description" style='font-size: 80%;'><%=t :want_to_become_a_member%></span>
+      </label>
+  </div>
+  <script>
+  $('.custom-switch-input').change(function() {
+    console.log($(this));
+      if($(this).is(":checked")) {
+      $('#passwords').attr('style', '');
+    } else {
+      $('#passwords').attr('style', 'display:none;');
+    }
+  });
+  </script>
+</div>
+<div class="row" id='passwords' style="display:none;">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :password%></label>
+      <%= text_field_tag :password, nil, {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label"><%=t :password_confirmation%></label>
+      <%= text_field_tag :password_confirmation, nil, {class: "form-control"} %>
+    </div>
+  </div>
+</div>
+<%end%>

@@ -1,107 +1,49 @@
-<div id='remove_from_cart'>
-  <div class='row'>
-    <div class='col-md-12 col-lg-12'>
-      <%= form_for Order.new do%>
-      <table class="table card-table table-striped table-vcenter">
-        <thead>
-          <tr>
-            <th class="w-1">#</th>
-            <th class="w-1"></th>
-            <th class="text-left w-25"><%=t :product_name%></th>
-            <th><%=t :count%></th>
-            <th><%=t :price%></th>
-            <th><%=t :total_price%></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <%@i = 1%>
-          <% for item in cart.cart_items%>
-          <%if !item.product.blank?%>
-          <tr>
-            <td><%= @i%><%@i += 1%></td>
-            <td>
-              <span class="avatar" style="background-image: url(<%= item.product.image('thumb')%>)"></span>
-            </td>
-            <td><%= link_to item.product.title, item.product%></td>
-            <td class="text-nowrap">
-              <%= select_tag "count_#{item.product.id}", options_for_select((1..10).step(1).collect {|p| [ "#{p}", p ] }), { :class => "form-control col-md-8 count" } %>
-            </td>
-            <td><span id='price_<%=item.product.id%>'><%= item.product.priced%></span> <span id='currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
-            <td><span class='total_price' id='total_price_<%=item.product.id%>'><%= item.product.price%></span> <span id='total_currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
-            <td>
-              <%= link_to "/carts/remove_from_cart/#{cart.id}?product_id=#{item.product.id}", class: "icon", remote: true do %>
-              <i class="fe fe-trash"></i>
-              <%end%>
-            </td>
-          </tr>
-          <%end%>
-          <%end%>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td class='text-right'><strong><%=t :total_sum%></strong></td>
-            <td >
-              <% @price = 0%>
-              <% cart.cart_items.each do |item|%>
-              <%if !item.product.blank?%>
-              <% @price += item.product.price.to_i %>
-              <%end%>
-              <%end%>
-              <strong id='total_sum'><%= @price%></strong> <strong><%= rcurrencies(cart.cart_items.first.product.currency) rescue nil%></strong>
-            </td>
-            <td></td>
-          </tr>
-          <script>
-          $('.count').on('change', function() {
-            var product_id = this.id.split('_')[1];
-            var price = $('#price_'+product_id).text();
-            var count = parseInt($('#count_'+product_id).children("option:selected").val());
-            var currency = $('#currency_'+product_id).text();
-            $('#total_price_'+product_id).text(price*count);
-            $('#total_currency_'+product_id).text(currency);
-            var total_sum = 0
-            $('.total_price').each(function(item){
-              total_sum = total_sum + parseInt($(this).text());
-              if(item == $('.total_price').length - 1 ){
-                $('#total_sum').text(total_sum);
-              }
-            });
-          });
-          </script>
-
-        </tbody>
-      </table>
+<div class='row'>
+  <div class='col-md-12 col-lg-12'>
+    <%= form_for Order.new do%>
+    <div id='remove_from_cart'>
+      <%= render partial: 'carts/cart_items', locals:{ cart: cart}%>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <div class="form-label"><%=t :reciever_info%></div>
-        <div class="custom-controls-stacked">
-          <label class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" name="example-inline-radios" value="option1" checked="">
-            <span class="custom-control-label pr-5"><%=t :my_self%></span>
-          </label>
-          <label class="custom-control custom-radio custom-control-inline">
-            <input type="radio" class="custom-control-input" name="example-inline-radios" value="option2">
-            <span class="custom-control-label pr-5"><%=t :some_one_else%></span>
-          </label>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <div class="form-label"><%=t :reciever_info%></div>
+          <div class="custom-controls-stacked">
+            <label class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" name="example-inline-radios" value="my_self" checked="">
+              <span class="custom-control-label pr-5"><%=t :my_self%></span>
+            </label>
+            <label class="custom-control custom-radio custom-control-inline">
+              <input type="radio" class="custom-control-input" name="example-inline-radios" value="some_one_else">
+              <span class="custom-control-label pr-5"><%=t :some_one_else%></span>
+            </label>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
+    <script>
+    $('.custom-control-input').change(function() {
+      if (this.value == 'my_self') {
+        $('#reciver_address').attr('style', 'display:none;');
+        $('#your_address').attr('style', '');
+      }
+      else if (this.value == 'some_one_else') {
+        $('#reciver_address').attr('style', '');
+        $('#your_address').attr('style', 'display:none;');
+      }
+    });
+    </script>
 
+    <div class="row">
+      <div class="col-md-12">
+        <%= render partial: 'orders/address_form'%>
+      </div>
     </div>
-  </div>
 
-  <div class="card-footer text-right">
-    <button type="submit" class="btn btn-success"><%=t :complete_order%> <i class="fe fe-arrow-left"></i></button>
+    <div class="card-footer text-right">
+      <button type="submit" class="btn btn-success"><%=t :complete_order%> <i class="fe fe-arrow-left"></i></button>
+    </div>
+    <%end%>
   </div>
-  <%end%>
 </div>
