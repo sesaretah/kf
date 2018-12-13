@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  before_filter :authenticate_user!, :except => [:create]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
 
   # GET /orders
@@ -32,18 +33,23 @@ class OrdersController < ApplicationController
         @items << {product: @product, quantity: value}
       end
     end
-    @total = 0
-    for item in @items
-      @total = @total + item['product'].price * item['quantity']
+    if !params['will_to_register'].blank? && !params[:customer_mobile].blank? && !params[:customer_name].blank? && !params[:password].blank? && !params[:password_confirmation].blank?
+      @username = request.subdomain+'_'+params[:customer_mobile]
+      @user = User.new(username: @username,mobile: params[:customer_mobile], password: params[:password], password_confirmation: params[:password_confirmation])
+      @user.save
     end
-    @order.subtotal = @total
-    @order.business_id = @business_id
-    @order.user_id = current_user.id
-    @order.order_status_id = 1
-    @order.save
-    for item in @items
-      @order_items = OrderItem.new      
-    end
+  #  @subtotal = 0
+#    for item in @items
+#      @subtotal = @subtotal + item['product'].price * item['quantity']
+#    end
+#    @order.subtotal = @total
+#    @order.business_id = @business_id
+#    @order.user_id = current_user.id
+#    @order.order_status_id = 1
+#    @order.save
+#    for item in @items
+#      @order_items = OrderItem.new
+#    end
   #
 
   end
