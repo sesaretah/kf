@@ -1,6 +1,6 @@
 <div class='row'>
   <div class='col-md-12 col-lg-12'>
-    <%= form_for Order.new do%>
+    <%= form_for Order.new, remote: true do%>
     <div id='remove_from_cart'>
       <%= render partial: 'carts/cart_items', locals:{ cart: cart}%>
     </div>
@@ -10,11 +10,11 @@
           <div class="form-label"><%=t :reciever_info%></div>
           <div class="custom-controls-stacked">
             <label class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" name="example-inline-radios" value="my_self" checked="">
+              <input type="radio" class="custom-control-input" name="reciever_info" value="my_self" checked="">
               <span class="custom-control-label pr-5"><%=t :my_self%></span>
             </label>
             <label class="custom-control custom-radio custom-control-inline">
-              <input type="radio" class="custom-control-input" name="example-inline-radios" value="some_one_else">
+              <input type="radio" class="custom-control-input" name="reciever_info" value="some_one_else">
               <span class="custom-control-label pr-5"><%=t :some_one_else%></span>
             </label>
           </div>
@@ -23,16 +23,16 @@
     </div>
 
     <script>
-    $('.custom-control-input').change(function() {
-      if (this.value == 'my_self') {
-        $('#reciver_address').attr('style', 'display:none;');
-        $('#your_address').attr('style', '');
-      }
-      else if (this.value == 'some_one_else') {
-        $('#reciver_address').attr('style', '');
-        $('#your_address').attr('style', 'display:none;');
-      }
-    });
+      $('.custom-control-input').change(function() {
+        if (this.value == 'my_self') {
+          $('#reciver_address').attr('style', 'display:none;');
+          $('#your_address').attr('style', '');
+        }
+        else if (this.value == 'some_one_else') {
+          $('#reciver_address').attr('style', '');
+          $('#your_address').attr('style', 'display:none;');
+        }
+      });
     </script>
 
     <div class="row">
@@ -40,10 +40,41 @@
         <%= render partial: 'orders/address_form'%>
       </div>
     </div>
-
-    <div class="card-footer text-right">
-      <button type="submit" class="btn btn-success"><%=t :complete_order%> <i class="fe fe-arrow-left"></i></button>
-    </div>
     <%end%>
+    <div class="card-footer text-right">
+      <a href='#' id='order-btn' class="btn btn-success"><%=t :complete_order%> <i class="fe fe-arrow-left"></i></a>
+    </div>
+    <script>
+      $('#order-btn').click(function(event) {
+        $('#mobile-error').remove();
+        $('#password_confirmation-error ').remove();
+        event.preventDefault();
+      $.ajax({
+        type: "POST",
+        beforeSend: function(xhr) {xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'))},
+        url: '/orders',
+        dataType: 'JSON',
+        data: $("#new_order").serialize(),
+        success: function(response){
+          console.log(response);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.log(XMLHttpRequest);
+         if (XMLHttpRequest.responseJSON.error == "Saving User") {
+           if ( typeof XMLHttpRequest.responseJSON.why.mobile !== "undefined"){
+             $('#customer_mobile').addClass('is-invalid');
+             $('#customer_mobile_label').append("<span id='mobile-error' style='color:red;'>" + XMLHttpRequest.responseJSON.why.mobile + "</span>");
+           }
+           if ( typeof XMLHttpRequest.responseJSON.why.password_confirmation !== "undefined"){
+             $('#password_confirmation').addClass('is-invalid');
+             $('#password_confirmation_label').append("<span id='password_confirmation-error' style='color:red;'> " + XMLHttpRequest.responseJSON.why.password_confirmation + "</span>");
+           }
+         }
+
+        }
+
+      });
+    });
+    </script>
   </div>
 </div>

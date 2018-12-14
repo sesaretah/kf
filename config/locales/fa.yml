@@ -216,6 +216,9 @@ fa:
             rank: 'مرتبه علمی'
             digest_email: 'ایمیل آگاهسازی'
             email: 'ایمیل'
+            province_id: 'استان'
+            address: 'آدرس'
+            postal_code: 'کد پستی'
         business:
           title: 'نام کسب و کار '
           tel: 'تلفن'
@@ -278,11 +281,12 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  edit_your_information: 'ویرایش اطلاعات من'
   password_confirmation: 'تکرار رمز عبور'
   want_to_become_a_member: 'مایل به عضویت در این سایت هستم'
   reciever_province: 'استان محل اقامت دریافت کننده'
   reciever_address: 'آدرس دریافت کننده'
-  reciever_postal_code: 'کد پستی دریافت کننده ' 
+  reciever_postal_code: 'کد پستی دریافت کننده '
   your_province: 'استان محل اقامت شما '
   your_address: 'آدرس شما'
   your_postal_code: 'کد پستی شما'

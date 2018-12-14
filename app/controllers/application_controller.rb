@@ -46,10 +46,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_cart
-    @cart = Cart.find(session[:cart_id])
+    @cart = Cart.find(cookies[:cart_id])
     rescue ActiveRecord::RecordNotFound
     @cart = Cart.create
-    session[:cart_id] = @cart.id
+    cookies[:cart_id] = @cart.id
   end
 
   def create_visit
@@ -103,5 +103,5 @@ class ApplicationController < ActionController::Base
       end
     end
   end
-  
+
 end

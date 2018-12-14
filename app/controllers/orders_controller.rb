@@ -33,25 +33,49 @@ class OrdersController < ApplicationController
         @items << {product: @product, quantity: value}
       end
     end
-    if !params['will_to_register'].blank? && !params[:customer_mobile].blank? && !params[:customer_name].blank? && !params[:password].blank? && !params[:password_confirmation].blank?
-      @username = request.subdomain+'_'+params[:customer_mobile]
-      @user = User.new(username: @username,mobile: params[:customer_mobile], password: params[:password], password_confirmation: params[:password_confirmation])
-      @user.save
-    end
-  #  @subtotal = 0
-#    for item in @items
-#      @subtotal = @subtotal + item['product'].price * item['quantity']
-#    end
-#    @order.subtotal = @total
-#    @order.business_id = @business_id
-#    @order.user_id = current_user.id
-#    @order.order_status_id = 1
-#    @order.save
-#    for item in @items
-#      @order_items = OrderItem.new
-#    end
-  #
 
+    if current_user.blank?
+      handle_user
+    end
+    @subtotal = 0
+    for item in @items
+      @subtotal = @subtotal + item['product'].price * item['quantity']
+    end
+    @order.subtotal = @total
+    @order.business_id = @business_id
+    if !current_user.blank?
+      @order.user_id = current_user.id
+    end
+    if !@user.blank?
+      @order.user_id = current_user.id
+    end
+    @order.order_status_id = 1
+    @order.save
+    for item in @items
+      @order_items = OrderItem.new
+    end
+  end
+
+  def handle_user
+    if params['will_to_register'].blank?
+      @profile = Profile.new(name: params[:customer_name], phonenumber: params[:customer_mobile], adderss: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
+      if @profile.save
+        render json: { success: true}.to_json
+      end
+    else
+      if !params[:customer_mobile].blank? && !params[:customer_name].blank? && !params[:password].blank? && !params[:password_confirmation].blank?
+        @username = request.subdomain+'_'+params[:customer_mobile]
+        @user = User.new(username: @username,mobile: params[:customer_mobile], password: params[:password], password_confirmation: params[:password_confirmation])
+        if @user.save
+          @profile = Profile.create(user_id: @user.id, name: params[:customer_name], phonenumber: params[:customer_mobile], adderss: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
+          render json: { success: true}.to_json
+        else
+          render json: { error: 'Saving User' , why: @user.errors}.to_json, status: :unprocessable_entity
+        end
+      else
+        render json: {error: 'Processing',  why: 'Incomplete Data'}, status: :unprocessable_entity
+      end
+    end
   end
 
   # PATCH/PUT /orders/1
@@ -79,13 +103,13 @@ class OrdersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_order
-      @order = Order.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_order
+    @order = Order.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def order_params
-      params.require(:order).permit(:subtotal, :tax, :shipping, :total, :business_id, :user_id)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def order_params
+    params.require(:order).permit(:subtotal, :tax, :shipping, :total, :business_id, :user_id)
+  end
 end

@@ -6,6 +6,7 @@ class Profile < ActiveRecord::Base
   #validates :name, presence: true
   #validates :surename, presence: true
   #validate :fullname_or_stage_name
+  belongs_to :province
 
   def fullname
     "#{self.name} #{self.surename}"

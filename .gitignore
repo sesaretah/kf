@@ -16,6 +16,7 @@
 !/log/.keep
 /tmp
 
+/config/database.yml
 /public/system
 /public/system/*
 
@@ -26,3 +27,4 @@ Gemfile.lock
 
 /config/initializers/devise.rb
 config/initializers/devise.rb
+

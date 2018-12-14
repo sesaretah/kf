@@ -16,8 +16,8 @@ development:
     collation: utf8mb4_unicode_ci
     hostname: 127.0.0.1
     username: root
-    password: salam64511
-    socket: /var/run/mysqld/mysqld.sock
+    password: 
+    socket: /tmp/mysql.sock
 
 
 # Warning: The database defined as "test" will be erased and
