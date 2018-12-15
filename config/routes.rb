@@ -64,5 +64,8 @@ Rails.application.routes.draw do
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
 
   match "/businesses/change_theme/:id" => "businesses#change_theme", :via => :get
+  match "/sale_settings/remote_switch" => "sale_settings#remote_switch", :via => :get
+
+  match "/home/sales" => "home#sales", :via => :get
 
 end

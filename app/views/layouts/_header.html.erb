@@ -6,8 +6,9 @@
       </a>
       <div class="d-flex order-lg-2 mr-auto">
         <div class="nav-item d-none d-md-flex">
-
-
+          <% if !user_signed_in?%>
+            <a href="/users/sign_in" class="btn btn-sm btn-secondary"><%=t :sign_in_or_sign_up%></a>
+          <%end%>
         </div>
         <div class="dropdown" >
           <% if !current_user.blank?%>

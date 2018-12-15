@@ -1,0 +1,2 @@
+class TaxationsController < ApplicationController
+end

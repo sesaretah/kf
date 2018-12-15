@@ -22,3 +22,8 @@ $("#theme-nav").addClass('active');
 $("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'pixels/business_pixel')) %>");
 $("#pixel-nav").addClass('active');
 <%end%>
+
+<% if @section == 'sales'%>
+$("#settings-detail").replaceWith("<%= escape_javascript(render(:partial => 'home/sales_settings')) %>");
+$("#sales-nav").addClass('active');
+<%end%>

@@ -8,4 +8,14 @@ class HomeController < ApplicationController
   def settings
     @section = params[:section]
   end
+
+  def sales
+    @items = []
+    params.each do |name, value|
+      if name =~ /count_(.+)$/
+        @province = Province.find($1)
+        @items << {province: @province, cost: value}
+      end
+    end
+  end
 end

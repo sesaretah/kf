@@ -1,6 +1,8 @@
 class OrdersController < ApplicationController
   before_filter :authenticate_user!, :except => [:create]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :load_business, only: [:show, :create]
+
 
   # GET /orders
   # GET /orders.json
@@ -26,33 +28,57 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new
+    @subtotal = 0
     @items = []
+    extract_products
+    if current_user.blank?
+      handle_user
+    end
+    order_total
+    @order.subtotal = @subtotal
+    @order.business_id = @business.id
+    @order.order_status_id = 1
+    reciever_details
+    @order.save
+    prepare_items
+  end
+
+  def prepare_items
+    for item in @items
+      @order_items = OrderItem.create(product_id: item[:product].id, order_id: @order.id, quantity: item[:quantity])
+    end
+  end
+
+  def reciever_details
+    if !current_user.blank?
+      @order.user_id = current_user.id
+    end
+    if !@user.blank?
+      @order.user_id = @user.id
+    end
+    @order.customer_name = params[:customer_name]
+    @order.customer_mobile = params[:customer_mobile]
+    @order.customer_province = params[:customer_province]
+    @order.customer_address = params[:customer_address]
+    @order.customer_postal_code = params[:customer_postal_code]
+    @order.reciever_address = params[:reciever_address]
+    @order.reciever_province = params[:reciever_province]
+    @order.reciever_postal_code = params[:reciever_postal_code]
+  end
+
+  def order_total
+    for item in @items
+      @subtotal = @subtotal + item[:product].price.to_i * item[:quantity].to_i
+    end
+  end
+
+  def extract_products
+
     params.each do |name, value|
       if name =~ /count_(.+)$/
         @product = Product.find($1)
         @items << {product: @product, quantity: value}
       end
-    end
-
-    if current_user.blank?
-      handle_user
-    end
-    @subtotal = 0
-    for item in @items
-      @subtotal = @subtotal + item['product'].price * item['quantity']
-    end
-    @order.subtotal = @total
-    @order.business_id = @business_id
-    if !current_user.blank?
-      @order.user_id = current_user.id
-    end
-    if !@user.blank?
-      @order.user_id = current_user.id
-    end
-    @order.order_status_id = 1
-    @order.save
-    for item in @items
-      @order_items = OrderItem.new
     end
   end
 

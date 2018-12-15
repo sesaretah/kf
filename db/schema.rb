@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181214162652) do
+ActiveRecord::Schema.define(version: 20181215141554) do
 
   create_table "businesses", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -104,14 +104,23 @@ ActiveRecord::Schema.define(version: 20181214162652) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string   "subtotal",    limit: 255
-    t.string   "tax",         limit: 255
-    t.string   "shipping",    limit: 255
-    t.string   "total",       limit: 255
-    t.integer  "business_id", limit: 4
-    t.integer  "user_id",     limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.string   "subtotal",             limit: 255
+    t.string   "tax",                  limit: 255
+    t.string   "shipping",             limit: 255
+    t.string   "total",                limit: 255
+    t.integer  "business_id",          limit: 4
+    t.integer  "user_id",              limit: 4
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.string   "customer_name",        limit: 255
+    t.string   "customer_mobile",      limit: 255
+    t.string   "customer_province",    limit: 255
+    t.string   "customer_address",     limit: 255
+    t.string   "customer_postal_code", limit: 255
+    t.string   "reciever_province",    limit: 255
+    t.string   "reciever_address",     limit: 255
+    t.string   "reciever_postal_code", limit: 255
+    t.integer  "order_status_id",      limit: 4
   end
 
   create_table "pixels", force: :cascade do |t|
@@ -166,6 +175,15 @@ ActiveRecord::Schema.define(version: 20181214162652) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "sale_settings", force: :cascade do |t|
+    t.boolean  "shipping_cost"
+    t.boolean  "vat"
+    t.boolean  "force_signin"
+    t.integer  "business_id",   limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "segmentations", force: :cascade do |t|
     t.integer  "segment_id", limit: 4
     t.integer  "product_id", limit: 4
@@ -184,6 +202,14 @@ ActiveRecord::Schema.define(version: 20181214162652) do
     t.integer  "level",            limit: 4
   end
 
+  create_table "shipping_costs", force: :cascade do |t|
+    t.integer  "province_id", limit: 4
+    t.integer  "business_id", limit: 4
+    t.string   "cost",        limit: 255
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
   create_table "specifications", force: :cascade do |t|
     t.integer  "product_id", limit: 4
     t.integer  "spec_id",    limit: 4
@@ -197,6 +223,13 @@ ActiveRecord::Schema.define(version: 20181214162652) do
     t.integer  "category_id", limit: 4
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "taxations", force: :cascade do |t|
+    t.decimal  "percent",               precision: 10
+    t.integer  "business_id", limit: 4
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
   end
 
   create_table "themes", force: :cascade do |t|
@@ -226,7 +259,7 @@ ActiveRecord::Schema.define(version: 20181214162652) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "email",                  limit: 255
     t.string   "encrypted_password",     limit: 255, default: "", null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
@@ -237,16 +270,15 @@ ActiveRecord::Schema.define(version: 20181214162652) do
     t.string   "username",               limit: 255
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "visits", force: :cascade do |t|
     t.integer  "visitable_id",    limit: 4
     t.string   "visitable_type",  limit: 255
-    t.string   "visitor_session", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.text     "visitor_session", limit: 65535
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
 end

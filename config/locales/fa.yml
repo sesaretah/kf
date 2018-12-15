@@ -281,6 +281,14 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  avarage_shipping_cost: 'هزینه ارسال'
+  province: 'استان'
+  vat_percentage: 'درصد مالیات ارزش افزوده'
+  include_vat: 'افزودن مبلغ ارزش افزوده به فاکنور'
+  force_user_to_sign_in_for_purchase: 'اجبار مشتری به ثبت نام در سایت برای خرید'
+  include_shippment_costs: 'افزودن هزینه حمل به فاکتور'
+  sales_settings: 'تنظیمات فروش'
+  sign_in_or_sign_up: 'ورود | عضویت '
   edit_your_information: 'ویرایش اطلاعات من'
   password_confirmation: 'تکرار رمز عبور'
   want_to_become_a_member: 'مایل به عضویت در این سایت هستم'

@@ -1,0 +1,109 @@
+<div id='settings-detail'>
+<%= form_tag '/home/sales', method: :get, remote: true do%>
+  <% @sale_setting = @business.sale_setting%>
+<div class="row">
+  <div class="col-md-12">
+    <label class="custom-switch mt-1">
+      <input type="checkbox" name="shipping_cost" id='shipping_cost' class="custom-switch-input" <%if !@sale_setting.blank? && @sale_setting.shipping_cost %>checked<%end%>>
+      <span class="custom-switch-indicator"></span>
+      <span class="custom-switch-description" style='font-size: 80%;'><%=t :include_shippment_costs%></span>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <label class="custom-switch mt-1">
+      <input type="checkbox" name="vat" id='vat' class="custom-switch-input" <%if !@sale_setting.blank? && @sale_setting.vat %>checked<%end%>>
+      <span class="custom-switch-indicator"></span>
+      <span class="custom-switch-description" style='font-size: 80%;'><%=t :include_vat%></span>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <label class="custom-switch mt-1">
+      <input type="checkbox" name="force_signin" id='force_signin' class="custom-switch-input" <%if !@sale_setting.blank? && @sale_setting.force_signin %>checked<%end%>>
+      <span class="custom-switch-indicator"></span>
+      <span class="custom-switch-description" style='font-size: 80%;'><%=t :force_user_to_sign_in_for_purchase%></span>
+    </label>
+  </div>
+</div>
+
+
+<script>
+$('.custom-switch-input').change(function() {
+  var id = $(this).attr('id');
+  if($(this).is(":checked")) {
+    $.ajax({
+      url: '/sale_settings/remote_switch',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        to: 'check',
+        what: id
+      },
+      error: function() {
+        $(this).attr("checked", false);
+      },
+      success: function(res) {
+        $(this).attr("checked", true);
+      }
+    });
+  } else {
+    $.ajax({
+      url: '/sale_settings/remote_switch/',
+      type: 'GET',
+      dataType: 'json',
+      data: {
+        to: 'uncheck',
+        what: id
+      },
+      error: function() {
+        $(this).attr("checked", true);
+      },
+      success: function(res) {
+        $(this).attr("checked", false);
+      }
+    });
+  }
+});
+</script>
+<hr class="mt-2 mb-2"/>
+<div class="row">
+  <div class="col-md-3">
+    <div class="form-group">
+      <label class="form-label"><%=t :vat_percentage%></label>
+      <div class="input-group">
+        <%= text_field_tag :vat_percentage, nil, {class: "form-control"} %>
+        <span class="input-group-prepend" id="basic-addon1">
+          <span class="input-group-text">%</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<hr class="mt-2 mb-2"/>
+<table>
+  <thead>
+    <tr>
+      <td><%=t :province%></td>
+      <td><%=t :avarage_shipping_cost%></td>
+    </tr>
+  </thead>
+  <tbody>
+    <% for province in Province.all%>
+    <tr>
+      <td><%= province.name%></td>
+      <td><%= text_field_tag "province_#{province.id}", nil, {class: "form-control"} %></td>
+    </tr>
+    <%end%>
+  </tbody>
+</tr>
+</table>
+<div class="card-footer text-right">
+  <button type="submit" class="btn btn-primary"><%=t :submit%></button>
+</div>
+<%end%>
+</div>

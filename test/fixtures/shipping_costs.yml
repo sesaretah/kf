@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  province_id: 1
+  business_id: 1
+  cost: MyString
+
+two:
+  province_id: 1
+  business_id: 1
+  cost: MyString

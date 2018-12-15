@@ -25,7 +25,7 @@
   <div class="col-md-4">
     <div class="form-group">
       <label class="form-label" id="customer_province_label"><%=t :your_province%></label>
-      <% if user_signed_in?%>
+      <% if user_signed_in? && !current_user.profile.province.blank?%>
         <%= select_tag :customer_province, options_for_select(Province.all.collect{ |u| [u.name, u.id] }, current_user.profile.province.id), {class: "form-control", disabled: true} %>
       <% else%>
         <%= select_tag :customer_province, options_for_select(Province.all.collect{ |u| [u.name, u.id] }) , {class: "form-control"} %>
@@ -35,7 +35,7 @@
   <div class="col-md-4">
     <div class="form-group">
       <label class="form-label" id="customer_address_label"><%=t :your_address%></label>
-      <% if user_signed_in?%>
+      <% if user_signed_in? && !current_user.profile.address.blank?%>
         <%= text_area_tag :customer_address, current_user.profile.address, {class: "form-control", disabled: true} %>
       <% else%>
         <%= text_area_tag :customer_address, nil, {class: "form-control"} %>
@@ -45,7 +45,7 @@
   <div class="col-md-4">
     <div class="form-group">
       <label class="form-label" id="customer_postal_code_label"><%=t :your_postal_code%></label>
-      <% if user_signed_in?%>
+      <% if user_signed_in? && !current_user.profile.postal_code.blank?%>
         <%= text_field_tag :customer_postal_code, current_user.profile.postal_code, {class: "form-control", disabled: true} %>
       <% else%>
         <%= text_field_tag :customer_postal_code, nil, {class: "form-control"} %>
