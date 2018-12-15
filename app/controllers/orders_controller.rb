@@ -61,6 +61,8 @@ class OrdersController < ApplicationController
     @order.customer_province = params[:customer_province]
     @order.customer_address = params[:customer_address]
     @order.customer_postal_code = params[:customer_postal_code]
+    @order.reciever_name = params[:reciever_name]
+    @order.reciever_mobile = params[:reciever_mobile]
     @order.reciever_address = params[:reciever_address]
     @order.reciever_province = params[:reciever_province]
     @order.reciever_postal_code = params[:reciever_postal_code]

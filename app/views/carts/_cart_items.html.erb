@@ -33,20 +33,35 @@
     </tr>
     <%end%>
     <%end%>
+    <% @subtotal = 0%>
+    <% cart.cart_items.each do |item|%>
+    <%if !item.product.blank?%>
+    <% @subtotal += item.product.price.to_i %>
+    <%end%>
+    <%end%>
+    <% @taxation = @business.taxations.first%>
+    <% @sale_setting = @business.sale_setting%>
+    <% if !@taxation.blank? && !@sale_setting.blank? && @sale_setting.vat%>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td class='text-right'><strong><%=t :vat%></strong></td>
+      <td >
+        <strong id='vat'><%@vat = @subtotal * @taxation.percent / 100%> <%= @vat%></strong> <strong><%= rcurrencies(cart.cart_items.first.product.currency) rescue nil%></strong>
+      </td>
+      <td></td>
+    </tr>
+    <%end%>
     <tr>
       <td></td>
       <td></td>
       <td></td>
       <td></td>
       <td class='text-right'><strong><%=t :total_sum%></strong></td>
-      <td >
-        <% @price = 0%>
-        <% cart.cart_items.each do |item|%>
-        <%if !item.product.blank?%>
-        <% @price += item.product.price.to_i %>
-        <%end%>
-        <%end%>
-        <strong id='total_sum'><%= @price%></strong> <strong><%= rcurrencies(cart.cart_items.first.product.currency) rescue nil%></strong>
+      <td>
+        <strong id='total_sum'><%= @subtotal%></strong> <strong><%= rcurrencies(cart.cart_items.first.product.currency) rescue nil%></strong>
       </td>
       <td></td>
     </tr>

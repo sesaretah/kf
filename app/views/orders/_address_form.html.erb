@@ -54,6 +54,21 @@
   </div>
 </div>
 
+<div class="row" id="reciver_name"  style="display:none;">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label" id="reciever_province_label"><%=t :reciever_name%></label>
+      <%= text_field_tag :reciever_name, nil , {class: "form-control"} %>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-group">
+      <label class="form-label" id="reciever_address_label"><%=t :reciever_mobile%></label>
+      <%= text_area_tag :reciever_mobile, nil, {class: "form-control"} %>
+    </div>
+  </div>
+</div>
+
 <div class="row" id="reciver_address"  style="display:none;">
   <div class="col-md-4">
     <div class="form-group">

@@ -1,36 +1,128 @@
 <div class='row'>
-  <div class="col-lg-4 order-lg-1">
-  </div>
-  <div class="col-lg-8 order-lg-1">
+  <div class="col-lg-12 order-lg-1">
     <div class="card">
-      <div class="card-header">
-        <h3 class="card-title"></h3>
-        <div class="card-options">
-          <a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
-        </div>
-      </div>
+
       <div class="card-body">
         <div class='row'>
           <div class='col-md-12 col-lg-12'>
-                        <div class="form-group">
-              <%= label :order, :subtotal , class: "form-label", style: 'color: #7795c1;'%>              <div class="form-control-plaintext"><%= @order.subtotal %></div>
+            <div class='row'>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :customer_name%>:</strong> <%= @order.customer_name%>
+              </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :customer_mobile%>:</strong> <%= @order.customer_mobile%>
+              </div>
             </div>
-                        <div class="form-group">
-              <%= label :order, :tax , class: "form-label", style: 'color: #7795c1;'%>              <div class="form-control-plaintext"><%= @order.tax %></div>
+
+            <div class='row'>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :customer_province%>:</strong> <%= Province.find(@order.customer_province).name rescue nil%>
+              </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :customer_postal_code%>:</strong> <%= @order.customer_postal_code%>
+              </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :customer_address%>:</strong> <%= @order.customer_address%>
+              </div>
             </div>
-                        <div class="form-group">
-              <%= label :order, :shipping , class: "form-label", style: 'color: #7795c1;'%>              <div class="form-control-plaintext"><%= @order.shipping %></div>
+            <hr class="mb-2 mt-2">
+            <div class='row'>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :reciever_province%>:</strong> <%= Province.find(@order.reciever_province).name rescue nil%>
+              </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :reciever_postal_code%>:</strong> <%= @order.reciever_postal_code%>
+              </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :reciever_address%>:</strong> <%= @order.reciever_address%>
+              </div>
             </div>
-                        <div class="form-group">
-              <%= label :order, :total , class: "form-label", style: 'color: #7795c1;'%>              <div class="form-control-plaintext"><%= @order.total %></div>
-            </div>
-                        <div class="form-group">
-              <%= label :order, :business_id , class: "form-label", style: 'color: #7795c1;'%>              <div class="form-control-plaintext"><%= @order.business_id %></div>
-            </div>
-                        <div class="form-group">
-              <%= label :order, :user_id , class: "form-label", style: 'color: #7795c1;'%>              <div class="form-control-plaintext"><%= @order.user_id %></div>
-            </div>
-                      </div>
+            <hr class="mb-2 mt-2">
+
+            <table class="table card-table table-striped table-vcenter">
+              <thead>
+                <tr>
+                  <th class="w-1">#</th>
+                  <th class="w-1"></th>
+                  <th class="text-left w-25"><%=t :product_name%></th>
+                  <th><%=t :count%></th>
+                  <th><%=t :price%></th>
+                  <th><%=t :total_price%></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <%@i = 1%>
+                <% for item in @order.order_items%>
+                <%if !item.product.blank?%>
+                <tr>
+                  <td><%= @i%><%@i += 1%></td>
+                  <td>
+                    <span class="avatar" style="background-image: url(<%= item.product.image('thumb')%>)"></span>
+                  </td>
+                  <td><%= link_to item.product.title, item.product%></td>
+                  <td class="text-nowrap">
+                    <%= item.quantity%>
+                  </td>
+                  <td><span id='price_<%=item.product.id%>'><%= item.product.priced%></span> <span id='currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
+                  <td><span class='total_price' id='total_price_<%=item.product.id%>'><%= item.product.price%></span> <span id='total_currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
+                </tr>
+                <%end%>
+                <%end%>
+                <% @subtotal = 0%>
+                <% @order.order_items.each do |item|%>
+                <%if !item.product.blank?%>
+                <% @subtotal += item.product.price.to_i %>
+                <%end%>
+                <%end%>
+                <% @taxation = @business.taxations.first%>
+                <% @sale_setting = @business.sale_setting%>
+                <% if !@taxation.blank? && !@sale_setting.blank? && @sale_setting.vat%>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class='text-right'><strong><%=t :vat%></strong></td>
+                  <td >
+                    <strong id='vat'><%@vat = @subtotal * @taxation.percent / 100%> <%= @vat%></strong> <strong><%= rcurrencies(cart.cart_items.first.product.currency) rescue nil%></strong>
+                  </td>
+                  <td></td>
+                </tr>
+                <%end%>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td class='text-right'><strong><%=t :total_sum%></strong></td>
+                  <td>
+                    <strong id='total_sum'><%= @subtotal%></strong> <strong><%= rcurrencies(cart.cart_items.first.product.currency) rescue nil%></strong>
+                  </td>
+                  <td></td>
+                </tr>
+                <script>
+                $('.count').on('change', function() {
+                  var product_id = this.id.split('_')[1];
+                  var price = $('#price_'+product_id).text();
+                  var count = parseInt($('#count_'+product_id).children("option:selected").val());
+                  var currency = $('#currency_'+product_id).text();
+                  $('#total_price_'+product_id).text(price*count);
+                  $('#total_currency_'+product_id).text(currency);
+                  var total_sum = 0
+                  $('.total_price').each(function(item){
+                    total_sum = total_sum + parseInt($(this).text());
+                    if(item == $('.total_price').length - 1 ){
+                      $('#total_sum').text(total_sum);
+                    }
+                  });
+                });
+                </script>
+
+              </tbody>
+            </table>
+
+          </div>
         </div>
       </div>
     </div>

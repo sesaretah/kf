@@ -281,7 +281,16 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
-  avarage_shipping_cost: 'هزینه ارسال'
+  reciever_name: 'نام دریافت کننده'
+  reciever_mobile: 'تلفن همراه دریافت کننده'
+  customer_address: 'آدرس مشتری '
+  customer_province: 'استان مشتری'
+  customer_postal_code: 'کد پستی مشتری'
+  customer_mobile: 'تلفن همراه مشتری'
+  to_complete_signin: 'برای تکمیل خرید عضو یا وارد شوید '
+  vat: 'مالیات ارزش افزوده '
+  submited_successfully: 'با موفقیت ثبت شد'
+  avarage_shipping_cost: 'هزینه ارسال (تومان )'
   province: 'استان'
   vat_percentage: 'درصد مالیات ارزش افزوده'
   include_vat: 'افزودن مبلغ ارزش افزوده به فاکنور'

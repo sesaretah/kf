@@ -76,7 +76,12 @@ $('.custom-switch-input').change(function() {
     <div class="form-group">
       <label class="form-label"><%=t :vat_percentage%></label>
       <div class="input-group">
-        <%= text_field_tag :vat_percentage, nil, {class: "form-control"} %>
+        <% @taxation = Taxation.where(business_id: @business.id).first%>
+        <%if @taxation.blank?%>
+          <%= text_field_tag :vat_percentage, 0, {class: "form-control"} %>
+        <%else%>
+          <%= text_field_tag :vat_percentage,  @taxation.percent, {class: "form-control"} %>
+        <%end%>
         <span class="input-group-prepend" id="basic-addon1">
           <span class="input-group-text">%</span>
         </span>
@@ -94,9 +99,14 @@ $('.custom-switch-input').change(function() {
   </thead>
   <tbody>
     <% for province in Province.all%>
+    <% @shipping_cost = ShippingCost.where(business_id: @business.id, province_id: province.id).first%>
     <tr>
       <td><%= province.name%></td>
-      <td><%= text_field_tag "province_#{province.id}", nil, {class: "form-control"} %></td>
+      <% if @shipping_cost.blank?%>
+        <td><%= text_field_tag "province_#{province.id}", 0, {class: "form-control"} %></td>
+      <%else%>
+      <td><%= text_field_tag "province_#{province.id}", @shipping_cost.cost, {class: "form-control"} %></td>
+      <%end%>
     </tr>
     <%end%>
   </tbody>
