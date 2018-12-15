@@ -16,9 +16,8 @@ development:
     collation: utf8mb4_unicode_ci
     hostname: 127.0.0.1
     username: root
-    password: 
-    socket: /tmp/mysql.sock
-
+    password: salam64511
+    socket: /var/run/mysqld/mysqld.sock
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
