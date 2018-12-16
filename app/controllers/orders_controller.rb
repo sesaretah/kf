@@ -1,8 +1,11 @@
 class OrdersController < ApplicationController
-  before_filter :authenticate_user!, :except => [:create]
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_action :load_business, only: [:index, :show, :create]
+  before_filter :authenticate_user!, :except => [:create, :index, :show, :finilize]
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :finilize]
+  before_action :load_business, only: [:index, :show, :create, :finilize]
 
+  def finilize
+    render layout: 'layouts/devise'
+  end
 
   # GET /orders
   # GET /orders.json
@@ -12,9 +15,8 @@ class OrdersController < ApplicationController
       @orders = current_user.orders.where(business_id: @business.id)
     end
     if !params[:uuid].blank?
-      @orders = current_user.orders.where(uuid: params[:uuid])
+      @orders = Order.where(uuid: params[:uuid])
     end
-
   end
 
   # GET /orders/1
@@ -41,14 +43,19 @@ class OrdersController < ApplicationController
     if current_user.blank?
       handle_user
     end
+    reciever_details
     order_total
     @order.subtotal = @subtotal
+    @order.total = @total
+    @order.tax = @vat
+    @order.shipping = @shipping
     @order.business_id = @business.id
     @order.order_status_id = 1
-    reciever_details
-    if @order.save
+    if @order.save && !@error
       prepare_items
       render :json => {result: 'OK', id: @order.id}.to_json , :callback => params['callback']
+    else
+      render :json => @error.to_json, status: :unprocessable_entity
     end
   end
 
@@ -101,6 +108,18 @@ class OrdersController < ApplicationController
     for item in @items
       @subtotal = @subtotal + item[:product].price.to_i * item[:quantity].to_i
     end
+    @sale_setting = @business.sale_setting
+    @taxation = @business.taxations.first
+    @shipping_cost = @business.shipping_costs.where(province_id: @order.reciever_province).first
+    @vat = 0
+    @shipping = 0
+    if !@sale_setting.blank? && !@taxation.blank? && @sale_setting.vat
+      @vat = @subtotal * @taxation.percent.to_i / 100
+    end
+    if !@sale_setting.blank? && !@shipping_cost.blank? && @sale_setting.shipping_cost
+      @shipping  = @shipping_cost.cost.to_i
+    end
+    @total = @subtotal + @vat + @shipping
   end
 
   def extract_products
@@ -115,22 +134,26 @@ class OrdersController < ApplicationController
 
   def handle_user
     if params['will_to_register'].blank?
-      @profile = Profile.new(name: params[:customer_name], phonenumber: params[:customer_mobile], adderss: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
-      if @profile.save
-        render json: { success: true}.to_json
+      if !params[:customer_mobile].blank? && !params[:customer_name].blank?
+        @profile = Profile.new(name: params[:customer_name], phonenumber: params[:customer_mobile], address: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
+        @profile.save
+      else
+        @error = {error: 'Processing',  why: 'Incomplete Data'}
       end
     else
       if !params[:customer_mobile].blank? && !params[:customer_name].blank? && !params[:password].blank? && !params[:password_confirmation].blank?
         @username = request.subdomain+'_'+params[:customer_mobile]
         @user = User.new(username: @username,mobile: params[:customer_mobile], password: params[:password], password_confirmation: params[:password_confirmation])
         if @user.save
-          @profile = Profile.create(user_id: @user.id, name: params[:customer_name], phonenumber: params[:customer_mobile], adderss: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
-          render json: { success: true}.to_json
+          @profile = Profile.create(user_id: @user.id, name: params[:customer_name], phonenumber: params[:customer_mobile], address: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
+          #render json: { success: true}.to_json
         else
-          render json: { error: 'Saving User' , why: @user.errors}.to_json, status: :unprocessable_entity
+          @error = { error: 'Saving User' , why: @user.errors}
+          #render json: { error: 'Saving User' , why: @user.errors}.to_json, status: :unprocessable_entity
         end
       else
-        render json: {error: 'Processing',  why: 'Incomplete Data'}, status: :unprocessable_entity
+        @error = {error: 'Processing',  why: 'Incomplete Data'}
+        #render json: {error: 'Processing',  why: 'Incomplete Data'}, status: :unprocessable_entity
       end
     end
   end

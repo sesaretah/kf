@@ -100,7 +100,7 @@ fa:
     messages:
       accepted: باید پذیرفته شود
       blank: نباید خالی باشد
-      confirmation: با تایید نمی‌خواند
+      confirmation:  با رمز همسان نیست
       empty: نمی‌تواند خالی باشد
       equal_to: باید برابر %{count} باشد
       even: باید زوج باشد
@@ -281,6 +281,9 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  please_check_the_content_of_the_order: 'لطفا محتویات فاکتور را کنترل نمایید و در صورت تایید دکمه زیر را بفشارید'
+  finilize_my_order: 'فاکتور مورد تایید است'
+  shipping_cost: 'هزینه حمل ونقل'
   uuid: 'کد پیگیری'
   order_date: 'تاریخ سفارش'
   order_status: 'وضعیت سفارش'

@@ -4,12 +4,6 @@
       <div class="card-body">
         <div class='row'>
           <div class='col-md-12 col-lg-12'>
-            <div class="alert alert-primary" role="alert">
-              <%=t :please_check_the_content_of_the_order%>
-            </div>
-            <div class='text-center'>
-              <a href='/orders/finilize/<%= @order.id%>' class='btn btn-success'><%=t :finilize_my_order%></a>
-            </div>
             <div class='row'>
               <div class='col-md-6 col-lg-6'>
                 <strong style='font-family: times;'><%=t :uuid%>: <%= @order.uuid%></strong>
@@ -80,7 +74,7 @@
                   <td>
                     <span class="avatar" style="background-image: url(<%= item.product.image('thumb')%>)"></span>
                   </td>
-                  <td><%= link_to item.product.title, item.product%></td>
+                  <td><%= item.product.title%></td>
                   <td class="text-nowrap">
                     <%= item.quantity%>
                   </td>
@@ -129,29 +123,8 @@
                   </td>
                   <td></td>
                 </tr>
-                <script>
-                $('.count').on('change', function() {
-                  var product_id = this.id.split('_')[1];
-                  var price = $('#price_'+product_id).text();
-                  var count = parseInt($('#count_'+product_id).children("option:selected").val());
-                  var currency = $('#currency_'+product_id).text();
-                  $('#total_price_'+product_id).text(price*count);
-                  $('#total_currency_'+product_id).text(currency);
-                  var total_sum = 0
-                  $('.total_price').each(function(item){
-                    total_sum = total_sum + parseInt($(this).text());
-                    if(item == $('.total_price').length - 1 ){
-                      $('#total_sum').text(total_sum);
-                    }
-                  });
-                });
-                </script>
-
               </tbody>
             </table>
-            <div class='text-center'>
-              <a href='/orders/finilize/<%= @order.id%>' class='btn btn-success'><%=t :finilize_my_order%></a>
-            </div>
           </div>
         </div>
       </div>

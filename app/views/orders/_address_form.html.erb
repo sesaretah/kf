@@ -14,9 +14,9 @@
     <div class="form-group">
       <label class="form-label" id="customer_mobile_label"><%=t :your_mobile%></label>
       <% if user_signed_in?%>
-        <%= text_field_tag :customer_mobile, current_user.profile.phonenumber, {class: "form-control", readonly: true} %>
+        <%= text_field_tag :customer_mobile, current_user.profile.phonenumber, {class: "form-control", readonly: true,  style: 'direction: ltr;'} %>
       <% else%>
-        <%= text_field_tag :customer_mobile, nil , {class: "form-control"} %>
+        <%= text_field_tag :customer_mobile, nil , {class: "form-control", style: 'direction: ltr;'} %>
       <%end%>
     </div>
   </div>

@@ -68,4 +68,6 @@ Rails.application.routes.draw do
 
   match "/home/sales" => "home#sales", :via => :get
 
+  match "/orders/finilize/:id" => "orders#finilize", :via => :get
+
 end

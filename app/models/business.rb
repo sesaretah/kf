@@ -12,4 +12,5 @@ class Business < ActiveRecord::Base
   has_many :pixels
   has_many :taxations
   has_one :sale_setting
+  has_many :shipping_costs
 end

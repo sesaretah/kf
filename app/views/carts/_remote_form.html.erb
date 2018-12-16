@@ -72,6 +72,7 @@
           }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
+          console.log(XMLHttpRequest);
          if (XMLHttpRequest.responseJSON.error == "Saving User") {
            if ( typeof XMLHttpRequest.responseJSON.why.mobile !== "undefined"){
              $('#customer_mobile').addClass('is-invalid');
