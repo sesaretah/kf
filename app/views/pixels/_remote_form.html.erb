@@ -6,7 +6,7 @@
       <%@business.products.all.group_by(&:category).each do |g,p|%>
         <%@categories << [g.title,g.id]%>
         <%@business.products.all.group_by(&:subcategory).each do |s, i|%>
-          <% if s.parent_id == g.id %>
+          <% if !s.blank? && s.parent_id == g.id %>
             <% @categories << ['-- '+s.title, s.id]%>
           <%end%>
         <%end%>

@@ -7,6 +7,12 @@
           <div class='col-md-12 col-lg-12'>
             <div class='row'>
               <div class='col-md-6 col-lg-6'>
+                <strong><%=t :uuid%>: <%= @order.uuid%></strong>
+              </div>
+            </div>
+            <hr class="mb-2 mt-2">
+            <div class='row'>
+              <div class='col-md-6 col-lg-6'>
                 <strong><%=t :customer_name%>:</strong> <%= @order.customer_name%>
               </div>
               <div class='col-md-6 col-lg-6'>
@@ -26,6 +32,15 @@
               </div>
             </div>
             <hr class="mb-2 mt-2">
+            <div class='row'>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :reciever_name%>:</strong> <%= @order.customer_name%>
+              </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :reciever_mobile%>:</strong> <%= @order.customer_mobile%>
+              </div>
+            </div>
+
             <div class='row'>
               <div class='col-md-6 col-lg-6'>
                 <strong><%=t :reciever_province%>:</strong> <%= Province.find(@order.reciever_province).name rescue nil%>

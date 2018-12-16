@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: true
   has_many :businesses
   has_one :profile
+  has_many :orders
   def email_required?
     false
   end

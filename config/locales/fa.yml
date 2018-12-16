@@ -281,6 +281,10 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  uuid: 'کد پیگیری'
+  order_date: 'تاریخ سفارش'
+  order_status: 'وضعیت سفارش'
+  orders: 'پیگیری سفارشات  '
   reciever_name: 'نام دریافت کننده'
   reciever_mobile: 'تلفن همراه دریافت کننده'
   customer_address: 'آدرس مشتری '

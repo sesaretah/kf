@@ -1,13 +1,20 @@
 class OrdersController < ApplicationController
   before_filter :authenticate_user!, :except => [:create]
   before_action :set_order, only: [:show, :edit, :update, :destroy]
-  before_action :load_business, only: [:show, :create]
+  before_action :load_business, only: [:index, :show, :create]
 
 
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all
+    @orders = []
+    if user_signed_in? && params[:uuid].blank?
+      @orders = current_user.orders.where(business_id: @business.id)
+    end
+    if !params[:uuid].blank?
+      @orders = current_user.orders.where(uuid: params[:uuid])
+    end
+
   end
 
   # GET /orders/1
@@ -39,8 +46,10 @@ class OrdersController < ApplicationController
     @order.business_id = @business.id
     @order.order_status_id = 1
     reciever_details
-    @order.save
-    prepare_items
+    if @order.save
+      prepare_items
+      render :json => {result: 'OK', id: @order.id}.to_json , :callback => params['callback']
+    end
   end
 
   def prepare_items
@@ -61,11 +70,31 @@ class OrdersController < ApplicationController
     @order.customer_province = params[:customer_province]
     @order.customer_address = params[:customer_address]
     @order.customer_postal_code = params[:customer_postal_code]
-    @order.reciever_name = params[:reciever_name]
-    @order.reciever_mobile = params[:reciever_mobile]
-    @order.reciever_address = params[:reciever_address]
-    @order.reciever_province = params[:reciever_province]
-    @order.reciever_postal_code = params[:reciever_postal_code]
+    if params[:reciever_name].blank?
+      @order.reciever_name = params[:customer_name]
+    else
+      @order.reciever_name = params[:reciever_name]
+    end
+
+    if params[:reciever_mobile].blank?
+      @order.reciever_mobile = params[:customer_mobile]
+    else
+      @order.reciever_mobile = params[:reciever_mobile]
+    end
+
+    if params[:reciever_address].blank?
+      @order.reciever_address = params[:customer_address]
+      @order.reciever_province = params[:customer_province]
+    else
+      @order.reciever_address = params[:reciever_address]
+      @order.reciever_province = params[:reciever_province]
+    end
+
+    if params[:reciever_postal_code].blank?
+      @order.reciever_postal_code = params[:customer_postal_code]
+    else
+      @order.reciever_postal_code = params[:reciever_postal_code]
+    end
   end
 
   def order_total

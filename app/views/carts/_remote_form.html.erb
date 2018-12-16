@@ -67,7 +67,9 @@
         dataType: 'JSON',
         data: $("#new_order").serialize(),
         success: function(response){
-          console.log(response);
+          if (response.result == 'OK'){
+            window.location.replace("/orders/"+response.id);
+          }
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
          if (XMLHttpRequest.responseJSON.error == "Saving User") {

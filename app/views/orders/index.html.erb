@@ -1,37 +1,54 @@
-<div class="row row-cards">
-  <div class="col-lg-3">
+<div class="row ">
+  <div class="col-lg-12">
     <div class="row">
       <div class="col-md-6 col-lg-12">
         <div class="card">
           <div class="card-body">
-
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-12">
-        <div class="card">
-          <div class="card-body">
-
+            <%= form_tag '/orders', method: :get do%>
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <%= text_field_tag :uuid, nil , class: "form-control" %>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <button type="submit" class="btn btn-primary"><%=t :search%></button>
+                <a href="/orders" class="btn btn-secondary"><%=t :all%></a>
+              </div>
+            </div>
+            <%end%>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-lg-9">
+</div>
+<div class="row ">
+  <div class="col-lg-12">
     <div class="card">
       <table class="table card-table table-vcenter">
         <tbody>
+          <thead>
+            <tr>
+              <td><%=t :uuid%></td>
+              <td><%=t :order_date%></td>
+              <td><%=t :order_status%></td>
+              <td><%=t :total_price%></td>
+              <td><%=t :show%></td>
+            </tr>
+          </thead>
           <% @orders.each do |order| %>
           <tr>
-                        <td><%= order.subtotal %></td>
-                        <td><%= order.tax %></td>
-                        <td><%= order.shipping %></td>
-                        <td><%= order.total %></td>
-                        <td><%= order.business_id %></td>
-                        <td><%= order.user_id %></td>
-                        <td><%= link_to t(:show), order %></td>
-            <td><%= link_to t(:edit), edit_order_path(order) %></td>
-            <td><%= link_to t(:destroy), order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= order.uuid%></td>
+            <td>
+              <span>
+                <% @jalali = JalaliDate.to_jalali(order.created_at)%>
+                <%= @jalali.year%>/<%= @jalali.month%>/<%= @jalali.day%>
+              </span>
+            </td>
+            <td><%= order.order_status.title rescue nil%></td>
+            <td><%= order.total %></td>
+            <td><%= link_to t(:show), order %></td>
           </tr>
           <% end %>
         </tbody>
