@@ -23,6 +23,10 @@ class ApiController < ApplicationController
     render :json => @result.to_json, :callback => params['callback']
   end
 
+  def login
+  #  User.find_by_username('test_09123765047').try(:valid_password?, 12345)
+  end
+
   def business
     @business = { 'logo' => request.base_url + @business.logo('large'), 'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
     render :json => @business.to_json, :callback => params['callback']
@@ -131,6 +135,7 @@ class ApiController < ApplicationController
   end
 
   def is_admin
+    logger.debug current_user
     if current_user.blank?
       head(403)
     else
