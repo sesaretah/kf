@@ -60,6 +60,7 @@ Rails.application.routes.draw do
 
   match "/api/new_product" => "api#new_product", :via => :post
   match "/api/edit_business" => "api#edit_business", :via => :post
+  match "/api/check_token" => "api#check_token", :via => :post
 
 
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
