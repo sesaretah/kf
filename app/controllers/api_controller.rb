@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login]
   before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
@@ -24,7 +24,12 @@ class ApiController < ApplicationController
   end
 
   def login
-  #  User.find_by_username('test_09123765047').try(:valid_password?, 12345)
+    if User.find_by_username(request.subdomain+'_'+params['mobile']).try(:valid_password?, params[:password])
+      @user = User.find_by_username(request.subdomain+'_'+params['mobile'])
+      render :json => {result: 'OK', token: JWTWrapper.encode({ user_id: @user.id })}.to_json , :callback => params['callback']
+    else
+      render :json => {result: 'ERROR' }.to_json , :callback => params['callback']
+    end
   end
 
   def business
