@@ -1,0 +1,94 @@
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><%=t :crop_image%></h4>
+      </div>
+      <div class="modal-body">
+           <img id="target" for="" src=""/>
+           <input id="crop_x" name="upload[crop_x]" type="hidden" value="">
+           <input id="crop_y" name="upload[crop_y]" type="hidden" value="">
+           <input id="crop_w" name="upload[crop_w]" type="hidden" value="">
+           <input id="crop_h" name="upload[crop_h]" type="hidden" value="">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="send()"><%=t :submit%></button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function send(){
+$.ajax({
+type: "PATCH",
+dataType: 'JSON',
+url: '/uploads/'+ $('#target').attr('for'),
+data: {authenticity_token: window._token, 'upload[crop_x]': $('#crop_x').val(), 'upload[crop_y]': $('#crop_y').val(), 'upload[crop_w]': $('#crop_w').val(), 'upload[crop_h]': $('#crop_h').val()},
+success: function(){
+   $('#target').attr('src', '');
+   $('#myModal').modal('toggle');
+}
+});
+}
+</script>
+<%= form_for(Upload.new, html: {class: 'dropzone'}) do |f| %>
+<%= f.hidden_field :uploadable_type, value: 'Business'%>
+<%= f.hidden_field :uploadable_id, value: @business.id%>
+<%= f.hidden_field :attachment_type, value: 'business_logo'%>
+<%= hidden_field_tag :file_type, 'picture'%>
+<div class="fallback">
+  <%= f.file_field :picture %><br>
+  <%= f.hidden_field :uploadable_type, value: 'Business'%>
+  <%= f.hidden_field :uploadable_id, value: @business.id%>
+  <%= f.hidden_field :attachment_type, value: 'business_logo'%>
+  <%= f.submit "Upload" %>
+</div>
+<% end %>
+<script>
+Dropzone.autoDiscover = false;
+$("#new_upload").dropzone({
+  dictDefaultMessage : "<%=t :drop_files_here_to_upload%>",
+  dictRemoveFile : "<%=t :remove_file %>",
+  acceptedFiles : '.docx,.doc,.pdf,.txt, .png,.jpg,.jpeg',
+  addRemoveLinks: true,
+  removedfile: function(file) {
+    $.get( "/uploads/remoted/" + file.id, function( data ) {
+      console.log(data);
+    });
+    var _ref;
+    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+  },
+  init: function () {
+    this.on("success", function(file, responseText) {
+      $('#myModal').modal('show');
+      $('#target').attr('src', responseText.image);
+      $('#target').attr('for', responseText.id);
+      $(function() {
+        $('#target').Jcrop({
+          onChange: update_crop,
+          onSelect: update_crop,
+          setSelect: [0, 0, 500, 500],
+          aspectRatio: 1/1
+        });
+      });
+      function update_crop(coords) {
+        var ratio = responseText.ratio
+        $('#crop_x').val(Math.floor(coords.x * ratio));
+        $('#crop_y').val(Math.floor(coords.y * ratio));
+        $('#crop_w').val(Math.floor(coords.w * ratio));
+        $('#crop_h').val(Math.floor(coords.h * ratio));
+      }
+      file.id = responseText.id;
+    });
+
+    <% for upload in Upload.where(uploadable_type: 'Business', uploadable_id: @business.id, attachment_type: 'business_logo')%>
+    var mockFile = { name: "<%= upload.attachment_file_name%>", size: <%= upload.attachment_file_size%>, url: "<%= upload.attachment.url%>", id: <%= upload.id%> };
+    this.options.addedfile.call(this, mockFile);
+    this.options.thumbnail.call(this, mockFile, "<%= upload.attachment(:large)%>");
+    mockFile.previewElement.classList.add('dz-success');
+    mockFile.previewElement.classList.add('dz-complete');
+    <%end%>
+  }
+});
+</script>

@@ -2,7 +2,8 @@
   <div class="container">
     <div class="d-flex">
       <a class="header-brand" href="/">
-        <img src="/assets/logo.png" class="header-brand-img" alt="tabler logo">
+        <img src="<%= @business.image('thumb')%>" class="header-brand-img" alt="tabler logo">
+        <%= @business.title%>
       </a>
       <div class="d-flex order-lg-2 mr-auto">
         <div class="nav-item d-none d-md-flex">

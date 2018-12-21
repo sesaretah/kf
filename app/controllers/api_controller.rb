@@ -1,9 +1,10 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
+
   def segments
     @data = []
     for segment in @business.segments.order('level desc, updated_at asc')
@@ -17,9 +18,16 @@ class ApiController < ApplicationController
     end
     render :json => @data.to_json, :callback => params['callback']
   end
+
   def products
     @product = @business.products.find(params[:id])
     @result = { 'productImageUrl' =>  @product.images('large').each{ |i| ["#{request.subdomain+i}"]}, 'productName' => @product.title, 'description' => @product.description, 'price' => @product.price, 'currency' => rcurrencies(@product.currency), 'category' => @product.category, 'subcategory' => @product.subcategory, 'subsubcategory' => @product.subsubcategory, 'tags': []}
+    render :json => @result.to_json, :callback => params['callback']
+  end
+
+  def product_picts
+    @product = @business.products.find(params[:id])
+    @result = { 'productImageUrl' =>  @product.images('large').each{ |i| ["#{request.subdomain+i}"]}}
     render :json => @result.to_json, :callback => params['callback']
   end
 
@@ -69,7 +77,7 @@ class ApiController < ApplicationController
     if @upload.save
       render :json => {result: 'OK' }.to_json , :callback => params['callback']
     else
-      render :json => {error: @user.errors }.to_json , :callback => params['callback']
+      render :json => {error: 'ERROR' }.to_json , :callback => params['callback']
     end
   end
 
@@ -117,7 +125,6 @@ class ApiController < ApplicationController
   end
 
   def edit_business
-    @business = Business.find(params[:id])
     @business.title = params['name']
     @business.bio = params['description']
     @business.instagram_page = params['instagramChannelAddr']

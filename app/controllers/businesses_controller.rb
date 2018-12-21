@@ -1,7 +1,10 @@
 class BusinessesController < ApplicationController
-  before_action :set_business, only: [:edit, :update, :destroy, :change_theme]
-  before_action :load_business, only: [:index, :show,:change_theme]
+  before_action :set_business, only: [:edit, :update, :destroy, :change_theme, :upload]
+  before_action :load_business, only: [:index, :show,:change_theme, :upload]
     before_filter :authenticate_user!, :except => [:show]
+    def upload
+
+    end
   # GET /businesses
   # GET /businesses.json
   def change_theme
@@ -36,7 +39,7 @@ class BusinessesController < ApplicationController
     @business.save
     extract_classifications
     respond_to do |format|
-        format.html { redirect_to @business, notice: 'Business was successfully created.' }
+      format.html { redirect_to "/businesses/upload/#{@business.id}", notice: 'Product was successfully updated.' }
     end
   end
 
@@ -46,7 +49,7 @@ class BusinessesController < ApplicationController
     @business.update(business_params)
     extract_classifications
     respond_to do |format|
-        format.html { redirect_to @business, notice: 'Business was successfully updated.' }
+      format.html { redirect_to "/businesses/upload/#{@business.id}", notice: 'Product was successfully updated.' }
     end
   end
 

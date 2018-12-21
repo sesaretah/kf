@@ -29,6 +29,8 @@ Rails.application.routes.draw do
 
   match "/categories/get_children/:id" => "categories#get_children", :via => :get
   match "/categories/specs/:id" => "categories#specs", :via => :get
+  match "/categories/upload/:id" => "categories#upload", :via => :get
+
   match "/products/upload/:id" => "products#upload", :via => :get
   match "/uploads/remoted/:id" => "uploads#remoted", :via => :get
 
@@ -57,6 +59,8 @@ Rails.application.routes.draw do
   match "/api/paginated_products" => "api#paginated_products", :via => :get
   match "/api/slider" => "api#slider", :via => :get
   match "/api/login" => "api#login", :via => :get
+  match "/api/product_picts/:id" => "api#product_picts", :via => :get
+
 
   match "/api/new_product" => "api#new_product", :via => :post
   match "/api/edit_business" => "api#edit_business", :via => :post
@@ -66,6 +70,7 @@ Rails.application.routes.draw do
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
 
   match "/businesses/change_theme/:id" => "businesses#change_theme", :via => :get
+  match "/businesses/upload/:id" => "businesses#upload", :via => :get
   match "/sale_settings/remote_switch" => "sale_settings#remote_switch", :via => :get
 
   match "/home/sales" => "home#sales", :via => :get
