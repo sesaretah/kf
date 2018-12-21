@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile]
   before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
