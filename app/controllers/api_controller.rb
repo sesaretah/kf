@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
 
@@ -153,6 +153,42 @@ class ApiController < ApplicationController
       render :json => {result: 'NONE'}.to_json , :callback => params['callback']
     end
   end
+
+  def create_order
+    @order = Order.new
+    @subtotal = 0
+    @items = []
+    extract_products
+    if current_user.blank?
+      handle_user
+    end
+    reciever_details
+    order_total
+    @order.subtotal = @subtotal
+    @order.total = @total
+    @order.tax = @vat
+    @order.shipping = @shipping
+    @order.business_id = @business.id
+    @order.order_status_id = 1
+    if @order.save && !@error
+      prepare_items
+      render :json => {result: 'OK', id: @order.id}.to_json , :callback => params['callback']
+    else
+      render :json => @error.to_json, status: :unprocessable_entity
+    end
+  end
+
+  def orders
+    @order = Order.find(params[:id])
+    @order_items = @order.order_items
+    render :json => {order: @order, order_items: @order_items}.to_json , :callback => params['callback']
+  end
+
+  def provinces
+    @provinces = Province.all
+    render :json => {provinces: @provinces}.to_json , :callback => params['callback']
+  end
+
 
   def is_admin
     logger.debug current_user

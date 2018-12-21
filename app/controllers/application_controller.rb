@@ -104,4 +104,100 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
+  def prepare_items
+    for item in @items
+      @order_items = OrderItem.create(product_id: item[:product].id, order_id: @order.id, quantity: item[:quantity])
+    end
+  end
+
+  def reciever_details
+    if !current_user.blank?
+      @order.user_id = current_user.id
+    end
+    if !@user.blank?
+      @order.user_id = @user.id
+    end
+    @order.customer_name = params[:customer_name]
+    @order.customer_mobile = params[:customer_mobile]
+    @order.customer_province = params[:customer_province]
+    @order.customer_address = params[:customer_address]
+    @order.customer_postal_code = params[:customer_postal_code]
+    if params[:reciever_name].blank?
+      @order.reciever_name = params[:customer_name]
+    else
+      @order.reciever_name = params[:reciever_name]
+    end
+
+    if params[:reciever_mobile].blank?
+      @order.reciever_mobile = params[:customer_mobile]
+    else
+      @order.reciever_mobile = params[:reciever_mobile]
+    end
+
+    if params[:reciever_address].blank?
+      @order.reciever_address = params[:customer_address]
+      @order.reciever_province = params[:customer_province]
+    else
+      @order.reciever_address = params[:reciever_address]
+      @order.reciever_province = params[:reciever_province]
+    end
+
+    if params[:reciever_postal_code].blank?
+      @order.reciever_postal_code = params[:customer_postal_code]
+    else
+      @order.reciever_postal_code = params[:reciever_postal_code]
+    end
+  end
+
+  def order_total
+    for item in @items
+      @subtotal = @subtotal + item[:product].price.to_i * item[:quantity].to_i
+    end
+    @sale_setting = @business.sale_setting
+    @taxation = @business.taxations.first
+    @shipping_cost = @business.shipping_costs.where(province_id: @order.reciever_province).first
+    @vat = 0
+    @shipping = 0
+    if !@sale_setting.blank? && !@taxation.blank? && @sale_setting.vat
+      @vat = @subtotal * @taxation.percent.to_i / 100
+    end
+    if !@sale_setting.blank? && !@shipping_cost.blank? && @sale_setting.shipping_cost
+      @shipping  = @shipping_cost.cost.to_i
+    end
+    @total = @subtotal + @vat + @shipping
+  end
+
+  def extract_products
+    params.each do |name, value|
+      if name =~ /count_(.+)$/
+        @product = Product.find($1)
+        @items << {product: @product, quantity: value}
+      end
+    end
+  end
+
+  def handle_user
+    if params['will_to_register'].blank?
+      if !params[:customer_mobile].blank? && !params[:customer_name].blank?
+        @profile = Profile.new(name: params[:customer_name], phonenumber: params[:customer_mobile], address: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
+        @profile.save
+      else
+        @error = {error: 'Processing',  why: 'Incomplete Data'}
+      end
+    else
+      if !params[:customer_mobile].blank? && !params[:customer_name].blank? && !params[:password].blank? && !params[:password_confirmation].blank?
+        @username = request.subdomain+'_'+params[:customer_mobile]
+        @user = User.new(username: @username,mobile: params[:customer_mobile], password: params[:password], password_confirmation: params[:password_confirmation])
+        if @user.save
+          @profile = Profile.create(user_id: @user.id, name: params[:customer_name], phonenumber: params[:customer_mobile], address: params[:customer_address], province_id: params[:customer_province], postal_code: params[:postal_code])
+        else
+          @error = { error: 'Saving User' , why: @user.errors}
+        end
+      else
+        @error = {error: 'Processing',  why: 'Incomplete Data'}
+      end
+    end
+  end
+
 end
