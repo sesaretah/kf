@@ -184,6 +184,11 @@ class ApiController < ApplicationController
     render :json => {order: @order, order_items: @order_items}.to_json , :callback => params['callback']
   end
 
+  def all_orders
+    @orders = current_user.orders
+    render :json => {orders: @orders}.to_json , :callback => params['callback']
+  end
+
   def provinces
     @provinces = Province.all
     render :json => {provinces: @provinces}.to_json , :callback => params['callback']
