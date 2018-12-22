@@ -206,7 +206,6 @@ class ApiController < ApplicationController
 
 
   def is_admin
-    logger.debug current_user
     if current_user.blank?
       head(403)
     else

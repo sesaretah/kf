@@ -13,6 +13,7 @@ class Business < ActiveRecord::Base
   has_many :taxations
   has_one :sale_setting
   has_many :shipping_costs
+  has_many :orders
 
   def image(style)
     @upload = Upload.where(uploadable_type: 'Business', uploadable_id: self.id, attachment_type: 'business_logo').first
