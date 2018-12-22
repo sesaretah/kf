@@ -21,13 +21,21 @@ class ApiController < ApplicationController
 
   def products
     @product = @business.products.find(params[:id])
-    @result = { 'productImageUrl' =>  @product.images('large').each{ |i| ["#{request.subdomain+i}"]}, 'productName' => @product.title, 'description' => @product.description, 'price' => @product.price, 'currency' => rcurrencies(@product.currency), 'category' => @product.category, 'subcategory' => @product.subcategory, 'subsubcategory' => @product.subsubcategory, 'tags': []}
+    @images = []
+    for image in @product.images('large')
+      @images << request.base_url + image
+    end
+    @result = { 'productImageUrl' =>  @images, 'productName' => @product.title, 'description' => @product.description, 'price' => @product.price, 'currency' => rcurrencies(@product.currency), 'category' => @product.category, 'subcategory' => @product.subcategory, 'subsubcategory' => @product.subsubcategory, 'tags': []}
     render :json => @result.to_json, :callback => params['callback']
   end
 
   def product_picts
     @product = @business.products.find(params[:id])
-    @result = { 'productImageUrl' =>  @product.images('large').each{ |i| ["#{request.subdomain+i}"]}}
+    @images = []
+    for image in @product.images('large')
+      @images << request.base_url + image
+    end
+    @result = { 'productImageUrl' => @images}
     render :json => @result.to_json, :callback => params['callback']
   end
 
