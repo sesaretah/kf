@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
 
@@ -49,7 +49,7 @@ class ApiController < ApplicationController
   end
 
   def business
-    @business = { 'logo' => request.base_url + @business.logo('large'), 'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
+    @business = { 'logo' => request.base_url + business.image('large'), 'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
     render :json => @business.to_json, :callback => params['callback']
   end
 
@@ -184,7 +184,7 @@ class ApiController < ApplicationController
     render :json => {order: @order, order_items: @order_items}.to_json , :callback => params['callback']
   end
 
-  def all_orders
+  def my_orders
     @orders = current_user.orders
     render :json => {orders: @orders}.to_json , :callback => params['callback']
   end
