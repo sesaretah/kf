@@ -49,6 +49,15 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def image_w_id(style)
+    @upload = Upload.where(uploadable_type: 'Product', uploadable_id: self.id, attachment_type: 'product_attachment').first
+    if !@upload.blank?
+      return { url: @upload.attachment(style), id: @upload.id}
+    else
+      {url: ActionController::Base.helpers.asset_path("noimage-35-#{style}.jpg", :digest => false), id: nil}
+    end
+  end
+
   def images(style)
     @uploads = Upload.where(uploadable_type: 'Product', uploadable_id: self.id, attachment_type: 'product_attachment')
     if !@uploads.blank?

@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders]
   before_action :is_admin, only: [:new_product, :edit_business]
   include ActionView::Helpers::TextHelper
 
@@ -74,6 +74,10 @@ class ApiController < ApplicationController
   def my_profile
     @profile = current_user.profile
     render :json => {name: @profile.name, surename: @profile.surename, phonenumber: @profile.phonenumber, address: @profile.address, province: @profile.province.name, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
+  end
+
+  def delete_pict
+
   end
 
   def upload_pict
@@ -167,9 +171,7 @@ class ApiController < ApplicationController
     @subtotal = 0
     @items = []
     extract_products
-    if current_user.blank?
-      handle_user
-    end
+    @order.user_id = current_user.id
     reciever_details
     order_total
     @order.subtotal = @subtotal
