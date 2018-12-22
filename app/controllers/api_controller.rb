@@ -49,8 +49,8 @@ class ApiController < ApplicationController
   end
 
   def business
-    @business = { 'logo' => request.base_url + business.image('large'), 'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
-    render :json => @business.to_json, :callback => params['callback']
+    @result = { 'logo' => request.base_url+@business.image('large') , 'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
+    render :json => @result.to_json, :callback => params['callback']
   end
 
   def new_user
@@ -179,13 +179,13 @@ class ApiController < ApplicationController
   end
 
   def orders
-    @order = Order.find(params[:id])
+    @order = @business.orders.find(params[:id])
     @order_items = @order.order_items
     render :json => {order: @order, order_items: @order_items}.to_json , :callback => params['callback']
   end
 
   def my_orders
-    @orders = current_user.orders
+    @orders = current_user.orders.where(business_id: @business.id)
     render :json => {orders: @orders}.to_json , :callback => params['callback']
   end
 

@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   match "/api/product_picts/:id" => "api#product_picts", :via => :get
   match "/api/provinces" => "api#provinces", :via => :get
   match "/api/orders/:id" => "api#orders", :via => :get
-  match "/api/my_orders/:id" => "api#my_orders", :via => :get
+  match "/api/my_orders" => "api#my_orders", :via => :get
 
 
   match "/api/new_product" => "api#new_product", :via => :post
