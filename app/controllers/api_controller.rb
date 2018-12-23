@@ -191,7 +191,12 @@ class ApiController < ApplicationController
   def orders
     @order = @business.orders.find(params[:id])
     @order_items = @order.order_items
-    render :json => {order: @order, order_items: @order_items}.to_json , :callback => params['callback']
+    @items = []
+    for order_item in @order_items
+      @product = Product.find(order_item.product_id)
+      @items << {id: @product.id, name: @product.title, image: request.base_url + @product.image('large')}
+    end
+    render :json => {order: @order, order_items: @items}.to_json , :callback => params['callback']
   end
 
   def my_orders
