@@ -81,8 +81,10 @@
   <div class="container">
     <div class="row align-items-center  h-6 pr-4">
       <ul class="nav nav-tabs border-0 flex-column flex-lg-row text-white">
-        <% @business.products.all.group_by(&:category).take(10).each do |g,p|%>
-        <li class="nav-item"><a href="/products?category-id-<%= g.id%>=<%= g.id%>" class="nav-link"><%= g.title%></a></li>
+        <% @business.products.all.group_by(&:category).take(5).each do |g,p|%>
+        <% if !g.blank?%>
+          <li class="nav-item"><a href="/products?category-id-<%= g.id%>=<%= g.id%>" class="nav-link"><%=truncate(g.title, length:22)%></a></li>
+        <%end%>
         <%end%>
       </ul>
       <div class='mr-auto text-white'><a href='/products' class='text-white'><%=t :all%></a></div>
