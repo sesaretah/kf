@@ -50,9 +50,9 @@ class ApiController < ApplicationController
 
   def check_token
     if current_user
-        render :json => {result: 'OK'}.to_json , :callback => params['callback']
+      render :json => {result: 'OK'}.to_json , :callback => params['callback']
     else
-        render :json => {result: 'ERROR'}.to_json , :callback => params['callback']
+      render :json => {result: 'ERROR'}.to_json , :callback => params['callback']
     end
   end
 
@@ -110,13 +110,15 @@ class ApiController < ApplicationController
   def categories
     @results = []
     @business.products.all.group_by(&:category).each do |g,p|
-      @hash = {'id' =>  g.id, 'name' => truncate(g.title, :length => 10, :omission => '..'), 'subCategories' => [], 'picture' => request.base_url + p.first.image('large')}
-      @business.products.all.group_by(&:subcategory).each do |s, i|
-        if !s.blank? && s.parent_id == g.id
-          @hash['subCategories'] << {'id' => s.id, 'name' => truncate(s.title, :length => 10, :omission => '..'), 'picture' => request.base_url + p.first.image('large')}
+      if !g.blank?
+        @hash = {'id' =>  g.id, 'name' => truncate(g.title, :length => 10, :omission => '..'), 'subCategories' => [], 'picture' => request.base_url + p.first.image('large')}
+        @business.products.all.group_by(&:subcategory).each do |s, i|
+          if !s.blank? && s.parent_id == g.id
+            @hash['subCategories'] << {'id' => s.id, 'name' => truncate(s.title, :length => 10, :omission => '..'), 'picture' => request.base_url + p.first.image('large')}
+          end
         end
+        @results << @hash
       end
-      @results << @hash
     end
     if !@results.blank?
       render :json => @results.to_json , :callback => params['callback']
