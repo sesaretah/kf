@@ -112,7 +112,7 @@ class ApiController < ApplicationController
     end
     @results = []
     for product in @products
-      if !product.blank? && product.category.blank? && product.subcategory.blank?
+      if !product.blank? && !product.category.blank? && !product.subcategory.blank?
         @results << {'id' => product.id, 'price' => product.price ,'name' => product.title, 'picture' => request.base_url + product.image('large'), 'category' => {'id' => product.category.id}, 'subcategory' => {'id' => product.subcategory.id}}
       end
     end
