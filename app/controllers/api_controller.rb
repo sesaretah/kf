@@ -112,7 +112,9 @@ class ApiController < ApplicationController
     end
     @results = []
     for product in @products
-      @results << {'id' => product.id, 'price' => product.price ,'name' => product.title, 'picture' => request.base_url + product.image('large'), 'category' => {'id' => product.category.id}, 'subcategory' => {'id' => product.subcategory.id}}
+      if !product.blank? && product.category.blank? && product.subcategory.blank?
+        @results << {'id' => product.id, 'price' => product.price ,'name' => product.title, 'picture' => request.base_url + product.image('large'), 'category' => {'id' => product.category.id}, 'subcategory' => {'id' => product.subcategory.id}}
+      end
     end
     if !@results.blank?
       render :json => {'products' => @results, 'page' => params[:page], 'per_page' => params[:per_page], 'total_pages' => @total_pages}.to_json , :callback => params['callback']
