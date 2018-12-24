@@ -94,8 +94,22 @@ class ApiController < ApplicationController
   end
 
   def paginated_products
-    @products = @business.products.paginate(:page => params[:page], :per_page => params[:per_page])
-    @total_pages = @products.total_pages
+    if params[:category_id]
+      @category = Category.find_by_id(params[:category_id])
+    end
+    if params[:subcategory_id]
+      @subcategory = Category.find_by_id(params[:subcategory_id])
+    end
+    if !@category.blank? || !@subcategory.blank?
+      @products = @business.products.joins(:categories).where(categories: {id: [@category, @subcategory]}).distinct.paginate(:page => params[:page], :per_page => params[:per_page])
+    else
+      @products = @business.products.paginate(:page => params[:page], :per_page => params[:per_page])
+    end
+    if !@products.blank?
+      @total_pages = @products.total_pages
+    else
+      @total_pages = 0
+    end
     @results = []
     for product in @products
       @results << {'id' => product.id, 'name' => product.title, 'picture' => request.base_url + product.image('large'), 'category' => {'id' => product.category.id}, 'subcategory' => {'id' => product.subcategory.id}}
