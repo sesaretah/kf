@@ -110,7 +110,6 @@ class ApiController < ApplicationController
     else
       @total_pages = 0
     end
-    logger.debug @products
     @results = []
     for product in @products
       @results << {'id' => product.id, 'price' => product.price ,'name' => product.title, 'picture' => request.base_url + product.image('large'), 'category' => {'id' => product.category.id}, 'subcategory' => {'id' => product.subcategory.id}}

@@ -22,6 +22,8 @@ class Product < ActiveRecord::Base
     @categorization = self.categorizations.where(level: 1).first
     if !@categorization.blank?
       return @categorization.category
+    else
+      return Category.first
     end
   end
 
@@ -30,6 +32,8 @@ class Product < ActiveRecord::Base
     @categorization = self.categorizations.where(level: 2).first
     if !@categorization.blank?
       return @categorization.category
+    else
+      return Category.first
     end
   end
 
