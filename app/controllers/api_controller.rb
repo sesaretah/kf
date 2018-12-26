@@ -82,8 +82,12 @@ class ApiController < ApplicationController
 
   def my_profile
     @profile = current_user.profile
-    logger.debug @profile.id
-    render :json => {name: @profile.name, surename: @profile.surename, phonenumber: @profile.phonenumber, address: @profile.address, province: @profile.province.name, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
+    if @profile.province.blank?
+      @province = nil
+    else
+      @province = @profile.province.name
+    end
+    render :json => {name: @profile.name, surename: @profile.surename, phonenumber: @profile.phonenumber, address: @profile.address, province: @province, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
   end
 
   def delete_pict
