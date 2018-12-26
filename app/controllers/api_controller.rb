@@ -20,7 +20,7 @@ class ApiController < ApplicationController
   end
 
   def search
-    @products = Product.search params[:q], star: true
+    @products = @business.products.search params[:q], star: true
     if !@products.blank?
       render :json => {result: @products}.to_json , :callback => params['callback']
     else
@@ -81,6 +81,7 @@ class ApiController < ApplicationController
   end
 
   def my_profile
+    logger.debug current_user.id
     @profile = current_user.profile
     render :json => {name: @profile.name, surename: @profile.surename, phonenumber: @profile.phonenumber, address: @profile.address, province: @profile.province.name, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
   end
