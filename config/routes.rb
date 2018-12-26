@@ -64,7 +64,7 @@ Rails.application.routes.draw do
   match "/api/orders/:id" => "api#orders", :via => :get
   match "/api/my_orders" => "api#my_orders", :via => :get
   match "/api/search" => "api#search", :via => :get
-  match "/api/edit_product" => "api#edit_product", :via => :get
+
   match "/api/sort" => "api#sort", :via => :get
 
 
@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   match "/api/edit_business" => "api#edit_business", :via => :post
   match "/api/check_token" => "api#check_token", :via => :post
   match "/api/create_order" => "api#create_order", :via => :post
+  match "/api/edit_product" => "api#edit_product", :via => :post
 
 
   match "/faqs/change_rank/:id" => "faqs#change_rank", :via => :get
