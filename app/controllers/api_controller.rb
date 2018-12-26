@@ -1,8 +1,8 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product]
-  before_action :is_admin, only: [:new_product, :edit_business, :edit_product]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile]
+  before_action :is_admin, only: [:new_product, :edit_business, :edit_product, :edit_profile]
   include ActionView::Helpers::TextHelper
 
   def segments
@@ -87,7 +87,23 @@ class ApiController < ApplicationController
     else
       @province = @profile.province.name
     end
-    render :json => {name: @profile.name, surename: @profile.surename, phonenumber: @profile.phonenumber, address: @profile.address, province: @province, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
+    render :json => {name: @profile.name, surename: @profile.surename, phonenumber: current_user.mobile, address: @profile.address, province: @province, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
+  end
+
+  def edit_profile
+    @profile = current_user.profile
+    if !@profile.blank?
+      @profile.name = params[:name]
+      @profile.phonenumber = params[:phonenumber]
+      @profile.address = params[:address]
+      @profile.postal_code = params[:postal_code]
+      @profile.province_id = params[:province_id]
+    end
+    if !@profile.blank? && @profile.save
+      render :json => {result: 'OK', id: @profile.id}.to_json, :callback => params['callback']
+      else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
   end
 
   def delete_pict
@@ -241,7 +257,7 @@ class ApiController < ApplicationController
     @items = []
     for order_item in @order_items
       @product = Product.find(order_item.product_id)
-      @items << {id: @product.id, name: @product.title, image: request.base_url + @product.image('large')}
+      @items << {id: @product.id, name: @product.title, image: request.base_url + @product.image('large'), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
     end
     render :json => {order: @order, order_items: @items}.to_json , :callback => params['callback']
   end
