@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort]
   before_action :is_admin, only: [:new_product, :edit_business, :edit_product, :edit_profile]
   include ActionView::Helpers::TextHelper
 
@@ -25,6 +25,26 @@ class ApiController < ApplicationController
       render :json => {result: @products}.to_json , :callback => params['callback']
     else
       render :json => {result: 'ERROR'}.to_json , :callback => params['callback']
+    end
+  end
+
+  def sort
+    if params[:category_id]
+      @category = Category.find_by_id(params[:category_id])
+    end
+    if params[:subcategory_id]
+      @subcategory = Category.find_by_id(params[:subcategory_id])
+    end
+    if !@category.blank? || !@subcategory.blank?
+      @products = @business.products.joins(:categories).where(categories: {id: [@category, @subcategory]}).distinct.order("#{params[:attribute]} #{params[:order]}")
+    else
+      @products = @business.products.order("#{params[:attribute]} #{params[:order]}")
+    end
+
+    if !@products.blank?
+      render :json => {result: 'OK', products: @products}.to_json , :callback => params['callback']
+    else
+      render :json => {result: 'ERROR' }.to_json , :callback => params['callback']
     end
   end
 
