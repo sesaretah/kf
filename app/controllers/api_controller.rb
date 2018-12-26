@@ -19,6 +19,15 @@ class ApiController < ApplicationController
     render :json => @data.to_json, :callback => params['callback']
   end
 
+  def search
+    @products = Product.search params[:q], star: true
+    if !@products.blank?
+      render :json => {result: @products}.to_json , :callback => params['callback']
+    else
+      render :json => {result: 'ERROR'}.to_json , :callback => params['callback']
+    end
+  end
+
   def products
     @product = @business.products.find(params[:id])
     @images = []
