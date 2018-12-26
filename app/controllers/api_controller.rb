@@ -1,8 +1,8 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search]
-  before_action :is_admin, only: [:new_product, :edit_business]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product]
+  before_action :is_admin, only: [:new_product, :edit_business, :edit_product]
   include ActionView::Helpers::TextHelper
 
   def segments
@@ -159,6 +159,21 @@ class ApiController < ApplicationController
 
   def new_product
     @product = Product.new(title: params['productName'], description: params['description'], price: params['price'], currency: params['currency'])
+    @product.business_id = @business.id
+    if @product.save
+      extract_features(@product)
+      render :json => {result: 'OK', id: @product.id}.to_json, :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+  end
+
+  def edit_product
+    @product = @business.products.find(params[:id])
+    @product.title = params['productName']
+    @product.description = params['description']
+    @product.price = params['price']
+    @product.currency = params['currency']
     @product.business_id = @business.id
     if @product.save
       extract_features(@product)
