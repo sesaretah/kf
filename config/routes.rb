@@ -65,6 +65,8 @@ Rails.application.routes.draw do
   match "/api/my_orders" => "api#my_orders", :via => :get
   match "/api/search" => "api#search", :via => :get
   match "/api/sort" => "api#sort", :via => :get
+  match "/api/delete_pict" => "api#delete_pict", :via => :get
+  match "/api/delete_product" => "api#delete_product", :via => :get
 
 
   match "/api/new_product" => "api#new_product", :via => :post

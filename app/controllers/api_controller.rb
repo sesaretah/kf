@@ -1,8 +1,8 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort]
-  before_action :is_admin, only: [:new_product, :edit_business, :edit_product, :edit_profile]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :editprofile, :sort, :delete_pict, :delete_product]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort, :delete_pict, :delete_product]
+  before_action :is_admin, only: [:new_product, :edit_business, :edit_product, :edit_profile, :delete_pict, :delete_product]
   include ActionView::Helpers::TextHelper
 
   def segments
@@ -21,8 +21,12 @@ class ApiController < ApplicationController
 
   def search
     @products = Product.search params[:q], with: {business_id: @business.id}, star: true
+    @results = []
+    for product in @products
+      @results << { product: product, image: request.base_url + product.image('meduim')}
+    end
     if !@products.blank?
-      render :json => {result: @products}.to_json , :callback => params['callback']
+      render :json => {result: @results}.to_json , :callback => params['callback']
     else
       render :json => {result: 'ERROR'}.to_json , :callback => params['callback']
     end
@@ -41,8 +45,13 @@ class ApiController < ApplicationController
       @products = @business.products.order("#{params[:attribute]} #{params[:order]}")
     end
 
-    if !@products.blank?
-      render :json => {result: 'OK', products: @products}.to_json , :callback => params['callback']
+    @results = []
+    for product in @products
+      @results << { product: product, image: request.base_url + product.image('meduim')}
+    end
+
+    if !@results.blank?
+      render :json => {result: 'OK', products: @results}.to_json , :callback => params['callback']
     else
       render :json => {result: 'ERROR' }.to_json , :callback => params['callback']
     end
@@ -129,7 +138,22 @@ class ApiController < ApplicationController
   end
 
   def delete_pict
+    @product = @business.products.where(product_id: params[:product_id])
+    @upload = Upload.where(uploadable_id: params[:product_id], uploadable_type: 'Product', id: params[:id]).first
+    if !@upload.blank? && @upload.destroy
+      render :json => {result: 'OK'}.to_json, :callback => params['callback']
+      else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+  end
 
+  def delete_product
+    @product = @business.products.find_by_id(params[:id])
+    if !@product.blank? && @product.destroy
+      render :json => {result: 'OK'}.to_json, :callback => params['callback']
+      else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
   end
 
   def upload_pict
@@ -285,12 +309,13 @@ class ApiController < ApplicationController
   end
 
   def my_orders
+    @orders = {}
     @orders = current_user.orders.where(business_id: @business.id)
     for order in @orders
       order['customer_province'] = Province.find(order.customer_province).name rescue nil
       order['reciever_province'] = Province.find(order.reciever_province).name rescue nil
       @jalali = JalaliDate.to_jalali(order.created_at)
-      order['created_at'] = "#{@jalali.year}/#{@jalali.month}/#{@jalali.day}" rescue nil
+      order['created_at'] = "#{@jalali.year}-#{@jalali.month}-#{@jalali.day}" rescue nil
     end
     render :json => {orders: @orders}.to_json , :callback => params['callback']
   end

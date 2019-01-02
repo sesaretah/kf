@@ -1,4 +1,5 @@
 class Order < ActiveRecord::Base
+  
   has_many :order_items
   belongs_to :order_status
   belongs_to :user
@@ -8,4 +9,5 @@ class Order < ActiveRecord::Base
   def set_uuid
     self.uuid = SecureRandom.hex(4)
   end
+
 end
