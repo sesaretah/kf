@@ -103,9 +103,9 @@ class ApiController < ApplicationController
   def my_profile
     @profile = current_user.profile
     if @profile.province_id.blank?
-      @province = nil
+      @province = {name: nil, id: nil}
     else
-      @province = @profile.province.name
+      @province = {name: @profile.province.name,  id: @profile.province.id}
     end
     render :json => {name: @profile.name, surename: @profile.surename, phonenumber: current_user.mobile, address: @profile.address, province: @province, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
   end
@@ -297,7 +297,6 @@ class ApiController < ApplicationController
     @provinces = Province.all
     render :json => {provinces: @provinces}.to_json , :callback => params['callback']
   end
-
 
   def is_admin
     if current_user.blank?
