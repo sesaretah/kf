@@ -103,11 +103,13 @@ class ApiController < ApplicationController
   def my_profile
     @profile = current_user.profile
     if @profile.province_id.blank?
-      @province = {name: nil, id: nil}
+      @province = nil
+      @province_id = nil
     else
-      @province = {name: @profile.province.name,  id: @profile.province.id}
+      @province = @profile.province.name
+      @province_id = @profile.province.id
     end
-    render :json => {name: @profile.name, surename: @profile.surename, phonenumber: current_user.mobile, address: @profile.address, province: @province, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
+    render :json => {name: @profile.name, surename: @profile.surename, phonenumber: current_user.mobile, address: @profile.address, province: @province, province_id: @province_id, postal_code: @profile.postal_code}.to_json, :callback => params['callback']
   end
 
   def edit_profile
