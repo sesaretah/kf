@@ -77,6 +77,20 @@ class Product < ActiveRecord::Base
     end
   end
 
+  def images_w_ids(style)
+    @uploads = Upload.where(uploadable_type: 'Product', uploadable_id: self.id, attachment_type: 'product_attachment')
+    if !@uploads.blank?
+      @images = []
+      for upload in @uploads
+        @images << {url: upload.attachment(style), id: upload.id}
+      end
+      return @images
+    else
+      return [{url: ActionController::Base.helpers.asset_path("noimage-35-#{style}.jpg", :digest => false), id: nil}]
+    end
+  end
+
+
   def priced
     return number_with_delimiter(self.price, delimiter: ",")
   end

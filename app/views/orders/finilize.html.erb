@@ -8,6 +8,12 @@
               <div class='col-md-6 col-lg-6'>
                 <strong style='font-family: times;'><%=t :uuid%>: <%= @order.uuid%></strong>
               </div>
+              <div class='col-md-6 col-lg-6'>
+                <strong><%=t :created_at%>:
+                  <% @jalali = JalaliDate.to_jalali(@order.created_at)%>
+                  <%= @jalali.year%>/<%= @jalali.month%>/<%= @jalali.day%>
+                 </strong>
+              </div>
             </div>
             <hr class="mb-2 mt-2">
             <div class='row'>

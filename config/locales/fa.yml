@@ -281,6 +281,7 @@ fa:
     page_gap: "&hellip;"
     previous_label: "قبلی"
     next_label: "بعدی"
+  created_at: 'تاریخ'
   please_check_the_content_of_the_order: 'لطفا محتویات فاکتور را کنترل نمایید و در صورت تایید دکمه زیر را بفشارید'
   finilize_my_order: 'فاکتور مورد تایید است'
   shipping_cost: 'هزینه حمل ونقل'

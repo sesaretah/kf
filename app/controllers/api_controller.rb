@@ -51,8 +51,8 @@ class ApiController < ApplicationController
   def products
     @product = @business.products.find(params[:id])
     @images = []
-    for image in @product.images('large')
-      @images << request.base_url + image
+    for image in @product.images_w_ids('large')
+      @images << {url: request.base_url + image[:url], id: image[:id]}
     end
     @result = { 'productImageUrl' =>  @images, 'productName' => @product.title, 'description' => @product.description, 'price' => @product.price, 'currency' => rcurrencies(@product.currency), 'category' => @product.category, 'subcategory' => @product.subcategory, 'subsubcategory' => @product.subsubcategory, 'tags': []}
     render :json => @result.to_json, :callback => params['callback']
@@ -102,7 +102,7 @@ class ApiController < ApplicationController
 
   def my_profile
     @profile = current_user.profile
-    if @profile.province.blank?
+    if @profile.province_id.blank?
       @province = nil
     else
       @province = @profile.province.name
@@ -265,7 +265,7 @@ class ApiController < ApplicationController
     @order.order_status_id = 1
     if @order.save && !@error
       prepare_items
-      render :json => {result: 'OK', id: @order.id}.to_json , :callback => params['callback']
+      render :json => {result: 'OK', id: @order.id, uuid: @order.uuid}.to_json , :callback => params['callback']
     else
       render :json => @error.to_json, status: :unprocessable_entity
     end
@@ -284,6 +284,12 @@ class ApiController < ApplicationController
 
   def my_orders
     @orders = current_user.orders.where(business_id: @business.id)
+    for order in @orders
+      order['customer_province'] = Province.find(order.customer_province).name rescue nil
+      order['reciever_province'] = Province.find(order.reciever_province).name rescue nil
+      @jalali = JalaliDate.to_jalali(order.created_at)
+      order['created_at'] = "#{@jalali.year}/#{@jalali.month}/#{@jalali.day}" rescue nil
+    end
     render :json => {orders: @orders}.to_json , :callback => params['callback']
   end
 
