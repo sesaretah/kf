@@ -310,7 +310,7 @@ class ApiController < ApplicationController
 
   def my_orders
     @orders = {}
-    @orders = current_user.orders.where(business_id: @business.id)
+    @orders = current_user.orders.where(business_id: @business.id).order('created_at desc')
     for order in @orders
       order['customer_province'] = Province.find(order.customer_province).name rescue nil
       order['reciever_province'] = Province.find(order.reciever_province).name rescue nil
