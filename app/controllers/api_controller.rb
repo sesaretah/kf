@@ -23,7 +23,7 @@ class ApiController < ApplicationController
     @products = Product.search params[:q], with: {business_id: @business.id}, star: true
     @results = []
     for product in @products
-      @results << { product: product, image: request.base_url + product.image('meduim')}
+      @results << { product: product, image: request.base_url + product.image('medium')}
     end
     if !@products.blank?
       render :json => {result: @results}.to_json , :callback => params['callback']
@@ -47,7 +47,7 @@ class ApiController < ApplicationController
 
     @results = []
     for product in @products
-      @results << { product: product, image: request.base_url + product.image('meduim')}
+      @results << { product: product, image: request.base_url + product.image('medium')}
     end
 
     if !@results.blank?
