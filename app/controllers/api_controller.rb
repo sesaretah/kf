@@ -326,7 +326,7 @@ class ApiController < ApplicationController
   end
 
   def order_statuses
-    @order_statuses = OrderStatuse.all
+    @order_statuses = OrderStatus.all
     if !@order_statuses.blank?
       render :json => {result: 'OK', order_statuses: @order_statuses}.to_json, :callback => params['callback']
     else
@@ -335,7 +335,7 @@ class ApiController < ApplicationController
   end
 
   def change_order_status
-    @order = Order.find_by_uuid(uuid: params[:uuid])
+    @order = Order.find_by_uuid(params[:uuid])
     @order.order_status_id = params[:status_id]
     if @order.save
       render :json => {result: 'OK'}.to_json, :callback => params['callback']
