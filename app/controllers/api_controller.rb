@@ -1,8 +1,8 @@
 class ApiController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :editprofile, :sort, :delete_pict, :delete_product]
-  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort, :delete_pict, :delete_product]
-  before_action :is_admin, only: [:new_product, :edit_business, :edit_product, :edit_profile, :delete_pict, :delete_product]
+  before_filter :authenticate_user!, :except => [:new_user, :segments, :products, :business, :upload_pict, :categories, :paginated_products, :new_product, :slider, :edit_business, :login, :check_token,:product_picts, :my_profile,  :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :editprofile, :sort, :delete_pict, :delete_product, :order_statuses, :change_order_status]
+  before_action :load_business, only: [:segments,:products, :business, :upload_pict, :categories, :paginated_products, :new_product, :is_admin, :edit_business, :slider, :product_picts, :create_order, :provinces, :my_orders, :orders, :search, :edit_product, :edit_profile, :sort, :delete_pict, :delete_product, :order_statuses, :change_order_status]
+  before_action :is_admin, only: [:new_product, :edit_business, :edit_product, :edit_profile, :delete_pict, :delete_product, :change_order_status]
   include ActionView::Helpers::TextHelper
 
   def segments
@@ -323,6 +323,25 @@ class ApiController < ApplicationController
   def provinces
     @provinces = Province.all
     render :json => {provinces: @provinces}.to_json , :callback => params['callback']
+  end
+
+  def order_statuses
+    @order_statuses = OrderStatuse.all
+    if !@order_statuses.blank?
+      render :json => {result: 'OK', order_statuses: @order_statuses}.to_json, :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
+  end
+
+  def change_order_status
+    @order = Order.find_by_uuid(uuid: params[:uuid])
+    @order.order_status_id = params[:status_id]
+    if @order.save
+      render :json => {result: 'OK'}.to_json, :callback => params['callback']
+    else
+      render :json => {result: 'NONE'}.to_json , :callback => params['callback']
+    end
   end
 
   def is_admin
