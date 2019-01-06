@@ -7,9 +7,11 @@
             <div class="alert alert-primary" role="alert">
               <%=t :please_check_the_content_of_the_order%>
             </div>
+            <% if @order.order_status_id == 1%>
             <div class='text-center'>
               <a href='/orders/finilize/<%= @order.id%>' class='btn btn-success'><%=t :finilize_my_order%></a>
             </div>
+            <%end%>
             <div class='row'>
               <div class='col-md-6 col-lg-6'>
                 <strong style='font-family: times;'><%=t :uuid%>: <%= @order.uuid%></strong>
@@ -83,7 +85,7 @@
                 <tr>
                   <td><%= @i%><%@i += 1%></td>
                   <td>
-                    
+
                   </td>
                   <td><%= item.product_name%></td>
                   <td class="text-nowrap">
@@ -153,9 +155,11 @@
 
               </tbody>
             </table>
+            <% if @order.order_status_id == 1%>
             <div class='text-center'>
               <a href='/orders/finilize/<%= @order.id%>' class='btn btn-success'><%=t :finilize_my_order%></a>
             </div>
+            <%end%>
           </div>
         </div>
       </div>
