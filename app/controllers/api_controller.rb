@@ -302,7 +302,7 @@ class ApiController < ApplicationController
     @order_items = @order.order_items
     @items = []
     for order_item in @order_items
-      @product = Product.find(order_item.product_id)
+      @product = Product.find_by_id(order_item.product_id)
       if !@product.blank?
         @items << {id: @product.id, name:  order_item.product_name, image: request.base_url + @product.image('large'), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
       else
