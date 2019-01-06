@@ -4,6 +4,8 @@ class OrdersController < ApplicationController
   before_action :load_business, only: [:index, :show, :create, :finilize]
 
   def finilize
+    @order.order_status_id = 2
+    @order.save
     render layout: 'layouts/devise'
   end
 
@@ -53,6 +55,7 @@ class OrdersController < ApplicationController
     @order.order_status_id = 1
     if @order.save && !@error
       prepare_items
+      cookies[:cart_id] = 0
       render :json => {result: 'OK', id: @order.id}.to_json , :callback => params['callback']
     else
       render :json => @error.to_json, status: :unprocessable_entity

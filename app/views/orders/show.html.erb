@@ -80,20 +80,18 @@
               <tbody>
                 <%@i = 1%>
                 <% for item in @order.order_items%>
-                <%if !item.product.blank?%>
                 <tr>
                   <td><%= @i%><%@i += 1%></td>
                   <td>
-                    <span class="avatar" style="background-image: url(<%= item.product.image('thumb')%>)"></span>
+                    
                   </td>
-                  <td><%= link_to item.product.title, item.product%></td>
+                  <td><%= item.product_name%></td>
                   <td class="text-nowrap">
                     <%= item.quantity%>
                   </td>
-                  <td><span id='price_<%=item.product.id%>'><%= item.product.priced%></span> <span id='currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
-                  <td><span class='total_price' id='total_price_<%=item.product.id%>'><%= item.product.price%></span> <span id='total_currency_<%=item.product.id%>'><%= rcurrencies(item.product.currency)%></span></td>
+                  <td><%= item.unit_price%></span></td>
+                  <td><span class='total_price'><%= item.total_price%></span> <span><%= rcurrencies(1)%></span></td>
                 </tr>
-                <%end%>
                 <%end%>
                 <% @taxation = @business.taxations.first%>
                 <% @sale_setting = @business.sale_setting%>

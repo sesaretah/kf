@@ -222,6 +222,7 @@ class ApiController < ApplicationController
   def new_product
     @product = Product.new(title: params['productName'], description: params['description'], price: params['price'], currency: params['currency'])
     @product.business_id = @business.id
+    @product.user_id = current_user.id
     if @product.save
       extract_features(@product)
       render :json => {result: 'OK', id: @product.id}.to_json, :callback => params['callback']
