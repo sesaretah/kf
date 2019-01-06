@@ -177,7 +177,7 @@ class ApiController < ApplicationController
       @subcategory = Category.find_by_id(params[:subcategory_id])
     end
     if !@category.blank? || !@subcategory.blank?
-      @products = @business.products.joins(:categories).where(categories: {id: [@category, @subcategory]}).order_by(&:created_at).reverse!.distinct.paginate(:page => params[:page], :per_page => params[:per_page])
+      @products = @business.products.joins(:categories).where(categories: {id: [@category, @subcategory]}).order('created_at desc').distinct.paginate(:page => params[:page], :per_page => params[:per_page])
     else
       @products = @business.products.order('created_at desc').paginate(:page => params[:page], :per_page => params[:per_page])
     end
