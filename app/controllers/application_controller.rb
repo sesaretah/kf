@@ -107,7 +107,7 @@ class ApplicationController < ActionController::Base
 
   def prepare_items
     for item in @items
-      @order_items = OrderItem.create( unit_price: item[:product].price, quantity: item[:quantity], total_price: item[:product].price.to_i * item[:quantity].to_i , product_id: item[:product].id, order_id: @order.id, quantity: item[:quantity])
+      @order_items = OrderItem.create( unit_price: item[:product].price, quantity: item[:quantity], total_price: item[:product].price.to_i * item[:quantity].to_i , product_id: item[:product].id, product_name: item[:product].title, order_id: @order.id, quantity: item[:quantity])
     end
   end
 

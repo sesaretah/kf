@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181216131251) do
+ActiveRecord::Schema.define(version: 20190106124919) do
 
   create_table "businesses", force: :cascade do |t|
     t.string   "title",             limit: 255
@@ -88,13 +88,14 @@ ActiveRecord::Schema.define(version: 20181216131251) do
   end
 
   create_table "order_items", force: :cascade do |t|
-    t.integer  "product_id",  limit: 4
-    t.integer  "order_id",    limit: 4
-    t.string   "unit_price",  limit: 255
-    t.integer  "quantity",    limit: 4
-    t.integer  "total_price", limit: 4
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "product_id",   limit: 4
+    t.integer  "order_id",     limit: 4
+    t.string   "unit_price",   limit: 255
+    t.integer  "quantity",     limit: 4
+    t.integer  "total_price",  limit: 4
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "product_name", limit: 255
   end
 
   create_table "order_statuses", force: :cascade do |t|
@@ -264,7 +265,7 @@ ActiveRecord::Schema.define(version: 20181216131251) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "email",                  limit: 255
     t.string   "encrypted_password",     limit: 255, default: "", null: false
     t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
@@ -275,16 +276,15 @@ ActiveRecord::Schema.define(version: 20181216131251) do
     t.string   "username",               limit: 255
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["username"], name: "index_users_on_username", unique: true, using: :btree
 
   create_table "visits", force: :cascade do |t|
     t.integer  "visitable_id",    limit: 4
     t.string   "visitable_type",  limit: 255
-    t.string   "visitor_session", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.text     "visitor_session", limit: 65535
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
 end
