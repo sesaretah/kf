@@ -306,7 +306,7 @@ class ApiController < ApplicationController
       if !@product.blank?
         @items << {id: @product.id, name:  order_item.product_name, image: request.base_url + @product.image('large'), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
       else
-        @items << {id: 0, name: order_item.product_name, image: request.base_url +  ActionController::Base.helpers.asset_path("noimage-35-#{style}.jpg", :digest => false), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
+        @items << {id: 0, name: order_item.product_name, image: request.base_url +  ActionController::Base.helpers.asset_path("noimage-35-meduim.jpg", :digest => false), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
       end
     end
     render :json => {order: @order, order_items: @items}.to_json , :callback => params['callback']
