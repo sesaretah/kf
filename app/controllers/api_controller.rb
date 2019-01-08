@@ -95,7 +95,7 @@ class ApiController < ApplicationController
   end
 
   def business
-    @result = { 'logo' => request.base_url+@business.image('large') , 'id' => @business.id ,'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
+    @result = { 'logo' => request.base_url+@business.image('meduim') , 'id' => @business.id ,'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
     render :json => @result.to_json, :callback => params['callback']
   end
 

@@ -16,7 +16,7 @@ class Business < ActiveRecord::Base
   has_many :orders
 
   def image(style)
-    @upload = Upload.where(uploadable_type: 'Business', uploadable_id: self.id, attachment_type: 'business_logo').first
+    @upload = Upload.where(uploadable_type: 'Business', uploadable_id: self.id, attachment_type: 'business_logo').last
     if !@upload.blank?
       return @upload.attachment(style)
     else
