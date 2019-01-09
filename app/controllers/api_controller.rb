@@ -95,7 +95,7 @@ class ApiController < ApplicationController
   end
 
   def business
-    @result = { 'logo' => request.base_url+@business.image('meduim') , 'id' => @business.id ,'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
+    @result = { 'logo' => request.base_url+@business.image('medium') , 'id' => @business.id ,'name' => @business.title, 'description' => @business.bio, 'instagramChannelAddr' => @business.instagram_page, 'telegramChannelAddr' => @business.telegram_channel, 'address' => @business.address, 'tel' => @business.tel, 'fax' => @business.fax, 'mobile' => @business.mobile, 'email' => @business.email, 'webpage' =>  @business.subdomain+'.'+'kaarafarin.ir'}
     render :json => @result.to_json, :callback => params['callback']
   end
 
@@ -307,7 +307,7 @@ class ApiController < ApplicationController
       if !@product.blank?
         @items << {id: @product.id, name:  order_item.product_name, image: request.base_url + @product.image('large'), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
       else
-        @items << {id: 0, name: order_item.product_name, image: request.base_url +  ActionController::Base.helpers.asset_path("noimage-35-meduim.jpg", :digest => false), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
+        @items << {id: 0, name: order_item.product_name, image: request.base_url +  ActionController::Base.helpers.asset_path("noimage-35-medium.jpg", :digest => false), quantity: order_item.quantity, unit_price: order_item.unit_price, total_price: order_item.total_price }
       end
     end
     render :json => {order: @order, order_items: @items}.to_json , :callback => params['callback']
